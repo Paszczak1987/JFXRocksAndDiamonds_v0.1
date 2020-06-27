@@ -7,14 +7,14 @@ import javafx.scene.input.KeyEvent;
 import rocks_and_diamonds.GameState;
 import rocks_and_diamonds.GameStates;
 
-public class Loading implements StateController {
-	private GameState parent;
+public class Loading extends StateController {
 	
+	private GameState parent;
 	@FXML
 	private Label label;
 	
 	@FXML
-	public void initialize() {
+	public void initialize() throws InterruptedException {
 		label.setFocusTraversable(true);
 	}
 	
@@ -28,4 +28,10 @@ public class Loading implements StateController {
 	public void setParent(GameState parent) {
 		this.parent = parent;
 	}
+
+	@Override
+	public void handle(long now) {
+		// TODO Auto-generated method stub
+	}
+
 }

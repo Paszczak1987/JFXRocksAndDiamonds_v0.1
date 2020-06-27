@@ -8,14 +8,13 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class MainWindow extends Application {
-
+	
 	private Stage appWindow;
 	private List<GameState> gameStates;
 	private GameState currentState;
 
 	@Override
 	public void start(Stage window) throws Exception {
-
 		this.appWindow = window;
 
 		gameStates = new ArrayList<GameState>();
@@ -29,12 +28,12 @@ public class MainWindow extends Application {
 		changeState(GameStates.ENTER_PLAYER_NAME);
 		appWindow.getIcons().add(new Image("/Pictures/MainIcon.png"));
 		appWindow.setTitle("Rocks & Diamonds by £ukasz & Krzysztof");
-		//appWindow.setResizable(false);
+		appWindow.setResizable(false);
 		appWindow.show();
 
 	}
 
-	public void changeState(GameStates state) {
+	public void changeState(GameStates state){
 		for (GameState gameState : gameStates)
 			if (gameState.getState() == state)
 				currentState = gameState;

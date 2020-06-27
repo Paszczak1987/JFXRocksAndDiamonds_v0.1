@@ -8,12 +8,9 @@ import javafx.scene.layout.StackPane;
 import rocks_and_diamonds.GameState;
 import rocks_and_diamonds.GameStates;
 
-public class EnterPlayerName implements StateController{
+public class EnterPlayerName extends StateController{
+	
 	private GameState parent;
-	
-	@FXML
-	private StackPane stackPane;
-	
 	@FXML
 	private Label label;
 	
@@ -32,4 +29,10 @@ public class EnterPlayerName implements StateController{
 	public void setParent(GameState parent) {
 		this.parent = parent;
 	}
+
+	@Override
+	public void handle(long now) {
+		// TODO Auto-generated method stub
+	}
+	
 }
