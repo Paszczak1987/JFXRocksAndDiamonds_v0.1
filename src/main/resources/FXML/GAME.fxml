@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<StackPane prefHeight="748.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rocks_and_diamonds.controllers.Game">
+   <children>
+      <HBox>
+         <children>
+            <Pane fx:id="gamePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="748.0" prefWidth="748.0" />
+            <VBox fx:id="sideDisplay" prefHeight="748.0" prefWidth="176.0">
+               <children>
+                  <Label fx:id="label" alignment="CENTER" contentDisplay="CENTER" minHeight="50.0" onKeyPressed="#labelKeyPressed" prefWidth="176.0" text="Rocks &amp; Diamonds">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</StackPane>
