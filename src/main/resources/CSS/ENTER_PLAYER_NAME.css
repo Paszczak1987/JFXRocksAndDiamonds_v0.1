@@ -1,0 +1,15 @@
+.root{
+	-fx-background-color: linear-gradient(to bottom, #CB3066, #16BFFD);
+}
+
+#label{
+	-fx-font-size: 20px;
+}
+
+#label:hover{
+	-fx-text-fill: red;
+	-fx-font-size: 25px;
+	-fx-font-weight: bold; 
+	-fx-cursor: crosshair;
+	-fx-rotate: 15px;
+}

@@ -1,0 +1,9 @@
+.root{
+	-fx-background-color: radial-gradient(radius 100%, tomato, papayawhip, steelblue);
+}
+
+#label{
+	-fx-font-size: 25px;
+	-fx-text-fill: orangered;
+	-fx-effect: dropshadow(gaussian, black, 0px, 2px, 3px, 3px) ;
+}

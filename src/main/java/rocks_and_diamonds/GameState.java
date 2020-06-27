@@ -17,6 +17,7 @@ public class GameState implements Comparable<GameState> {
 	private StateController controller;
 
 	public GameState(MainWindow parent, GameStates state, URL fxmlPathForScene ) throws IOException {
+		
 		this.parent = parent;
 		this.stateName = state;
 		FXMLLoader loader = new FXMLLoader(fxmlPathForScene);
@@ -24,6 +25,7 @@ public class GameState implements Comparable<GameState> {
 		controller = loader.getController();
 		controller.setParent(this);
 		scene = new Scene(stackPane);
+		scene.getStylesheets().add(this.getClass().getResource("/CSS/"+stateName.toString()+".css").toExternalForm());
 	}
 
 	public Scene getScene() {
