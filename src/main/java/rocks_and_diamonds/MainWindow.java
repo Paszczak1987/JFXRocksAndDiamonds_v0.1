@@ -8,14 +8,13 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class MainWindow extends Application {
-
+	
 	private Stage appWindow;
 	private List<GameState> gameStates;
 	private GameState currentState;
 
 	@Override
 	public void start(Stage window) throws Exception {
-
 		this.appWindow = window;
 
 		gameStates = new ArrayList<GameState>();
@@ -34,7 +33,7 @@ public class MainWindow extends Application {
 
 	}
 
-	public void changeState(GameStates state) {
+	public void changeState(GameStates state){
 		for (GameState gameState : gameStates)
 			if (gameState.getState() == state)
 				currentState = gameState;

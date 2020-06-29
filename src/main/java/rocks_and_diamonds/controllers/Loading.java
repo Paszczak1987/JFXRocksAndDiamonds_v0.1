@@ -12,9 +12,9 @@ import javafx.scene.media.MediaPlayer;
 import rocks_and_diamonds.GameState;
 import rocks_and_diamonds.GameStates;
 
-public class Loading implements StateController {
-	private GameState parent;
+public class Loading extends StateController {
 	
+	private GameState parent;
 	@FXML
 	private StackPane Stackpane;
 	
@@ -36,6 +36,7 @@ public class Loading implements StateController {
 	private MediaPlayer mediaPlayer;
 	
 	@FXML
+<<<<<<< HEAD
 	public void initialize() {
 		System.out.println(this.getClass().getResource(MEDIA_URL).toExternalForm());
 	 	mediaPlayer = new MediaPlayer(new Media(this.getClass().getResource(MEDIA_URL).toExternalForm()));
@@ -45,6 +46,11 @@ public class Loading implements StateController {
 //	     new Bounce(Circle2).setCycleCount(5).setDelay(Duration.valueOf("1250ms")).play();
 //	     new Bounce(Circle3).setCycleCount(5).setDelay(Duration.valueOf("1500ms")).play();
 	 	}
+=======
+	public void initialize() throws InterruptedException {
+		label.setFocusTraversable(true);
+	}
+>>>>>>> 9864f3563245b50298305248bc3f16e0af11ad82
 	
 	public void labelKeyPressed(KeyEvent e) {
 		System.out.println("LOADING");
@@ -56,4 +62,10 @@ public class Loading implements StateController {
 	public void setParent(GameState parent) {
 		this.parent = parent;
 	}
+
+	@Override
+	public void handle(long now) {
+		// TODO Auto-generated method stub
+	}
+
 }

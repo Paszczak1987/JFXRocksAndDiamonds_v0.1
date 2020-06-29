@@ -7,9 +7,9 @@ import javafx.scene.input.KeyEvent;
 import rocks_and_diamonds.GameState;
 import rocks_and_diamonds.GameStates;
 
-public class Menu implements StateController {
-	private GameState parent;
+public class Menu extends StateController {
 	
+	private GameState parent;
 	@FXML
 	private Label label;
 	
@@ -27,5 +27,10 @@ public class Menu implements StateController {
 	@Override
 	public void setParent(GameState parent) {
 		this.parent = parent;
+	}
+
+	@Override
+	public void handle(long now) {
+		// TODO Auto-generated method stub		
 	}
 }

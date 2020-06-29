@@ -3,7 +3,6 @@ package rocks_and_diamonds.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -18,8 +17,10 @@ import rocks_and_diamonds.items.Item;
 import rocks_and_diamonds.GameState;
 import rocks_and_diamonds.GameStates;
 
-public class Game extends AnimationTimer implements StateController {
+public class Game extends StateController {
+	
 	private static final int RECT_SIZE = 44;
+	
 	private GameState parent;
 	private int levelNr;
 	private Item player;
@@ -33,7 +34,7 @@ public class Game extends AnimationTimer implements StateController {
 
 	@FXML
 	public void initialize() {
-		levelNr = 0;
+		this.levelNr = 0;
 		player = new Item(RECT_SIZE);
 		map = new ArrayList<Rectangle>();
 		gamePane.setStyle("-fx-background-color: #000000");
@@ -48,16 +49,6 @@ public class Game extends AnimationTimer implements StateController {
 		System.out.println("GAME");
 		if (e.getCode() == KeyCode.SPACE)
 			parent.mainWindow().changeState(GameStates.QUIT);
-	}
-
-	private void loadLevel() {
-		Image level = new Image("Pictures/Levels/lvl" + levelNr + ".bmp");
-		for (int x = 0; x < level.getWidth(); x++) {
-			for (int y = 0; y < level.getHeight(); y++) {
-				Color color = level.getPixelReader().getColor(x, y);
-				updateMap(color, x, y);
-			}
-		}
 	}
 
 	private void updateMap(Color color, int x, int y) {
@@ -77,14 +68,23 @@ public class Game extends AnimationTimer implements StateController {
 			item = new Item(Items.DIRT, RECT_SIZE, x, y);
 			map.add(item.getBody());
 
-		} else {
-
-			Rectangle rectangle = new Rectangle(RECT_SIZE, RECT_SIZE);
-			rectangle.setFill(color);
-			rectangle.setX(x*RECT_SIZE);
-			rectangle.setY(y*RECT_SIZE);
-			map.add(rectangle);
-
+		}
+//		else {
+//			Rectangle rectangle = new Rectangle(RECT_SIZE, RECT_SIZE);
+//			rectangle.setFill(color);
+//			rectangle.setX(x*RECT_SIZE);
+//			rectangle.setY(y*RECT_SIZE);
+//			map.add(null);
+//		}
+	}
+	
+	private void loadLevel() {
+		Image level = new Image("Pictures/Levels/lvl" + levelNr + ".bmp");
+		for (int x = 0; x < level.getWidth(); x++) {
+			for (int y = 0; y < level.getHeight(); y++) {
+				Color color = level.getPixelReader().getColor(x, y);
+				updateMap(color, x, y);
+			}
 		}
 	}
 
@@ -99,10 +99,8 @@ public class Game extends AnimationTimer implements StateController {
 		this.parent = parent;
 	}
 
-	@Override
 	public void handle(long now) {
 		// TODO Auto-generated method stub
-
 	}
-
+	
 }

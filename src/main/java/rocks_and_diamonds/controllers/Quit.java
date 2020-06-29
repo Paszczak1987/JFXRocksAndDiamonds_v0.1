@@ -6,9 +6,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import rocks_and_diamonds.GameState;
 
-public class Quit implements StateController {
-	private GameState parent;
+public class Quit extends StateController {
 	
+	private GameState parent;
 	@FXML
 	private Label label;
 	
@@ -27,4 +27,10 @@ public class Quit implements StateController {
 	public void setParent(GameState parent) {
 		this.parent = parent;
 	}
+
+	@Override
+	public void handle(long now) {
+		// TODO Auto-generated method stub
+	}
+
 }

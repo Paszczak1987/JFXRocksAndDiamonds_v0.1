@@ -1,15 +1,7 @@
 # JFXRocksAndDiamonds
-Gotowy szablon do naszej gry.
-Tymczasowo [SPACJA] przewijasz się po scenach:
-EnterPlayerName->Loading->Menu->Game->Quit->koniec apki.
-W Quit jak wcisniesz [SPPACJA] zamyka się cała apka.
-Listener zaczepiony jest o labela w scene builderze.
-klasy controllerów są w paczce rock_and_diamonds.controllers
-kolejno:
-EnterPlayerName
-Loading
-Menu
-Game
-Quit
-
+Krzychu, pliki CSS same się dodają w GameState.java w 28 linijce,
+więc nie musisz ich dodawać w SceneBuilderze.
+Aby naprawić autouzupełnianie CSSa wystarczy dodać w BuildPaths
+projektu plik: org.eclipse.fx.ide.css.jfx8_3.5.0.201907240300.jar, 
+ze strony http://eclipse.mirrors.estointernet.in/efxclipse/updates-released/3.6.0/site/plugins/
 Pozdro.
