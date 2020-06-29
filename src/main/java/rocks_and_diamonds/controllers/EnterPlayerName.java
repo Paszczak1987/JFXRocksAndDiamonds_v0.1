@@ -14,8 +14,11 @@ import rocks_and_diamonds.GameState;
 import rocks_and_diamonds.GameStates;
 
 public class EnterPlayerName extends StateController{
-	
 	private GameState parent;
+	
+	@FXML
+	private StackPane stackpane;
+	
 	@FXML
 	private Rectangle rectangle;
 	

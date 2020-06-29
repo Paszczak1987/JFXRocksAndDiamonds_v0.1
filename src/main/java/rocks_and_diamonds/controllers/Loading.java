@@ -37,16 +37,18 @@ public class Loading extends StateController {
 	private MediaPlayer mediaPlayer;
 	
 	@FXML
+
 	public void initialize() {
 		System.out.println(this.getClass().getResource(MEDIA_URL).toExternalForm());
 	 	mediaPlayer = new MediaPlayer(new Media(this.getClass().getResource(MEDIA_URL).toExternalForm()));
 	 	mediaPlayer.setAutoPlay(true);
 //	 	MediaView.setMediaPlayer(mediaPlayer);
-//	 	 new Bounce(circle1).setCycleCount(5).setDelay(Duration.valueOf("1000ms")).play();
-//	     new Bounce(circle2).setCycleCount(5).setDelay(Duration.valueOf("1250ms")).play();
-//	     new Bounce(circle3).setCycleCount(5).setDelay(Duration.valueOf("1500ms")).play();
-//	 	}
-	}
+//	 	 new Bounce(Circle1).setCycleCount(5).setDelay(Duration.valueOf("1000ms")).play();
+//	     new Bounce(Circle2).setCycleCount(5).setDelay(Duration.valueOf("1250ms")).play();
+//	     new Bounce(Circle3).setCycleCount(5).setDelay(Duration.valueOf("1500ms")).play();
+	 	}
+
+
 	
 	public void labelKeyPressed(KeyEvent e) {
 		System.out.println("LOADING");
