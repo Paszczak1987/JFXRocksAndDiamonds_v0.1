@@ -36,7 +36,7 @@ public class Loading extends StateController {
 	private MediaPlayer mediaPlayer;
 	
 	@FXML
-<<<<<<< HEAD
+
 	public void initialize() {
 		System.out.println(this.getClass().getResource(MEDIA_URL).toExternalForm());
 	 	mediaPlayer = new MediaPlayer(new Media(this.getClass().getResource(MEDIA_URL).toExternalForm()));
@@ -46,11 +46,7 @@ public class Loading extends StateController {
 //	     new Bounce(Circle2).setCycleCount(5).setDelay(Duration.valueOf("1250ms")).play();
 //	     new Bounce(Circle3).setCycleCount(5).setDelay(Duration.valueOf("1500ms")).play();
 	 	}
-=======
-	public void initialize() throws InterruptedException {
-		label.setFocusTraversable(true);
-	}
->>>>>>> 9864f3563245b50298305248bc3f16e0af11ad82
+
 	
 	public void labelKeyPressed(KeyEvent e) {
 		System.out.println("LOADING");
