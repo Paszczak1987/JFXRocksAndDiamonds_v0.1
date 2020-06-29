@@ -1,7 +1,0 @@
-.root{
-	-fx-background-color: linear-gradient(rgb(50, 200, 240) 20%, rgb(255, 250, 140) 80%);
-}
-
-#label{
-	-fx-font-size: 20px;
-}
