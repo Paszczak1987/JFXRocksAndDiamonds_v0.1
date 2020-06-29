@@ -16,41 +16,37 @@ public class Loading extends StateController {
 	
 	private GameState parent;
 	@FXML
-	private StackPane Stackpane;
+	private StackPane stackPane;
 	
 	@FXML
-	private Label Label;
+	private Label label;
 	
 	@FXML
-	private Circle Circle1;
+	private Circle circle1;
 	
 	@FXML
-	private Circle Circle2;
+	private Circle circle2;
 	
 	@FXML
-	private Circle Circle3;
+	private Circle circle3;
 	
 	@FXML 
-	private MediaView MediaView;	
-	private static final String MEDIA_URL = "/Pictures/Diamond.mp4";
+	private MediaView mediaView;	
+	
+	private String MEDIA_URL = "/Pictures/Diamond.mp4";
 	private MediaPlayer mediaPlayer;
 	
 	@FXML
-<<<<<<< HEAD
 	public void initialize() {
 		System.out.println(this.getClass().getResource(MEDIA_URL).toExternalForm());
 	 	mediaPlayer = new MediaPlayer(new Media(this.getClass().getResource(MEDIA_URL).toExternalForm()));
 	 	mediaPlayer.setAutoPlay(true);
-	 	MediaView.setMediaPlayer(mediaPlayer);
-//	 	 new Bounce(Circle1).setCycleCount(5).setDelay(Duration.valueOf("1000ms")).play();
-//	     new Bounce(Circle2).setCycleCount(5).setDelay(Duration.valueOf("1250ms")).play();
-//	     new Bounce(Circle3).setCycleCount(5).setDelay(Duration.valueOf("1500ms")).play();
-	 	}
-=======
-	public void initialize() throws InterruptedException {
-		label.setFocusTraversable(true);
+//	 	MediaView.setMediaPlayer(mediaPlayer);
+//	 	 new Bounce(circle1).setCycleCount(5).setDelay(Duration.valueOf("1000ms")).play();
+//	     new Bounce(circle2).setCycleCount(5).setDelay(Duration.valueOf("1250ms")).play();
+//	     new Bounce(circle3).setCycleCount(5).setDelay(Duration.valueOf("1500ms")).play();
+//	 	}
 	}
->>>>>>> 9864f3563245b50298305248bc3f16e0af11ad82
 	
 	public void labelKeyPressed(KeyEvent e) {
 		System.out.println("LOADING");
