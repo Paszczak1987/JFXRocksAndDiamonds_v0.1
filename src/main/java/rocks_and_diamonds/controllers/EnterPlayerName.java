@@ -1,10 +1,15 @@
 package rocks_and_diamonds.controllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import rocks_and_diamonds.GameState;
 import rocks_and_diamonds.GameStates;
 
@@ -15,16 +20,30 @@ public class EnterPlayerName implements StateController{
 	private StackPane stackPane;
 	
 	@FXML
-	private Label label;
+	private Rectangle Rectangle;
 	
 	@FXML
-	public void initialize() {
-		label.setFocusTraversable(true);
+	private VBox VBox;
+	
+	@FXML
+	private Label Label;
+	
+	@FXML
+	private HBox HBox;
+	
+	@FXML
+	private TextArea TextArea;
+	
+	@FXML
+	private Button Button;
+		
+	public void onActionButton(KeyEvent e) {
+		System.out.println("ENTER_PLAYER_NAME");
+		if(e.getCode() == KeyCode.ENTER )
+			parent.mainWindow().changeState(GameStates.LOADING);
 	}
 	
-	public void labelKeyPressed(KeyEvent e) {
-		System.out.println("ENTER_PLAYER_NAME");
-		if(e.getCode() == KeyCode.SPACE )
+	public void onMouseClickedButton() {
 			parent.mainWindow().changeState(GameStates.LOADING);
 	}
 	

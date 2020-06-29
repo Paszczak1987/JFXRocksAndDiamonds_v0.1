@@ -1,10 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
-<StackPane prefHeight="748.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rocks_and_diamonds.controllers.EnterPlayerName">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="748.0" prefWidth="924.0" style="-fx-background-image: url('Pictures/EnterPlayerName.jpg'); -fx-background-size: stretch;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rocks_and_diamonds.controllers.EnterPlayerName">
    <children>
-      <Label fx:id="label" onKeyPressed="#labelKeyPressed" text="Enter name" />
-   </children>
+      <Rectangle fx:id="Rectangle" arcHeight="5.0" arcWidth="5.0" fill="#dcdfe2" height="150.0" opacity="0.3" stroke="#cdc0c0" strokeType="INSIDE" width="250.0" />
+      <VBox fx:id="VBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="250.0">
+         <children>
+            <Label fx:id="Label" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="ENTER YOUR NAME">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Label>
+            <HBox fx:id="HBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="238.0">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+               <children>
+                  <TextArea fx:id="TextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.55" prefHeight="34.0" prefWidth="160.0">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin></TextArea>
+                  <Button fx:id="Button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onKeyPressed="#onActionButton" onMouseClicked="#onMouseClickedButton" opacity="0.7" prefHeight="34.0" prefWidth="40.0" />
+               </children>
+            </HBox>
+         </children>
+         <StackPane.margin>
+            <Insets />
+         </StackPane.margin>
+      </VBox>
+   </children> 
 </StackPane>

@@ -3,7 +3,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.StackPane?>
 
-<StackPane prefHeight="748.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rocks_and_diamonds.controllers.Quit">
+<StackPane prefHeight="748.0" prefWidth="924.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="rocks_and_diamonds.controllers.Quit">
    <children>
       <Label fx:id="label" onKeyPressed="#labelKeyPressed" text="Quit" />
    </children>

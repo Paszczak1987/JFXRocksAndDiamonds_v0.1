@@ -29,7 +29,7 @@ public class MainWindow extends Application {
 		changeState(GameStates.ENTER_PLAYER_NAME);
 		appWindow.getIcons().add(new Image("/Pictures/MainIcon.png"));
 		appWindow.setTitle("Rocks & Diamonds by £ukasz & Krzysztof");
-		//appWindow.setResizable(false);
+		appWindow.setResizable(false);
 		appWindow.show();
 
 	}
