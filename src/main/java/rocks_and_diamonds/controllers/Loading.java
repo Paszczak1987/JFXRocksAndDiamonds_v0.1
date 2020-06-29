@@ -16,23 +16,24 @@ public class Loading extends StateController {
 	
 	private GameState parent;
 	@FXML
-	private StackPane Stackpane;
+	private StackPane stackPane;
 	
 	@FXML
-	private Label Label;
+	private Label label;
 	
 	@FXML
-	private Circle Circle1;
+	private Circle circle1;
 	
 	@FXML
-	private Circle Circle2;
+	private Circle circle2;
 	
 	@FXML
-	private Circle Circle3;
+	private Circle circle3;
 	
 	@FXML 
-	private MediaView MediaView;	
-	private static final String MEDIA_URL = "/Pictures/Diamond.mp4";
+	private MediaView mediaView;	
+	
+	private String MEDIA_URL = "/Pictures/Diamond.mp4";
 	private MediaPlayer mediaPlayer;
 	
 	@FXML
@@ -41,11 +42,12 @@ public class Loading extends StateController {
 		System.out.println(this.getClass().getResource(MEDIA_URL).toExternalForm());
 	 	mediaPlayer = new MediaPlayer(new Media(this.getClass().getResource(MEDIA_URL).toExternalForm()));
 	 	mediaPlayer.setAutoPlay(true);
-	 	MediaView.setMediaPlayer(mediaPlayer);
+//	 	MediaView.setMediaPlayer(mediaPlayer);
 //	 	 new Bounce(Circle1).setCycleCount(5).setDelay(Duration.valueOf("1000ms")).play();
 //	     new Bounce(Circle2).setCycleCount(5).setDelay(Duration.valueOf("1250ms")).play();
 //	     new Bounce(Circle3).setCycleCount(5).setDelay(Duration.valueOf("1500ms")).play();
 	 	}
+
 
 	
 	public void labelKeyPressed(KeyEvent e) {

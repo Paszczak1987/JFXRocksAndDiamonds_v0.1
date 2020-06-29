@@ -20,22 +20,25 @@ public class EnterPlayerName extends StateController{
 	private StackPane stackpane;
 	
 	@FXML
-	private Rectangle Rectangle;
+	private Rectangle rectangle;
 	
 	@FXML
-	private VBox VBox;
+	private StackPane stackPane;
 	
 	@FXML
-	private Label Label;
+	private VBox vBox;
 	
 	@FXML
-	private HBox HBox;
+	private Label label;
 	
 	@FXML
-	private TextArea TextArea;
+	private HBox hBox;
 	
 	@FXML
-	private Button Button;
+	private TextArea textArea;
+	
+	@FXML
+	private Button button;
 		
 	public void onActionButton(KeyEvent e) {
 		System.out.println("ENTER_PLAYER_NAME");
