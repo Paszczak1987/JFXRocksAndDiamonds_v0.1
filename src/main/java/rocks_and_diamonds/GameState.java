@@ -25,11 +25,8 @@ public class GameState implements Comparable<GameState> {
 		controller = loader.getController();
 		controller.setParent(this);
 		scene = new Scene(stackPane);
-<<<<<<< HEAD
-=======
-		
+
 		//£adowanie CSSów
->>>>>>> f463fae
 		//scene.getStylesheets().add(this.getClass().getResource("/CSS/"+stateName.toString()+".css").toExternalForm());
 	}
 
