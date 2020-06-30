@@ -8,7 +8,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.media.MediaView;
 import javafx.scene.shape.Circle;
-import javafx.scene.media.Media;
+//import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import rocks_and_diamonds.GameState;
 import rocks_and_diamonds.GameStates;
