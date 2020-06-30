@@ -1,5 +1,6 @@
 package rocks_and_diamonds.controllers;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
@@ -39,9 +40,24 @@ public class Loading extends StateController {
 	@FXML
 
 	public void initialize() {
+		
+		{//dodanie Eventhandlera tymczasowo	
+			label.setFocusTraversable(true);
+			EventHandler<KeyEvent> handler = new EventHandler<KeyEvent>() {
+				@Override
+				public void handle(KeyEvent event) {
+					if(event.getCode() == KeyCode.SPACE)
+						parent.mainWindow().changeState(GameStates.MENU);
+				}
+				
+			};
+			label.addEventHandler(KeyEvent.KEY_PRESSED, handler);
+		}//dodanie Eventhandlera tymczasowo		
+		
+		
 		System.out.println(this.getClass().getResource(MEDIA_URL).toExternalForm());
-	 	mediaPlayer = new MediaPlayer(new Media(this.getClass().getResource(MEDIA_URL).toExternalForm()));
-	 	mediaPlayer.setAutoPlay(true);
+	 	//mediaPlayer = new MediaPlayer(new Media(this.getClass().getResource(MEDIA_URL).toExternalForm()));
+	 	//mediaPlayer.setAutoPlay(true);
 //	 	MediaView.setMediaPlayer(mediaPlayer);
 //	 	 new Bounce(Circle1).setCycleCount(5).setDelay(Duration.valueOf("1000ms")).play();
 //	     new Bounce(Circle2).setCycleCount(5).setDelay(Duration.valueOf("1250ms")).play();

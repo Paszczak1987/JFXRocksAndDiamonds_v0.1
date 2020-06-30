@@ -18,9 +18,7 @@ import rocks_and_diamonds.GameState;
 import rocks_and_diamonds.GameStates;
 
 public class Game extends StateController {
-	
-	private static final int RECT_SIZE = 44;
-	
+
 	private GameState parent;
 	private int levelNr;
 	private Item player;
