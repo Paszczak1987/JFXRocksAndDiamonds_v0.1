@@ -47,6 +47,7 @@ public class MainWindow extends Application {
 	public void close() {
 		appWindow.close();
 	}
+	
 	public GameState getGameState() {
 		return currentState;
 	}

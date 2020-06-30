@@ -34,6 +34,7 @@ public class Game extends StateController {
 	//Game fields
 	private boolean pause = true;
 	private String collisionType = "NONE";
+	private KeyEvent event;
 
 	@FXML
 	private Pane gamePane;
@@ -44,7 +45,6 @@ public class Game extends StateController {
 	@FXML
 	private Label timeLabel;
 
-	private KeyEvent event;
 
 	@FXML
 	public void initialize() {
