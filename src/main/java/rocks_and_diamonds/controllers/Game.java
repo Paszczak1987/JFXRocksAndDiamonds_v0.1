@@ -3,6 +3,7 @@ package rocks_and_diamonds.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -18,13 +19,17 @@ import rocks_and_diamonds.GameState;
 import rocks_and_diamonds.GameStates;
 
 public class Game extends StateController {
-	
-	private static final int RECT_SIZE = 44;
-	
+
 	private GameState parent;
 	private int levelNr;
 	private Item player;
-	private List<Rectangle> map;
+	private List<Item> map;
+
+	private int timeToCount;
+	private long lastTime;
+	private long frameTime;
+	private int msSum;
+
 	@FXML
 	private Pane gamePane;
 	@FXML
@@ -32,52 +37,57 @@ public class Game extends StateController {
 	@FXML
 	private Label label;
 
+	private KeyEvent e;
+
 	@FXML
 	public void initialize() {
 		this.levelNr = 0;
 		player = new Item(RECT_SIZE);
-		map = new ArrayList<Rectangle>();
-		gamePane.setStyle("-fx-background-color: #000000");
+		map = new ArrayList<Item>();
 
 		loadLevel();
 		displayLevel();
 
-		label.setFocusTraversable(true);
+		{// KeyListener na gamePane
+			gamePane.setFocusTraversable(true);
+			EventHandler<KeyEvent> keyPressed = new EventHandler<KeyEvent>() {
+				@Override
+				public void handle(KeyEvent e) {
+					gamePaneOnKeyPressed(e);
+				}
+			};
+			gamePane.addEventHandler(KeyEvent.ANY, keyPressed);
+		} // KeyListener na gamePane
+
+		this.timeToCount = 90;
+
 	}
 
-	public void labelKeyPressed(KeyEvent e) {
-		System.out.println("GAME");
-		if (e.getCode() == KeyCode.SPACE)
+	public void gamePaneOnKeyPressed(KeyEvent e) {
+		if (e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.SPACE)
 			parent.mainWindow().changeState(GameStates.QUIT);
+		if(e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.Q)
+			check();
+		if (e.getCode() == KeyCode.UP || e.getCode() == KeyCode.DOWN || e.getCode() == KeyCode.LEFT || e.getCode() == KeyCode.RIGHT) {
+			this.e = e;
+			start();
+		}
 	}
 
 	private void updateMap(Color color, int x, int y) {
 		Item item;
 		if (color.equals(Items.PLAYER.getColor())) {
-
-			player.setXY(x, y);
-			map.add(player.getBody());
-
+			player.setPosition(x, y);
+			map.add(player);
 		} else if (color.equals(Items.WALL.getColor())) {
-
 			item = new Item(Items.WALL, RECT_SIZE, x, y);
-			map.add(item.getBody());
-
+			map.add(item);
 		} else if (color.equals(Items.DIRT.getColor())) {
-
 			item = new Item(Items.DIRT, RECT_SIZE, x, y);
-			map.add(item.getBody());
-
+			map.add(item);
 		}
-//		else {
-//			Rectangle rectangle = new Rectangle(RECT_SIZE, RECT_SIZE);
-//			rectangle.setFill(color);
-//			rectangle.setX(x*RECT_SIZE);
-//			rectangle.setY(y*RECT_SIZE);
-//			map.add(null);
-//		}
 	}
-	
+
 	private void loadLevel() {
 		Image level = new Image("Pictures/Levels/lvl" + levelNr + ".bmp");
 		for (int x = 0; x < level.getWidth(); x++) {
@@ -89,9 +99,69 @@ public class Game extends StateController {
 	}
 
 	public void displayLevel() {
-		for (Rectangle rec : map) {
-			gamePane.getChildren().add(rec);
+		for (Item item : map) {
+			gamePane.getChildren().add(item.getBody());
 		}
+	}
+	
+	private void check() {
+		for(int i = 0; i< map.size(); i++) {
+			System.out.println(i+":"+map.get(i).getBody().getBoundsInLocal());
+			
+		}
+		
+		
+	}
+
+	public void checkCollision() {
+		
+//		double playerXl = player.getBody().getX() - 2;
+//		double playerXr = player.getBody().getX() + RECT_SIZE + 2;
+//		
+//		for (int i = 0; i < map.size(); i++) {
+////			if (map.get(i).getItem() == Items.WALL)
+//				if (player.getBody().getBoundsInLocal().intersects(map.get(i).getBody().getBoundsInLocal())) {
+//					System.out.println(player.getDirection() + " collide");
+//				}
+//
+////			if(playerXr >= map.get(i).getBody().getX()) {
+////				if(map.get(i).getItem() == Items.WALL) 
+////					System.out.println("kolizja z prawej");
+////				
+////			}else if(playerX <= map.get(i).getBody().getX()) {
+////				if(map.get(i).getItem() == Items.WALL) 
+////					System.out.println("kolizja z lewej");
+////				
+////			}
+//		}
+	}
+
+	// game loop / timer
+	public void handle(long now) {
+		if (lastTime == 0) {
+			lastTime = System.currentTimeMillis();
+			return;
+		}
+
+		msSum += frameTime;
+
+		// System.out.println(moving);
+		checkCollision();
+		player.move(e);
+
+		if (msSum > 1000) {
+			timeToCount--;
+
+			if (timeToCount == 0) {
+				stop();
+				return;
+			}
+
+			msSum = 0;
+		}
+
+		frameTime = System.currentTimeMillis() - lastTime;
+		lastTime = System.currentTimeMillis();
 	}
 
 	@Override
@@ -99,8 +169,4 @@ public class Game extends StateController {
 		this.parent = parent;
 	}
 
-	public void handle(long now) {
-		// TODO Auto-generated method stub
-	}
-	
 }

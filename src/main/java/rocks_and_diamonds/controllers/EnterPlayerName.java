@@ -3,7 +3,7 @@ package rocks_and_diamonds.controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
@@ -14,40 +14,35 @@ import rocks_and_diamonds.GameState;
 import rocks_and_diamonds.GameStates;
 
 public class EnterPlayerName extends StateController{
+	
 	private GameState parent;
-	
 	@FXML
-	private StackPane stackpane;
-	
+	private StackPane stackpane;	
 	@FXML
-	private Rectangle rectangle;
-	
+	private Rectangle rectangle;	
 	@FXML
-	private StackPane stackPane;
-	
+	private StackPane stackPane;	
 	@FXML
-	private VBox vBox;
-	
+	private VBox vBox;	
 	@FXML
-	private Label label;
-	
+	private Label label;	
 	@FXML
-	private HBox hBox;
-	
+	private HBox hBox;	
 	@FXML
-	private TextArea textArea;
-	
+	private TextField textField;	
 	@FXML
 	private Button button;
-		
-	public void onActionButton(KeyEvent e) {
-		System.out.println("ENTER_PLAYER_NAME");
-		if(e.getCode() == KeyCode.ENTER )
+	
+	public void buttonOnMouseClicked() {
+		if(!textField.getText().equals(""))
 			parent.mainWindow().changeState(GameStates.LOADING);
+		parent.mainWindow().getGameState().getController().start();
 	}
 	
-	public void onMouseClickedButton() {
+	public void textFieldOnKeyPressed(KeyEvent e) {
+		if(e.getCode() == KeyCode.ENTER && !textField.getText().equals(""))
 			parent.mainWindow().changeState(GameStates.LOADING);
+		parent.mainWindow().getGameState().getController().start();
 	}
 	
 	@Override

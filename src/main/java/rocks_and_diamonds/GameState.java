@@ -41,6 +41,10 @@ public class GameState implements Comparable<GameState> {
 	public MainWindow mainWindow() {
 		return parent;
 	}
+	
+	public StateController getController() {
+		return controller;
+	}
 
 	@Override
 	public int compareTo(GameState o) {
