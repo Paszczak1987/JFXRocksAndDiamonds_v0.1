@@ -3,6 +3,7 @@ package rocks_and_diamonds.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -19,61 +20,71 @@ import rocks_and_diamonds.GameStates;
 
 public class Game extends StateController {
 
-	private GameState parent;
-	private int levelNr;
-	private Item player;
-	private List<Rectangle> map;
+	private GameState 		parent;
+	private int 			levelNr;
+	private Item 			player;
+	private List<Rectangle>	map;
+	
+	private int 			timeToCount;
+	private long 			lastTime;
+	private long 			frameTime;
+	private int 			msSum;
+
 	@FXML
 	private Pane gamePane;
 	@FXML
 	private VBox sideDisplay;
 	@FXML
 	private Label label;
+	
+	private KeyEvent e;
 
 	@FXML
 	public void initialize() {
 		this.levelNr = 0;
 		player = new Item(RECT_SIZE);
 		map = new ArrayList<Rectangle>();
-		gamePane.setStyle("-fx-background-color: #000000");
 
 		loadLevel();
 		displayLevel();
+		
+		{//KeyListener na gamePane
+			gamePane.setFocusTraversable(true);
+			EventHandler<KeyEvent> keyPressed = new EventHandler<KeyEvent>() {
+				@Override
+				public void handle(KeyEvent e) {
+					gamePaneOnKeyPressed(e);
+				}
+			};
+			gamePane.addEventHandler(KeyEvent.ANY, keyPressed);
+		}//KeyListener na gamePane
 
-		label.setFocusTraversable(true);
+		this.timeToCount = 90;
+	
 	}
 
-	public void labelKeyPressed(KeyEvent e) {
-		System.out.println("GAME");
-		if (e.getCode() == KeyCode.SPACE)
+	public void gamePaneOnKeyPressed(KeyEvent e) {
+		this.e = e;
+		if (e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.SPACE)
 			parent.mainWindow().changeState(GameStates.QUIT);
+		
+		if(e.getCode() == KeyCode.UP || e.getCode() == KeyCode.DOWN || e.getCode() == KeyCode.LEFT || e.getCode() == KeyCode.RIGHT) {
+			start();
+		}
 	}
 
 	private void updateMap(Color color, int x, int y) {
 		Item item;
 		if (color.equals(Items.PLAYER.getColor())) {
-
-			player.setXY(x, y);
+			player.setPosition(x, y);
 			map.add(player.getBody());
-
 		} else if (color.equals(Items.WALL.getColor())) {
-
 			item = new Item(Items.WALL, RECT_SIZE, x, y);
 			map.add(item.getBody());
-
 		} else if (color.equals(Items.DIRT.getColor())) {
-
 			item = new Item(Items.DIRT, RECT_SIZE, x, y);
 			map.add(item.getBody());
-
 		}
-//		else {
-//			Rectangle rectangle = new Rectangle(RECT_SIZE, RECT_SIZE);
-//			rectangle.setFill(color);
-//			rectangle.setX(x*RECT_SIZE);
-//			rectangle.setY(y*RECT_SIZE);
-//			map.add(null);
-//		}
 	}
 	
 	private void loadLevel() {
@@ -96,9 +107,32 @@ public class Game extends StateController {
 	public void setParent(GameState parent) {
 		this.parent = parent;
 	}
-
+	
+	//game loop / timer
 	public void handle(long now) {
-		// TODO Auto-generated method stub
+		if (lastTime == 0) {
+			lastTime = System.currentTimeMillis();
+			return;
+		}
+
+		msSum += frameTime;
+
+		//System.out.println(moving);
+		player.move(e);
+		
+		if (msSum > 1000) {
+			timeToCount--;
+			
+			if(timeToCount == 0) {
+				stop();
+				return;				
+			}
+			
+			msSum = 0;
+		}
+
+		frameTime = System.currentTimeMillis() - lastTime;
+		lastTime = System.currentTimeMillis();
 	}
 	
 }

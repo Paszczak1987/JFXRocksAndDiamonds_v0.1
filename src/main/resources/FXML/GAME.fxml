@@ -11,10 +11,10 @@
    <children>
       <HBox>
          <children>
-            <Pane fx:id="gamePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="748.0" prefWidth="748.0" />
+            <Pane fx:id="gamePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="748.0" prefWidth="748.0" style="-fx-background-color: black;" />
             <VBox fx:id="sideDisplay" prefHeight="748.0" prefWidth="176.0">
                <children>
-                  <Label fx:id="label" alignment="CENTER" contentDisplay="CENTER" minHeight="50.0" onKeyPressed="#labelKeyPressed" prefWidth="176.0" text="Rocks &amp; Diamonds">
+                  <Label fx:id="label" alignment="CENTER" contentDisplay="CENTER" minHeight="50.0" prefWidth="176.0" text="Rocks &amp; Diamonds">
                      <font>
                         <Font size="15.0" />
                      </font>
@@ -25,3 +25,9 @@
       </HBox>
    </children>
 </StackPane>
+
+<!-- 
+
+onKeyPressed="#labelKeyPressed"
+
+ -->

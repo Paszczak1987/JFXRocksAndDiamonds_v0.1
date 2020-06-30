@@ -14,8 +14,8 @@ import rocks_and_diamonds.GameState;
 import rocks_and_diamonds.GameStates;
 
 public class EnterPlayerName extends StateController{
-	private GameState parent;
 	
+	private GameState parent;
 	@FXML
 	private StackPane stackpane;	
 	@FXML
@@ -36,11 +36,13 @@ public class EnterPlayerName extends StateController{
 	public void buttonOnMouseClicked() {
 		if(!textField.getText().equals(""))
 			parent.mainWindow().changeState(GameStates.LOADING);
+		parent.mainWindow().getGameState().getController().start();
 	}
 	
 	public void textFieldOnKeyPressed(KeyEvent e) {
 		if(e.getCode() == KeyCode.ENTER && !textField.getText().equals(""))
 			parent.mainWindow().changeState(GameStates.LOADING);
+		parent.mainWindow().getGameState().getController().start();
 	}
 	
 	@Override

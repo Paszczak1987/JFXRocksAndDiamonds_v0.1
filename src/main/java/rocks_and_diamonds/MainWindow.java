@@ -47,7 +47,10 @@ public class MainWindow extends Application {
 	public void close() {
 		appWindow.close();
 	}
-
+	public GameState getGameState() {
+		return currentState;
+	}
+	
 	public GameState getGameState(GameStates state) {
 		for (GameState gameState : gameStates)
 			if (gameState.getState() == state)
