@@ -41,7 +41,7 @@ public class Loading extends StateController {
 
 	public void initialize() {
 		
-		this.timeToCount = 3;
+		this.timeToCount = 4;
 		
 		{//dodanie Eventhandlera tymczasowo	
 			label.setFocusTraversable(true);
@@ -83,8 +83,6 @@ public class Loading extends StateController {
 		}
 
 		msSum += frameTime;
-		
-		label.setText("Plewase wait... "+timeToCount);
 		
 		if (msSum > 1000) {
 		
