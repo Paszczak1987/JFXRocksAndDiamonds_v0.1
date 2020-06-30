@@ -15,10 +15,10 @@ import rocks_and_diamonds.GameStates;
 
 public class Loading extends StateController {
 	
-	private int 			timeToCount;
-	private long 			lastTime;
-	private long 			frameTime;
-	private int 			msSum;
+	private int 	timeToCount;
+	private long 	lastTime;
+	private long 	frameTime;
+	private int 	msSum;
 	
 	private GameState parent;
 	@FXML
@@ -84,10 +84,13 @@ public class Loading extends StateController {
 
 		msSum += frameTime;
 		
+		label.setText("Plewase wait... "+timeToCount);
+		
 		if (msSum > 1000) {
-			label.setText("Please Wait... "+timeToCount--);
+		
+			--timeToCount;
 			
-			if(timeToCount == 0) {
+			if(timeToCount == -1) {
 				parent.mainWindow().changeState(GameStates.MENU);
 				stop();
 				return;				

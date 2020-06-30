@@ -65,12 +65,16 @@ public class Item implements Comparable<Item> {
 		timeline.setCycleCount(size);
 	}
 
-	public Items getName() {
+	public Items getItem() {
 		return name;
 	}
 
 	public Rectangle getBody() {
 		return body;
+	}
+	
+	public KeyCode getDirection() {
+		return direction;
 	}
 
 	public void setPosition(int x, int y) {
@@ -91,8 +95,8 @@ public class Item implements Comparable<Item> {
 		
 		frameCounter++;
 		
-		//Jeœli to PLAYER
 		if(name == Items.PLAYER) {
+			//Jeœli to PLAYER
 			if(direction == KeyCode.LEFT)
 				body.setX(body.getX() - dx);			
 			else if(direction == KeyCode.RIGHT)
@@ -101,19 +105,12 @@ public class Item implements Comparable<Item> {
 				body.setY(body.getY() - dy);
 			else if(direction == KeyCode.DOWN)
 				body.setY(body.getY() + dy);
-		
-		
-			if(direction == KeyCode.LEFT)
-				body.setScaleX(-1);
-			else if(direction == KeyCode.RIGHT)
-				body.setScaleX(1);
-				
+			
 			animate(frameCounter);
-		//Jeœli coœ INNEGO	
 		}else {
+			//Jeœli coœ INNEGO	
 			System.out.println("nie jestem PLAYER");
 		}
-		
 	}
 	
 	private void afterSteps(ActionEvent actionEvent) {
@@ -122,7 +119,14 @@ public class Item implements Comparable<Item> {
 	}
 	
 	private void animate(int frameCounter) {
+		
+		if(direction == KeyCode.LEFT)
+			body.setScaleX(-1);
+		else if(direction == KeyCode.RIGHT)
+			body.setScaleX(1);
+		
 		frameCounter = (frameCounter == size ? 0 : frameCounter);
+		
 		if(frameCounter%22 == 0) {
 			if(skin.equals(textures.get(0)))
 				skin = textures.get(1);
@@ -135,7 +139,6 @@ public class Item implements Comparable<Item> {
 		}
 	}
 	
-	
 	public void move(KeyEvent e) {
 		if(timeline.getStatus() == Animation.Status.STOPPED)
 			direction = e.getCode();		
@@ -143,14 +146,13 @@ public class Item implements Comparable<Item> {
 			timeline.play();
 			timeline.setOnFinished(null);
 		}
-		if(e.getEventType() == KeyEvent.KEY_RELEASED) {
+		if(e.getEventType() == KeyEvent.KEY_RELEASED)
 			timeline.setOnFinished(this::afterSteps);
-		}
 	}
 
 	@Override
 	public int compareTo(Item o) {
-		if (name == o.getName())
+		if (name == o.getItem())
 			return 0;
 		else
 			return 1;

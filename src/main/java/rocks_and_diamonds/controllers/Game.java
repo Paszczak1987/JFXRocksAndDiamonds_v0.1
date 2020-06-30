@@ -20,15 +20,15 @@ import rocks_and_diamonds.GameStates;
 
 public class Game extends StateController {
 
-	private GameState 		parent;
-	private int 			levelNr;
-	private Item 			player;
-	private List<Rectangle>	map;
-	
-	private int 			timeToCount;
-	private long 			lastTime;
-	private long 			frameTime;
-	private int 			msSum;
+	private GameState parent;
+	private int levelNr;
+	private Item player;
+	private List<Item> map;
+
+	private int timeToCount;
+	private long lastTime;
+	private long frameTime;
+	private int msSum;
 
 	@FXML
 	private Pane gamePane;
@@ -36,19 +36,19 @@ public class Game extends StateController {
 	private VBox sideDisplay;
 	@FXML
 	private Label label;
-	
+
 	private KeyEvent e;
 
 	@FXML
 	public void initialize() {
 		this.levelNr = 0;
 		player = new Item(RECT_SIZE);
-		map = new ArrayList<Rectangle>();
+		map = new ArrayList<Item>();
 
 		loadLevel();
 		displayLevel();
-		
-		{//KeyListener na gamePane
+
+		{// KeyListener na gamePane
 			gamePane.setFocusTraversable(true);
 			EventHandler<KeyEvent> keyPressed = new EventHandler<KeyEvent>() {
 				@Override
@@ -57,18 +57,19 @@ public class Game extends StateController {
 				}
 			};
 			gamePane.addEventHandler(KeyEvent.ANY, keyPressed);
-		}//KeyListener na gamePane
+		} // KeyListener na gamePane
 
 		this.timeToCount = 90;
-	
+
 	}
 
 	public void gamePaneOnKeyPressed(KeyEvent e) {
-		this.e = e;
 		if (e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.SPACE)
 			parent.mainWindow().changeState(GameStates.QUIT);
-		
-		if(e.getCode() == KeyCode.UP || e.getCode() == KeyCode.DOWN || e.getCode() == KeyCode.LEFT || e.getCode() == KeyCode.RIGHT) {
+		if(e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.Q)
+			check();
+		if (e.getCode() == KeyCode.UP || e.getCode() == KeyCode.DOWN || e.getCode() == KeyCode.LEFT || e.getCode() == KeyCode.RIGHT) {
+			this.e = e;
 			start();
 		}
 	}
@@ -77,16 +78,16 @@ public class Game extends StateController {
 		Item item;
 		if (color.equals(Items.PLAYER.getColor())) {
 			player.setPosition(x, y);
-			map.add(player.getBody());
+			map.add(player);
 		} else if (color.equals(Items.WALL.getColor())) {
 			item = new Item(Items.WALL, RECT_SIZE, x, y);
-			map.add(item.getBody());
+			map.add(item);
 		} else if (color.equals(Items.DIRT.getColor())) {
 			item = new Item(Items.DIRT, RECT_SIZE, x, y);
-			map.add(item.getBody());
+			map.add(item);
 		}
 	}
-	
+
 	private void loadLevel() {
 		Image level = new Image("Pictures/Levels/lvl" + levelNr + ".bmp");
 		for (int x = 0; x < level.getWidth(); x++) {
@@ -98,17 +99,44 @@ public class Game extends StateController {
 	}
 
 	public void displayLevel() {
-		for (Rectangle rec : map) {
-			gamePane.getChildren().add(rec);
+		for (Item item : map) {
+			gamePane.getChildren().add(item.getBody());
 		}
 	}
-
-	@Override
-	public void setParent(GameState parent) {
-		this.parent = parent;
-	}
 	
-	//game loop / timer
+	private void check() {
+		for(int i = 0; i< map.size(); i++) {
+			System.out.println(i+":"+map.get(i).getBody().getBoundsInLocal());
+			
+		}
+		
+		
+	}
+
+	public void checkCollision() {
+		
+//		double playerXl = player.getBody().getX() - 2;
+//		double playerXr = player.getBody().getX() + RECT_SIZE + 2;
+//		
+//		for (int i = 0; i < map.size(); i++) {
+////			if (map.get(i).getItem() == Items.WALL)
+//				if (player.getBody().getBoundsInLocal().intersects(map.get(i).getBody().getBoundsInLocal())) {
+//					System.out.println(player.getDirection() + " collide");
+//				}
+//
+////			if(playerXr >= map.get(i).getBody().getX()) {
+////				if(map.get(i).getItem() == Items.WALL) 
+////					System.out.println("kolizja z prawej");
+////				
+////			}else if(playerX <= map.get(i).getBody().getX()) {
+////				if(map.get(i).getItem() == Items.WALL) 
+////					System.out.println("kolizja z lewej");
+////				
+////			}
+//		}
+	}
+
+	// game loop / timer
 	public void handle(long now) {
 		if (lastTime == 0) {
 			lastTime = System.currentTimeMillis();
@@ -117,22 +145,28 @@ public class Game extends StateController {
 
 		msSum += frameTime;
 
-		//System.out.println(moving);
+		// System.out.println(moving);
+		checkCollision();
 		player.move(e);
-		
+
 		if (msSum > 1000) {
 			timeToCount--;
-			
-			if(timeToCount == 0) {
+
+			if (timeToCount == 0) {
 				stop();
-				return;				
+				return;
 			}
-			
+
 			msSum = 0;
 		}
 
 		frameTime = System.currentTimeMillis() - lastTime;
 		lastTime = System.currentTimeMillis();
 	}
-	
+
+	@Override
+	public void setParent(GameState parent) {
+		this.parent = parent;
+	}
+
 }
