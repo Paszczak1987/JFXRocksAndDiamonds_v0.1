@@ -138,10 +138,12 @@ public class Game extends StateController {
 		for (int i = 0; i < map.size(); i++) {
 			Item item = map.get(i);
 			if (item.getItem() != Items.PLAYER) {	//odrzucamy playera 
+				
 				double itemXl = item.getBody().getX();
 				double itemXr = item.getBody().getX() + RECT_SIZE;
 				double itemYu = item.getBody().getY();
 				double itemYd = item.getBody().getY() + RECT_SIZE;	
+				
 				if (playerXl == itemXr && playerYu == itemYu) {			// 1. LEFT
 					if (item.getItem() == Items.WALL && !left)
 						left = true;
@@ -149,14 +151,15 @@ public class Game extends StateController {
 					if (item.getItem() == Items.WALL && !right)
 						right = true;
 				} else if (playerYd == itemYu && playerXl == itemXl) {	// 3. DOWN
-					if (map.get(i).getItem() == Items.WALL && !down)
+					if (item.getItem() == Items.WALL && !down)
 						down = true;
 				} else if (playerYu == itemYd && playerXl == itemXl) {	// 4. UP
-					if (map.get(i).getItem() == Items.WALL && !up)
+					if (item.getItem() == Items.WALL && !up)
 						up = true;
 				}
 			}
 		}
+		
 		if((!left && !right) && (!up && !down)) {
 			collisionType = "NONE";
 		}else if((left && right) && down) {
