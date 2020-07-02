@@ -1,6 +1,7 @@
 # JFXRocksAndDiamonds
-Krzychu, 
-textArea zamieniłem na textField
-naprawiłem apkę
-nie działa bo tag MediaView jest źle skonstruowany w fxml
-to wszystko.
+Dodano: 
+ - Kolizje ze ścianami,
+ - Rozpoczęcie gry po wciśnięciu [ENTER]
+ - Pauza po wciśnięciu [P] i wznowienie po wciśnięciu [ENTER]
+ - Timer gry 90s
+ 

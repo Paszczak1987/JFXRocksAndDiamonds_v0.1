@@ -25,10 +25,16 @@ public class Game extends StateController {
 	private Item player;
 	private List<Item> map;
 
+	//Timer fields
 	private int timeToCount;
 	private long lastTime;
 	private long frameTime;
-	private int msSum;
+	private int millisecondsSum;
+	
+	//Game fields
+	private boolean pause = true;
+	private String collisionType = "NONE";
+	private KeyEvent event;
 
 	@FXML
 	private Pane gamePane;
@@ -36,8 +42,9 @@ public class Game extends StateController {
 	private VBox sideDisplay;
 	@FXML
 	private Label label;
+	@FXML
+	private Label timeLabel;
 
-	private KeyEvent e;
 
 	@FXML
 	public void initialize() {
@@ -60,18 +67,30 @@ public class Game extends StateController {
 		} // KeyListener na gamePane
 
 		this.timeToCount = 90;
-
+		
+		timeLabel.setStyle("-fx-font-size: 12px");
+		timeLabel.setText("Wciœnij [ENTER]\njeœli jesteœ gotowy.");
 	}
 
 	public void gamePaneOnKeyPressed(KeyEvent e) {
+		
+		this.event = e;
+		
 		if (e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.SPACE)
 			parent.mainWindow().changeState(GameStates.QUIT);
-		if(e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.Q)
-			check();
-		if (e.getCode() == KeyCode.UP || e.getCode() == KeyCode.DOWN || e.getCode() == KeyCode.LEFT || e.getCode() == KeyCode.RIGHT) {
-			this.e = e;
-			start();
+		else if(e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.ENTER) {
+			if(timeToCount > 0)
+				pause = false;
+				timeLabel.setStyle("-fx-font-size: 15px");
+				start();
+				
+		} else if(e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.P) {
+			pause = true;
+			timeLabel.setStyle("-fx-font-size: 12px");
+			timeLabel.setText("Pauza\n[ENTER] by wznowiæ.");
+			stop();
 		}
+			
 	}
 
 	private void updateMap(Color color, int x, int y) {
@@ -103,53 +122,145 @@ public class Game extends StateController {
 			gamePane.getChildren().add(item.getBody());
 		}
 	}
-	
-	private void check() {
-		for(int i = 0; i< map.size(); i++) {
-			System.out.println(i+":"+map.get(i).getBody().getBoundsInLocal());
-			
-		}
-		
-		
-	}
 
 	public void checkCollision() {
 		
-//		double playerXl = player.getBody().getX() - 2;
-//		double playerXr = player.getBody().getX() + RECT_SIZE + 2;
-//		
-//		for (int i = 0; i < map.size(); i++) {
-////			if (map.get(i).getItem() == Items.WALL)
-//				if (player.getBody().getBoundsInLocal().intersects(map.get(i).getBody().getBoundsInLocal())) {
-//					System.out.println(player.getDirection() + " collide");
-//				}
-//
-////			if(playerXr >= map.get(i).getBody().getX()) {
-////				if(map.get(i).getItem() == Items.WALL) 
-////					System.out.println("kolizja z prawej");
-////				
-////			}else if(playerX <= map.get(i).getBody().getX()) {
-////				if(map.get(i).getItem() == Items.WALL) 
-////					System.out.println("kolizja z lewej");
-////				
-////			}
-//		}
+		double playerXl = player.getBody().getX();
+		double playerXr = player.getBody().getX() + RECT_SIZE;
+		double playerYu = player.getBody().getY();
+		double playerYd = player.getBody().getY() + RECT_SIZE;
+		
+		boolean left = false;
+		boolean right = false;
+		boolean up = false;
+		boolean down = false;
+		
+		for (int i = 0; i < map.size(); i++) {
+			Item item = map.get(i);
+			if (item.getItem() != Items.PLAYER) {	//odrzucamy playera 
+				
+				double itemXl = item.getBody().getX();
+				double itemXr = item.getBody().getX() + RECT_SIZE;
+				double itemYu = item.getBody().getY();
+				double itemYd = item.getBody().getY() + RECT_SIZE;	
+				
+				if (playerXl == itemXr && playerYu == itemYu) {			// 1. LEFT
+					if (item.getItem() == Items.WALL && !left)
+						left = true;
+				} else if (playerXr == itemXl && playerYu == itemYu) {	// 2. RIGHT
+					if (item.getItem() == Items.WALL && !right)
+						right = true;
+				} else if (playerYd == itemYu && playerXl == itemXl) {	// 3. DOWN
+					if (item.getItem() == Items.WALL && !down)
+						down = true;
+				} else if (playerYu == itemYd && playerXl == itemXl) {	// 4. UP
+					if (item.getItem() == Items.WALL && !up)
+						up = true;
+				}
+			}
+		}
+		
+		if((!left && !right) && (!up && !down)) {
+			collisionType = "NONE";
+		}else if((left && right) && down) {
+			collisionType = "WALL_LEFT_RIGHT_DOWN";
+		}else if((left && up) && down) {
+			collisionType = "WALL_LEFT_UP_DOWN";
+		}else if((left && up) && right) {
+			collisionType = "WALL_LEFT_UP_RIGHT";
+		}else if((up && right)&& down) {
+			collisionType = "WALL_UP_RIGHT_DOWN";
+		}else if(left && up) {
+			collisionType = "WALL_LEFT_UP";
+		}else if(left && right) {
+			collisionType = "WALL_LEFT_RIGHT";
+		}else if(left && down) {
+			collisionType = "WALL_LEFT_DOWN";			
+		}else if(up && right) {
+			collisionType = "WALL_UP_RIGHT";
+		}else if(right && down) {
+			collisionType = "WALL_RIGHT_DOWN";
+		}else if(up && down) {
+			collisionType = "WALL_UP_DOWN";
+		}else if(left) {	
+			collisionType = "WALL_LEFT";
+		}else if(up) {
+			collisionType = "WALL_UP";
+		}else if(right) {
+			collisionType = "WALL_RIGHT";
+		}else if(down) {
+			collisionType = "WALL_DOWN";
+		}	
+	}
+	
+	private void playerMove() {
+		KeyCode code = event.getCode();
+		if (code == KeyCode.UP || code == KeyCode.DOWN || code == KeyCode.LEFT || code == KeyCode.RIGHT) {
+			if (collisionType.equals("NONE"))
+				player.move(event);
+			else if (collisionType.equals("WALL_LEFT")) {
+				if (code != KeyCode.LEFT)
+					player.move(event);
+			} else if (collisionType.equals("WALL_UP")) {
+				if (code != KeyCode.UP)
+					player.move(event);
+			} else if (collisionType.equals("WALL_RIGHT")) {
+				if (code != KeyCode.RIGHT)
+					player.move(event);
+			} else if (collisionType.equals("WALL_DOWN")) {
+				if (code != KeyCode.DOWN)
+					player.move(event);
+			} else if (collisionType.equals("WALL_LEFT_UP")) {
+				if (code != KeyCode.LEFT && code != KeyCode.UP)
+					player.move(event);
+			} else if (collisionType.equals("WALL_LEFT_RIGHT")) {
+				if (code != KeyCode.LEFT && code != KeyCode.RIGHT)
+					player.move(event);
+			} else if (collisionType.equals("WALL_LEFT_DOWN")) {
+				if (code != KeyCode.LEFT && code != KeyCode.DOWN)
+					player.move(event);
+			} else if (collisionType.equals("WALL_UP_RIGHT")) {
+				if (code != KeyCode.UP && code != KeyCode.RIGHT)
+					player.move(event);
+			} else if (collisionType.equals("WALL_RIGHT_DOWN")) {
+				if (code != KeyCode.RIGHT && code != KeyCode.DOWN)
+					player.move(event);
+			} else if (collisionType.equals("WALL_UP_DOWN")) {
+				if (code != KeyCode.UP && code != KeyCode.DOWN)
+					player.move(event);
+			} else if (collisionType.equals("WALL_LEFT_RIGHT_DOWN")) {
+				if ((code != KeyCode.LEFT && code != KeyCode.RIGHT) && code != KeyCode.DOWN)
+					player.move(event);
+			} else if (collisionType.equals("WALL_LEFT_UP_DOWN")) {
+				if ((code != KeyCode.LEFT && code != KeyCode.UP) && code != KeyCode.DOWN)
+					player.move(event);
+			} else if (collisionType.equals("WALL_LEFT_UP_RIGHT")) {
+				if ((code != KeyCode.LEFT && code != KeyCode.UP) && code != KeyCode.RIGHT)
+					player.move(event);
+			} else if (collisionType.equals("WALL_UP_RIGHT_DOWN")) {
+				if ((code != KeyCode.UP && code != KeyCode.RIGHT) && code != KeyCode.DOWN)
+					player.move(event);
+			}
+		}
 	}
 
-	// game loop / timer
+	// Gameloop/Timer
 	public void handle(long now) {
 		if (lastTime == 0) {
 			lastTime = System.currentTimeMillis();
 			return;
 		}
 
-		msSum += frameTime;
+		millisecondsSum += frameTime;
+		
+		{// update
+			checkCollision();
+			playerMove();
+			timeLabel.setText("Time: " + timeToCount + "s left");
+		}
+		
+		if (millisecondsSum > 1000) {
 
-		// System.out.println(moving);
-		checkCollision();
-		player.move(e);
-
-		if (msSum > 1000) {
 			timeToCount--;
 
 			if (timeToCount == 0) {
@@ -157,7 +268,7 @@ public class Game extends StateController {
 				return;
 			}
 
-			msSum = 0;
+			millisecondsSum = 0;
 		}
 
 		frameTime = System.currentTimeMillis() - lastTime;
