@@ -24,8 +24,8 @@ public class Item implements Comparable<Item> {
 	
 	private Timeline 	timeline;
 	private KeyCode		direction; 
-	private int 		dx;
-	private int 		dy;
+	private final int 	dx;
+	private final int 	dy;
 	private int 		frameCounter;
 	
 	{

@@ -281,9 +281,8 @@ public class Game extends StateController {
 	}
 
 	@Override
-	protected void play() {
+	public void play() {
 		// TODO Auto-generated method stub
-		
 	}
 
 }

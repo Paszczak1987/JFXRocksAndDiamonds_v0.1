@@ -18,10 +18,10 @@ public class MainWindow extends Application {
 		this.appWindow = window;
 
 		gameStates = new ArrayList<GameState>();
-		gameStates.add(new GameState(this, GameStates.ENTER_PLAYER_NAME, 
-				this.getClass().getResource("/FXML/ENTER_PLAYER_NAME.fxml")));
+		gameStates.add(new GameState(this, GameStates.ENTER_PLAYER_NAME, this.getClass().getResource("/FXML/ENTER_PLAYER_NAME.fxml")));
 		gameStates.add(new GameState(this, GameStates.LOADING, this.getClass().getResource("/FXML/LOADING.fxml")));
 		gameStates.add(new GameState(this, GameStates.MENU, this.getClass().getResource("/FXML/MENU.fxml")));
+		gameStates.add(new GameState(this, GameStates.OPTIONS, this.getClass().getResource("/FXML/OPTIONS.fxml")));
 		gameStates.add(new GameState(this, GameStates.GAME, this.getClass().getResource("/FXML/GAME.fxml")));
 		gameStates.add(new GameState(this, GameStates.QUIT, this.getClass().getResource("/FXML/QUIT.fxml")));
 

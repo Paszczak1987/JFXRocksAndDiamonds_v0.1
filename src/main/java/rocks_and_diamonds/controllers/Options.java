@@ -4,13 +4,20 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.StackPane;
 import rocks_and_diamonds.GameState;
+import rocks_and_diamonds.GameStates;
 
-public class Quit extends StateController {
+public class Options extends StateController{
 	
 	private GameState parent;
+	
+	@FXML
+	private StackPane stackPane;
+	
 	@FXML
 	private Label label;
+	
 	
 	@FXML
 	public void initialize() {
@@ -18,14 +25,15 @@ public class Quit extends StateController {
 	}
 	
 	public void labelKeyPressed(KeyEvent e) {
-		System.out.println("QUIT");
+		System.out.println("OPTIONS");
 		if(e.getCode() == KeyCode.SPACE )
-			parent.mainWindow().close();
+			parent.mainWindow().changeState(GameStates.MENU);
 	}
 	
 	@Override
 	public void setParent(GameState parent) {
 		this.parent = parent;
+		
 	}
 
 	@Override
@@ -35,7 +43,7 @@ public class Quit extends StateController {
 
 	@Override
 	public void play() {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub	
 	}
-
+	
 }

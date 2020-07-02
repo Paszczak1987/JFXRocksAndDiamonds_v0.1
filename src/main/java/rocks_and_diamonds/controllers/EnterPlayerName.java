@@ -34,17 +34,19 @@ public class EnterPlayerName extends StateController{
 	private Button button;
 	
 	public void buttonOnMouseClicked() {
-		if(!textField.getText().equals(""))
+		if(!textField.getText().equals("")) {
 			parent.mainWindow().changeState(GameStates.LOADING);
-		parent.mainWindow().getGameState().getController().start();
-		parent.mainWindow().getGameState().getController().play();
+			parent.mainWindow().getGameState().getController().start();	//start Timera
+			parent.mainWindow().getGameState().getController().play();	//start Animacji 			
+		}
 	}
 	
 	public void textFieldOnKeyPressed(KeyEvent e) {
-		if(e.getCode() == KeyCode.ENTER && !textField.getText().equals(""))
+		if(e.getCode() == KeyCode.ENTER && !textField.getText().equals("")) {
 			parent.mainWindow().changeState(GameStates.LOADING);
-		parent.mainWindow().getGameState().getController().start();
-		parent.mainWindow().getGameState().getController().play();
+			parent.mainWindow().getGameState().getController().start();
+			parent.mainWindow().getGameState().getController().play();			
+		}
 	}
 	
 	@Override
@@ -58,9 +60,8 @@ public class EnterPlayerName extends StateController{
 	}
 
 	@Override
-	protected void play() {
+	public void play() {
 		// TODO Auto-generated method stub
-		
 	}
 	
 }
