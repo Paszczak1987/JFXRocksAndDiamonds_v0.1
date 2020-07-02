@@ -39,13 +39,8 @@ public class Menu extends StateController {
 	
 	public void newGameOnMouseClicked() {
 			parent.mainWindow().changeState(GameStates.GAME);
-		
 	}
-	
-	public void newGameOnKeyPressed(KeyEvent e) {
-		if(e.getCode() == KeyCode.ENTER)
-			parent.mainWindow().changeState(GameStates.GAME);
-	}
+
 	
 	@Override
 	public void setParent(GameState parent) {
@@ -55,5 +50,11 @@ public class Menu extends StateController {
 	@Override
 	public void handle(long now) {
 		// TODO Auto-generated method stub		
+	}
+
+	@Override
+	protected void play() {
+		// TODO Auto-generated method stub
+		
 	}
 }

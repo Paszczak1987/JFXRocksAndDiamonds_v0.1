@@ -37,12 +37,14 @@ public class EnterPlayerName extends StateController{
 		if(!textField.getText().equals(""))
 			parent.mainWindow().changeState(GameStates.LOADING);
 		parent.mainWindow().getGameState().getController().start();
+		parent.mainWindow().getGameState().getController().play();
 	}
 	
 	public void textFieldOnKeyPressed(KeyEvent e) {
 		if(e.getCode() == KeyCode.ENTER && !textField.getText().equals(""))
 			parent.mainWindow().changeState(GameStates.LOADING);
 		parent.mainWindow().getGameState().getController().start();
+		parent.mainWindow().getGameState().getController().play();
 	}
 	
 	@Override
@@ -53,6 +55,12 @@ public class EnterPlayerName extends StateController{
 	@Override
 	public void handle(long now) {
 		// TODO Auto-generated method stub
+	}
+
+	@Override
+	protected void play() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

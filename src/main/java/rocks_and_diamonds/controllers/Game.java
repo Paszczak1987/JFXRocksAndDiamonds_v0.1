@@ -280,4 +280,10 @@ public class Game extends StateController {
 		this.parent = parent;
 	}
 
+	@Override
+	protected void play() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
