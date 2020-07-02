@@ -46,7 +46,7 @@ public class Loading extends StateController {
 
 	public void initialize() {
 		
-		this.timeToCount = 4;
+		this.timeToCount = 3;
 		
 		{//dodanie Eventhandlera tymczasowo	
 			label.setFocusTraversable(true);

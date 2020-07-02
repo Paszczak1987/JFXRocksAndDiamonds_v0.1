@@ -39,13 +39,12 @@ public class Menu extends StateController {
 	
 	public void newGameOnMouseClicked() {
 			parent.mainWindow().changeState(GameStates.GAME);
-		parent.mainWindow().getGameState().getController().start();
+		
 	}
 	
 	public void newGameOnKeyPressed(KeyEvent e) {
 		if(e.getCode() == KeyCode.ENTER)
 			parent.mainWindow().changeState(GameStates.GAME);
-		parent.mainWindow().getGameState().getController().start();
 	}
 	
 	@Override
