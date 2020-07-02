@@ -68,6 +68,18 @@ public class Menu extends StateController {
 		parent.mainWindow().changeState(GameStates.GAME);
 	}
 	
+	public void optionsOnMouseClicked() {
+		parent.mainWindow().changeState(GameStates.OPTIONS);
+	}
+	
+	public void hallOfFameOnMouseClicked() {
+		parent.mainWindow().changeState(GameStates.HALLOFFAME);
+	} 
+	
+	public void quitOnMouseClicked() {
+		parent.mainWindow().changeState(GameStates.QUIT);
+	}
+	
 	public void buttonOnKeyEvent(KeyEvent e) {
 		for(Button btn: buttons) {
 			if(e.getCode() == KeyCode.ENTER) {
@@ -79,7 +91,7 @@ public class Menu extends StateController {
 					else if (btn.getId().equals("options"))
 						parent.mainWindow().changeState(GameStates.OPTIONS);
 					else if (btn.getId().equals("hallOfFame"))
-						System.out.println("HALL OF FAME !!!"); // tu zmienimy stan na HallOFFame, którego jeszcze nie ma
+						parent.mainWindow().changeState(GameStates.HALLOFFAME);
 					else if (btn.getId().equals("quit"))
 						parent.mainWindow().changeState(GameStates.QUIT);
 				}

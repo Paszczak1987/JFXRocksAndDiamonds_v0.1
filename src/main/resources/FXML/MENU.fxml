@@ -33,7 +33,7 @@
                               <Font name="System Bold" size="24.0" />
                            </font>
                         </Button>
-                        <Button fx:id="options" mnemonicParsing="false" opacity="0.7" prefHeight="70.0" prefWidth="268.0" text="Options">
+                        <Button fx:id="options" mnemonicParsing="false" onMouseClicked="#optionsOnMouseClicked" opacity="0.7" prefHeight="70.0" prefWidth="268.0" text="Options">
                            <VBox.margin>
                               <Insets bottom="10.0" />
                            </VBox.margin>
@@ -41,7 +41,7 @@
                               <Font name="System Bold" size="24.0" />
                            </font>
                         </Button>
-                        <Button fx:id="hallOfFame" mnemonicParsing="false" opacity="0.7" prefHeight="70.0" prefWidth="268.0" text="Hall of Fame">
+                        <Button fx:id="hallOfFame" mnemonicParsing="false" onMouseClicked="#hallOfFameOnMouseClicked" opacity="0.7" prefHeight="70.0" prefWidth="268.0" text="Hall of Fame">
                            <VBox.margin>
                               <Insets bottom="10.0" />
                            </VBox.margin>
@@ -49,7 +49,7 @@
                               <Font name="System Bold" size="24.0" />
                            </font>
                         </Button>
-                        <Button fx:id="quit" mnemonicParsing="false" opacity="0.7" prefHeight="70.0" prefWidth="268.0" text="Quite">
+                        <Button fx:id="quit" mnemonicParsing="false" onMouseClicked="#quitOnMouseClicked" opacity="0.7" prefHeight="70.0" prefWidth="268.0" text="Quite">
                            <VBox.margin>
                               <Insets bottom="30.0" />
                            </VBox.margin>
