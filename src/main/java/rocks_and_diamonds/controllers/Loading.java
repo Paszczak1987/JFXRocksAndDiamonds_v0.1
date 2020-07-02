@@ -1,17 +1,21 @@
 package rocks_and_diamonds.controllers;
 
+import animatefx.animation.Bounce;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.shape.Circle;
-//import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 import rocks_and_diamonds.GameState;
 import rocks_and_diamonds.GameStates;
+//import javafx.scene.media.Media;
+//import javafx.scene.media.MediaPlayer;
+
 
 public class Loading extends StateController {
 	
@@ -34,8 +38,9 @@ public class Loading extends StateController {
 	@FXML 
 	private MediaView mediaView;	
 	
-	private String MEDIA_URL = "/Pictures/Diamond.mp4";
 	private MediaPlayer mediaPlayer;
+	private String MEDIA_URL = "/Pictures/Diamond.mp4";
+	
 	
 	@FXML
 
@@ -55,13 +60,13 @@ public class Loading extends StateController {
 			label.addEventHandler(KeyEvent.KEY_PRESSED, handler);
 		}//dodanie Eventhandlera tymczasowo		
 		
-//		System.out.println(this.getClass().getResource(MEDIA_URL).toExternalForm());
-//	 	mediaPlayer = new MediaPlayer(new Media(this.getClass().getResource(MEDIA_URL).toExternalForm()));
-//	 	mediaPlayer.setAutoPlay(true);
-//	 	MediaView.setMediaPlayer(mediaPlayer);
-//	 	new Bounce(Circle1).setCycleCount(5).setDelay(Duration.valueOf("1000ms")).play();
-//	    new Bounce(Circle2).setCycleCount(5).setDelay(Duration.valueOf("1250ms")).play();
-//	    new Bounce(Circle3).setCycleCount(5).setDelay(Duration.valueOf("1500ms")).play();
+	 	mediaPlayer = new MediaPlayer(new Media(this.getClass().getResource(MEDIA_URL).toExternalForm()));
+	 	mediaPlayer.setAutoPlay(true);
+	 	mediaView.setMediaPlayer(mediaPlayer);
+	 	
+	 	new Bounce(circle1).setCycleCount(5).setDelay(Duration.valueOf("3000ms")).play();
+	    new Bounce(circle2).setCycleCount(5).setDelay(Duration.valueOf("3250ms")).play();
+	    new Bounce(circle3).setCycleCount(5).setDelay(Duration.valueOf("3500ms")).play();
 	 	
 	}
 
@@ -100,5 +105,7 @@ public class Loading extends StateController {
 		frameTime = System.currentTimeMillis() - lastTime;
 		lastTime = System.currentTimeMillis();
 	}
+
+
 
 }

@@ -20,6 +20,11 @@
 			<version>4.13</version>
 			<scope>test</scope>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.github.typhon0/AnimateFX -->
+		<dependency>
+   			 <groupId>io.github.typhon0</groupId>
+   			 <artifactId>AnimateFX</artifactId>
+    		<version>1.2.0</version>
+		</dependency>
 	</dependencies>
-
 </project>

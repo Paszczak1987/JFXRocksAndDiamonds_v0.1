@@ -1,10 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<StackPane prefHeight="748.0" prefWidth="924.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="rocks_and_diamonds.controllers.Menu">
+<StackPane fx:id="stackPane" alignment="BOTTOM_CENTER" prefHeight="748.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rocks_and_diamonds.controllers.Menu">
    <children>
-      <Label fx:id="label" onKeyPressed="#labelKeyPressed" text="Menu" />
+      <SplitPane fx:id="splitPane" dividerPositions="0.29316313284292517" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="748.0" prefWidth="924.0">
+        <items>
+          <AnchorPane fx:id="anchorPaneMenu" prefHeight="748.0" prefWidth="270.0" style="-fx-background-image: url(Pictures/Menu2.jpg); -fx-background-size: stretch;">
+               <children>
+                  <VBox fx:id="vBox" layoutY="-16.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="763.0" prefWidth="268.0">
+                     <children>
+                        <Button fx:id="reasumeGame" mnemonicParsing="false" opacity="0.7" prefHeight="70.0" prefWidth="268.0" text="Reasume Game">
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="newGame" mnemonicParsing="false" onMouseClicked="#newGameOnMouseClicked" opacity="0.7" prefHeight="70.0" prefWidth="268.0" text="New Game">
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="options" mnemonicParsing="false" opacity="0.7" prefHeight="70.0" prefWidth="268.0" text="Options">
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="hallOfFame" mnemonicParsing="false" opacity="0.7" prefHeight="70.0" prefWidth="268.0" text="Hall of Fame">
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="quite" mnemonicParsing="false" opacity="0.7" prefHeight="70.0" prefWidth="268.0" text="Quite">
+                           <VBox.margin>
+                              <Insets bottom="30.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font></Button>
+                        <Pane fx:id="pane" prefHeight="220.0" prefWidth="222.0" style="-fx-background-image: url(Pictures/MenuAvatar.jpg); -fx-background-size: stretch;" />
+                     </children>
+                     <padding>
+                        <Insets top="10.0" />
+                     </padding>
+                  </VBox>
+               </children></AnchorPane>
+          <AnchorPane fx:id="anchorPanePicture" minHeight="0.0" minWidth="0.0" prefHeight="746.0" prefWidth="629.0" style="-fx-background-image: url(Pictures/Menu.jpg); -fx-background-size: stretch;" />
+        </items>
+      </SplitPane>
    </children>
 </StackPane>
