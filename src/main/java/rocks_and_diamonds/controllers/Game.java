@@ -79,11 +79,11 @@ public class Game extends StateController {
 		if (e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.SPACE)
 			parent.mainWindow().changeState(GameStates.QUIT);
 		else if(e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.ENTER) {
-			if(timeToCount > 0)
+			if(timeToCount > 0) {
 				pause = false;
 				timeLabel.setStyle("-fx-font-size: 15px");
-				start();
-				
+				start();				
+			}
 		} else if(e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.P) {
 			pause = true;
 			timeLabel.setStyle("-fx-font-size: 12px");
@@ -143,19 +143,24 @@ public class Game extends StateController {
 				double itemXr = item.getBody().getX() + RECT_SIZE;
 				double itemYu = item.getBody().getY();
 				double itemYd = item.getBody().getY() + RECT_SIZE;	
-				
-				if (playerXl == itemXr && playerYu == itemYu) {			// 1. LEFT
-					if (item.getItem() == Items.WALL && !left)
-						left = true;
-				} else if (playerXr == itemXl && playerYu == itemYu) {	// 2. RIGHT
-					if (item.getItem() == Items.WALL && !right)
-						right = true;
-				} else if (playerYd == itemYu && playerXl == itemXl) {	// 3. DOWN
-					if (item.getItem() == Items.WALL && !down)
-						down = true;
-				} else if (playerYu == itemYd && playerXl == itemXl) {	// 4. UP
-					if (item.getItem() == Items.WALL && !up)
-						up = true;
+
+				if(item.getItem() == Items.WALL) {
+					if (playerXl == itemXr && playerYu == itemYu) {			// 1. LEFT
+						if (left == false)
+							left = true;
+					} else if (playerXr == itemXl && playerYu == itemYu) {	// 2. RIGHT
+						if (right == false)
+							right = true;
+					} else if (playerYd == itemYu && playerXl == itemXl) {	// 3. DOWN
+						if (down == false)
+							down = true;
+					} else if (playerYu == itemYd && playerXl == itemXl) {	// 4. UP
+						if (up == false)
+							up = true;
+					}
+				}else if(item.getItem() == Items.DIRT) {
+					if(player.getBody().intersects(item.getBody().getBoundsInLocal()))
+						System.out.println("DIRT!");
 				}
 			}
 		}
