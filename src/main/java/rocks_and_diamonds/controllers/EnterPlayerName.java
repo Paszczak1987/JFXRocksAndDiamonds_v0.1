@@ -36,8 +36,8 @@ public class EnterPlayerName extends StateController{
 	public void buttonOnMouseClicked() {
 		if(!textField.getText().equals(""))
 			parent.mainWindow().changeState(GameStates.LOADING);
-		parent.mainWindow().getGameState().getController().start();
-		parent.mainWindow().getGameState().getController().play();
+		parent.mainWindow().getGameState().getController().start();	//TIMER
+		parent.mainWindow().getGameState().getController().play();	//ANIMACJA 
 	}
 	
 	public void textFieldOnKeyPressed(KeyEvent e) {
@@ -58,9 +58,8 @@ public class EnterPlayerName extends StateController{
 	}
 
 	@Override
-	protected void play() {
+	public void play() {
 		// TODO Auto-generated method stub
-		
 	}
 	
 }

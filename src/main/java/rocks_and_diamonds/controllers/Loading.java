@@ -1,10 +1,8 @@
 package rocks_and_diamonds.controllers;
 
 import animatefx.animation.Bounce;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -13,9 +11,6 @@ import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 import rocks_and_diamonds.GameState;
 import rocks_and_diamonds.GameStates;
-//import javafx.scene.media.Media;
-//import javafx.scene.media.MediaPlayer;
-
 
 public class Loading extends StateController {
 	
@@ -41,24 +36,10 @@ public class Loading extends StateController {
 	private MediaPlayer mediaPlayer;
 	private String MEDIA_URL = "/Pictures/Diamond.mp4";
 	
-	
 	@FXML
-
 	public void initialize() {
 		
 		this.timeToCount = 3;
-		
-		{//dodanie Eventhandlera tymczasowo	
-			label.setFocusTraversable(true);
-			EventHandler<KeyEvent> handler = new EventHandler<KeyEvent>() {
-				@Override
-				public void handle(KeyEvent e) {
-					labelKeyPressed(e);
-				}
-				
-			};
-			label.addEventHandler(KeyEvent.KEY_PRESSED, handler);
-		}//dodanie Eventhandlera tymczasowo		
 		
 	 	mediaPlayer = new MediaPlayer(new Media(this.getClass().getResource(MEDIA_URL).toExternalForm()));
 	 	mediaView.setMediaPlayer(mediaPlayer);
@@ -71,11 +52,6 @@ public class Loading extends StateController {
 	
 	public void play() {
 		mediaPlayer.play();
-	}
-
-	
-	public void labelKeyPressed(KeyEvent e) {
-		System.out.println("LOADING");
 	}
 	
 	@Override
@@ -108,7 +84,5 @@ public class Loading extends StateController {
 		frameTime = System.currentTimeMillis() - lastTime;
 		lastTime = System.currentTimeMillis();
 	}
-
-
-
+	
 }
