@@ -36,7 +36,6 @@ public class Quit extends StateController {
 	@Override
 	public void play() {
 		// TODO Auto-generated method stub
-		
 	}
 
 }

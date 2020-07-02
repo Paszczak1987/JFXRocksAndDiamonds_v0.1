@@ -6,6 +6,6 @@
 
 <StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="748.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rocks_and_diamonds.controllers.Options">
    <children>
-      <Label text="Options" />
+      <Label fx:id="label" onKeyPressed="#labelKeyPressed" text="Options" />
    </children>
 </StackPane>

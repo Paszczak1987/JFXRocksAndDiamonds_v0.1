@@ -70,7 +70,7 @@ public class Loading extends StateController {
 		
 		if (msSum > 1000) {
 		
-			--timeToCount;
+			timeToCount--;
 			
 			if(timeToCount == -1) {
 				parent.mainWindow().changeState(GameStates.MENU);
