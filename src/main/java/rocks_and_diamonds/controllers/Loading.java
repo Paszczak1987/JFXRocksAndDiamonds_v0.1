@@ -46,7 +46,7 @@ public class Loading extends StateController {
 
 	public void initialize() {
 		
-		this.timeToCount = 4;
+		this.timeToCount = 3;
 		
 		{//dodanie Eventhandlera tymczasowo	
 			label.setFocusTraversable(true);
@@ -61,13 +61,16 @@ public class Loading extends StateController {
 		}//dodanie Eventhandlera tymczasowo		
 		
 	 	mediaPlayer = new MediaPlayer(new Media(this.getClass().getResource(MEDIA_URL).toExternalForm()));
-	 	mediaPlayer.setAutoPlay(true);
 	 	mediaView.setMediaPlayer(mediaPlayer);
 	 	
 	 	new Bounce(circle1).setCycleCount(5).setDelay(Duration.valueOf("3000ms")).play();
 	    new Bounce(circle2).setCycleCount(5).setDelay(Duration.valueOf("3250ms")).play();
 	    new Bounce(circle3).setCycleCount(5).setDelay(Duration.valueOf("3500ms")).play();
 	 	
+	}
+	
+	public void play() {
+		mediaPlayer.play();
 	}
 
 	
