@@ -15,38 +15,29 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class Item {
+	
+	protected Items name;
+	protected int size;
+	protected List<Image> textures;
+	protected Image skin;
+	protected Rectangle body;
 
-	private Items name;
-	private int size;
-	private List<Image> textures;
-	private Image skin;
-	private Rectangle body;
-
-	private Timeline timeline;
-	private KeyCode direction;
-	private final int dx;
-	private final int dy;
-	private int frameCounter;
+	protected Timeline timeline;
+	protected final int dx;
+	protected final int dy;
+	protected int frameCounter;
+	private boolean isAnimationFinished;
+	private boolean isAnimationStarted;
 
 	{
 		textures = new ArrayList<Image>();
-		timeline = new Timeline(new KeyFrame(Duration.millis(4), this::doStep));
+		timeline = new Timeline();
 		dx = 1;
 		dy = 1;
 		frameCounter = 0;
 	}
 
-	public Item(int size) {
-		name = Items.PLAYER;
-		this.size = size;
-		textures.add(new Image("Pictures/Player/adventurer_stand.png", size, size, false, false));
-		textures.add(new Image("Pictures/Player/adventurer_walk1.png", size, size, false, false));
-		textures.add(new Image("Pictures/Player/adventurer_walk2.png", size, size, false, false));
-		skin = textures.get(0);
-		body = new Rectangle(size, size);
-		body.setFill(new ImagePattern(skin));
-		timeline.setCycleCount(size);
-	}
+	public Item() {}
 
 	public Item(Items name, int size, int x, int y) {
 		this.name = name;
@@ -56,25 +47,32 @@ public class Item {
 		} else if (this.name == Items.WALL) {
 			textures.add(new Image("Pictures/Textures/brick_grey.png", size, size, false, false));
 		} else if (this.name == Items.DIRT) {
-			textures.add(new Image("Pictures/Textures/dirt.png", size, size, false, false));
+			textures.add(new Image("Pictures/Textures/dirt_default.png", size, size, false, false));
+			textures.add(new Image("Pictures/Textures/dirt_crushed_01.png", size, size, false, false));
+			textures.add(new Image("Pictures/Textures/dirt_crushed_02.png", size, size, false, false));			
+			timeline.setCycleCount(4);
+			timeline.getKeyFrames().add(new KeyFrame(Duration.millis(76), this::doStep));
 		}
 		skin = textures.get(0);
 		body = new Rectangle(size, size);
-		setPosition(x, y);
 		body.setFill(new ImagePattern(skin));
-		timeline.setCycleCount(size);
+		setPosition(x, y);
 	}
 
-	public Items getItem() {
+	public Items getName() {
 		return name;
 	}
 
 	public Rectangle getBody() {
 		return body;
 	}
-
-	public KeyCode getDirection() {
-		return direction;
+	
+	public boolean getAnimationStatus() {
+		return isAnimationFinished;
+	}
+	
+	public Timeline getAnimation() {
+		return timeline;
 	}
 
 	public void setPosition(int x, int y) {
@@ -91,62 +89,40 @@ public class Item {
 	}
 
 	// Metoda wywoywana przez Timeline co ka¿dy cykl
-	private void doStep(ActionEvent actionEvent) {
-
+	protected void doStep(ActionEvent actionEvent) {
 		frameCounter++;
-
-		if (name == Items.PLAYER) {
-			// Jeœli to PLAYER
-			if (direction == KeyCode.LEFT)
-				body.setX(body.getX() - dx);
-			else if (direction == KeyCode.RIGHT)
-				body.setX(body.getX() + dx);
-			else if (direction == KeyCode.UP)
-				body.setY(body.getY() - dy);
-			else if (direction == KeyCode.DOWN)
-				body.setY(body.getY() + dy);
-
-			animate(frameCounter);
-		} else {
-			// Jeœli coœ INNEGO
-			System.out.println("nie jestem PLAYER");
-		}
+		timeline.setOnFinished(this::afterAnimation);
+		animate();
 	}
 
-	private void afterSteps(ActionEvent actionEvent) {
-		skin = textures.get(0);
-		body.setFill(new ImagePattern(skin));
+	private void setDefaultSkin() {
+		if (!skin.equals(textures.get(0))) {
+			skin = textures.get(0);
+			body.setFill(new ImagePattern(skin));
+		} else
+			return;
 	}
 
-	private void animate(int frameCounter) {
-
-		if (direction == KeyCode.LEFT)
-			body.setScaleX(-1);
-		else if (direction == KeyCode.RIGHT)
-			body.setScaleX(1);
-
-		frameCounter = (frameCounter == size ? 0 : frameCounter);
-
-		if (frameCounter % 22 == 0) {
-			if (skin.equals(textures.get(0)))
-				skin = textures.get(1);
-			else if (skin.equals(textures.get(1)))
+	private void animate() {
+		
+		if (frameCounter % 2 != 0) {
+			if(skin.equals(textures.get(1)))
 				skin = textures.get(2);
-			else
+			else if(skin.equals(textures.get(0)))
 				skin = textures.get(1);
 			body.setFill(new ImagePattern(skin));
 		}
 	}
-
-	public void move(KeyEvent e) {
-		if (timeline.getStatus() == Animation.Status.STOPPED)
-			direction = e.getCode();
-		if (e.getEventType() == KeyEvent.KEY_PRESSED) {
+	
+	private void afterAnimation(ActionEvent actionEvent) {
+		isAnimationFinished = true;
+	}
+	
+	public void playAnimation() {
+		if(isAnimationStarted == false) {
 			timeline.play();
-			timeline.setOnFinished(null);
+			isAnimationStarted = true;
 		}
-		if (e.getEventType() == KeyEvent.KEY_RELEASED)
-			timeline.setOnFinished(this::afterSteps);
 	}
 
 }// Item
