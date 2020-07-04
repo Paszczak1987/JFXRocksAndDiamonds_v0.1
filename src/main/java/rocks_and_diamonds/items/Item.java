@@ -14,20 +14,20 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-public class Item implements Comparable<Item> {
+public class Item {
 
-	private Items 		name;
-	private int 		size;
-	private List<Image>	textures;
-	private Image 		skin;
-	private Rectangle 	body;
-	
-	private Timeline 	timeline;
-	private KeyCode		direction; 
-	private final int 	dx;
-	private final int 	dy;
-	private int 		frameCounter;
-	
+	private Items name;
+	private int size;
+	private List<Image> textures;
+	private Image skin;
+	private Rectangle body;
+
+	private Timeline timeline;
+	private KeyCode direction;
+	private final int dx;
+	private final int dy;
+	private int frameCounter;
+
 	{
 		textures = new ArrayList<Image>();
 		timeline = new Timeline(new KeyFrame(Duration.millis(4), this::doStep));
@@ -35,7 +35,7 @@ public class Item implements Comparable<Item> {
 		dy = 1;
 		frameCounter = 0;
 	}
-	
+
 	public Item(int size) {
 		name = Items.PLAYER;
 		this.size = size;
@@ -72,7 +72,7 @@ public class Item implements Comparable<Item> {
 	public Rectangle getBody() {
 		return body;
 	}
-	
+
 	public KeyCode getDirection() {
 		return direction;
 	}
@@ -89,73 +89,64 @@ public class Item implements Comparable<Item> {
 	public void setPositionY(int y) {
 		body.setX(y * size);
 	}
-	
-	//Metoda wywoywana przez Timeline co ka¿dy cykl
+
+	// Metoda wywoywana przez Timeline co ka¿dy cykl
 	private void doStep(ActionEvent actionEvent) {
-		
+
 		frameCounter++;
-		
-		if(name == Items.PLAYER) {
-			//Jeœli to PLAYER
-			if(direction == KeyCode.LEFT)
-				body.setX(body.getX() - dx);			
-			else if(direction == KeyCode.RIGHT)
-				body.setX(body.getX() + dx);						
-			else if(direction == KeyCode.UP)
+
+		if (name == Items.PLAYER) {
+			// Jeœli to PLAYER
+			if (direction == KeyCode.LEFT)
+				body.setX(body.getX() - dx);
+			else if (direction == KeyCode.RIGHT)
+				body.setX(body.getX() + dx);
+			else if (direction == KeyCode.UP)
 				body.setY(body.getY() - dy);
-			else if(direction == KeyCode.DOWN)
+			else if (direction == KeyCode.DOWN)
 				body.setY(body.getY() + dy);
-			
+
 			animate(frameCounter);
-		}else {
-			//Jeœli coœ INNEGO	
+		} else {
+			// Jeœli coœ INNEGO
 			System.out.println("nie jestem PLAYER");
 		}
 	}
-	
+
 	private void afterSteps(ActionEvent actionEvent) {
 		skin = textures.get(0);
 		body.setFill(new ImagePattern(skin));
 	}
-	
+
 	private void animate(int frameCounter) {
-		
-		if(direction == KeyCode.LEFT)
+
+		if (direction == KeyCode.LEFT)
 			body.setScaleX(-1);
-		else if(direction == KeyCode.RIGHT)
+		else if (direction == KeyCode.RIGHT)
 			body.setScaleX(1);
-		
+
 		frameCounter = (frameCounter == size ? 0 : frameCounter);
-		
-		if(frameCounter%22 == 0) {
-			if(skin.equals(textures.get(0)))
+
+		if (frameCounter % 22 == 0) {
+			if (skin.equals(textures.get(0)))
 				skin = textures.get(1);
+			else if (skin.equals(textures.get(1)))
+				skin = textures.get(2);
 			else
-				if(skin.equals(textures.get(1)))
-					skin = textures.get(2);
-				else
-					skin = textures.get(1);
+				skin = textures.get(1);
 			body.setFill(new ImagePattern(skin));
 		}
 	}
-	
+
 	public void move(KeyEvent e) {
-		if(timeline.getStatus() == Animation.Status.STOPPED)
-			direction = e.getCode();		
-		if(e.getEventType() == KeyEvent.KEY_PRESSED) {
+		if (timeline.getStatus() == Animation.Status.STOPPED)
+			direction = e.getCode();
+		if (e.getEventType() == KeyEvent.KEY_PRESSED) {
 			timeline.play();
 			timeline.setOnFinished(null);
 		}
-		if(e.getEventType() == KeyEvent.KEY_RELEASED)
+		if (e.getEventType() == KeyEvent.KEY_RELEASED)
 			timeline.setOnFinished(this::afterSteps);
-	}
-
-	@Override
-	public int compareTo(Item o) {
-		if (name == o.getItem())
-			return 0;
-		else
-			return 1;
 	}
 
 }// Item

@@ -8,7 +8,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class MainWindow extends Application {
-	
+
 	private Stage appWindow;
 	private List<GameState> gameStates;
 	private GameState currentState;
@@ -18,11 +18,13 @@ public class MainWindow extends Application {
 		this.appWindow = window;
 
 		gameStates = new ArrayList<GameState>();
-		gameStates.add(new GameState(this, GameStates.ENTER_PLAYER_NAME, this.getClass().getResource("/FXML/ENTER_PLAYER_NAME.fxml")));
+		gameStates.add(new GameState(this, GameStates.ENTER_PLAYER_NAME,
+				this.getClass().getResource("/FXML/ENTER_PLAYER_NAME.fxml")));
 		gameStates.add(new GameState(this, GameStates.LOADING, this.getClass().getResource("/FXML/LOADING.fxml")));
 		gameStates.add(new GameState(this, GameStates.MENU, this.getClass().getResource("/FXML/MENU.fxml")));
 		gameStates.add(new GameState(this, GameStates.OPTIONS, this.getClass().getResource("/FXML/OPTIONS.fxml")));
-		gameStates.add(new GameState(this, GameStates.HALLOFFAME, this.getClass().getResource("/FXML/HALLOFFAME.fxml")));
+		gameStates
+				.add(new GameState(this, GameStates.HALLOFFAME, this.getClass().getResource("/FXML/HALLOFFAME.fxml")));
 		gameStates.add(new GameState(this, GameStates.GAME, this.getClass().getResource("/FXML/GAME.fxml")));
 		gameStates.add(new GameState(this, GameStates.QUIT, this.getClass().getResource("/FXML/QUIT.fxml")));
 
@@ -34,7 +36,7 @@ public class MainWindow extends Application {
 
 	}
 
-	public void changeState(GameStates state){
+	public void changeState(GameStates state) {
 		for (GameState gameState : gameStates)
 			if (gameState.getState() == state)
 				currentState = gameState;
@@ -48,11 +50,11 @@ public class MainWindow extends Application {
 	public void close() {
 		appWindow.close();
 	}
-	
+
 	public GameState getGameState() {
 		return currentState;
 	}
-	
+
 	public GameState getGameState(GameStates state) {
 		for (GameState gameState : gameStates)
 			if (gameState.getState() == state)
