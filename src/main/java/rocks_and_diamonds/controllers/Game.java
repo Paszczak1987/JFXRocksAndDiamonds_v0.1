@@ -142,9 +142,11 @@ public class Game extends StateController {
 		boolean down = false;
 
 		for (int i = 0; i < map.size(); i++) {
+			
+			if(map.get(i).getName() == Items.PLAYER) // Wykluczamy Playera
+				i++;
+			
 			Item item = map.get(i);
-
-			i = (item.getName() == Items.PLAYER ? i + 1 : i); // Wykluczamy PLAYER
 			
 			//Item bounds
 			double iXl = item.getBody().getX();
@@ -159,12 +161,13 @@ public class Game extends StateController {
 					right = (right == false ? true : right);
 				} else if (pYd == iYu && pXl == iXl) { // 3. DOWN SIDE
 					down = (down == false ? true : down);
+					System.out.println(i+" "+item.getName());
 				} else if (pYu == iYd && pXl == iXl) { // 4. UP SIDE
 					up = (up == false ? true : up);
 				}
 			} else if (item.getName() == Items.DIRT) { // Jeœli DIRT
 				int shift = 2;
-				boolean u = true;
+				
 				if (item.getBody().intersects(pXl + shift, pYu + shift, RECT_SIZE - shift * 2, RECT_SIZE - shift * 2)) {
 						item.playAnimation();
 					if(item.getAnimationStatus()) 
