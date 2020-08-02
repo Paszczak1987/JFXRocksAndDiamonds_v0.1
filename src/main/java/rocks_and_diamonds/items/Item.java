@@ -42,16 +42,14 @@ public class Item {
 	public Item(Items name, int size, int x, int y) {
 		this.name = name;
 		this.size = size;
-		if (this.name == Items.PLAYER) {
-			textures.add(new Image("Pictures/Player/adventurer_stand.png", size, size, false, false));
-		} else if (this.name == Items.WALL) {
+		if (this.name == Items.WALL) {
 			textures.add(new Image("Pictures/Textures/brick_grey.png", size, size, false, false));
 		} else if (this.name == Items.DIRT) {
 			textures.add(new Image("Pictures/Textures/dirt_default.png", size, size, false, false));
 			textures.add(new Image("Pictures/Textures/dirt_crushed_01.png", size, size, false, false));
 			textures.add(new Image("Pictures/Textures/dirt_crushed_02.png", size, size, false, false));			
 			timeline.setCycleCount(4);
-			timeline.getKeyFrames().add(new KeyFrame(Duration.millis(76), this::doStep));
+			timeline.getKeyFrames().add(new KeyFrame(Duration.millis(74), this::doStep));
 		}
 		skin = textures.get(0);
 		body = new Rectangle(size, size);
