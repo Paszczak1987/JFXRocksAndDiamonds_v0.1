@@ -47,13 +47,22 @@ public class Item {
 		} else if (this.name == Items.DIRT) {
 			textures.add(new Image("Pictures/Textures/dirt_default.png", size, size, false, false));
 			textures.add(new Image("Pictures/Textures/dirt_crushed_01.png", size, size, false, false));
-			textures.add(new Image("Pictures/Textures/dirt_crushed_02.png", size, size, false, false));			
+			textures.add(new Image("Pictures/Textures/dirt_crushed_02.png", size, size, false, false));
 			timeline.setCycleCount(4);
 			timeline.getKeyFrames().add(new KeyFrame(Duration.millis(74), this::doStep));
+		} else if (this.name == Items.RED_DIAMOND) {
+			textures.add(new Image("Pictures/Textures/redD.png", size, size, false, false));
+		} else if (this.name == Items.GREEN_DIAMOND) {
+			textures.add(new Image("Pictures/Textures/greenD.png", size, size, false, false));
+		} else if (this.name == Items.BLUE_DIAMOND) {
+			textures.add(new Image("Pictures/Textures/blueD.png", size, size, false, false));
+		} else if (this.name == Items.YELLOW_DIAMOND) {
+			textures.add(new Image("Pictures/Textures/yellowD.png", size, size, false, false));
 		}
 		skin = textures.get(0);
 		body = new Rectangle(size, size);
 		body.setFill(new ImagePattern(skin));
+		//elo
 		setPosition(x, y);
 	}
 

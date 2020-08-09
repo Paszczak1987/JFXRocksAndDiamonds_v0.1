@@ -109,17 +109,26 @@ public class Game extends StateController {
 	}
 
 	private void loadItem(Color color, int x, int y) {
-		Item item;
+		Item item = null;
 		if (color.equals(Items.PLAYER.getColor())) {
 			player.setPosition(x, y);
 			map.add(player);
 		} else if (color.equals(Items.WALL.getColor())) {
-			item = new Item(Items.WALL, RECT_SIZE, x, y);
-			map.add(item);
+			item = new Item(Items.WALL, RECT_SIZE, x, y);			
 		} else if (color.equals(Items.DIRT.getColor())) {
-			item = new Item(Items.DIRT, RECT_SIZE, x, y);
-			map.add(item);
+			item = new Item(Items.DIRT, RECT_SIZE, x, y);			
+		} else if (color.equals(Items.RED_DIAMOND.getColor())) {
+			item = new Item(Items.RED_DIAMOND, RECT_SIZE, x, y);						
+		} else if (color.equals(Items.GREEN_DIAMOND.getColor())) {
+			item = new Item(Items.GREEN_DIAMOND, RECT_SIZE, x, y);			
+		} else if (color.equals(Items.BLUE_DIAMOND.getColor())) {
+			item = new Item(Items.BLUE_DIAMOND, RECT_SIZE, x, y);			
+		} else if (color.equals(Items.YELLOW_DIAMOND.getColor())) {
+			item = new Item(Items.YELLOW_DIAMOND, RECT_SIZE, x, y);
 		}
+		
+		if(item != null)
+			map.add(item);
 	}
 
 	private void loadLevel() {
@@ -167,6 +176,7 @@ public class Game extends StateController {
 			double iXr = item.getBody().getX() + RECT_SIZE;
 			double iYu = item.getBody().getY();
 			double iYd = item.getBody().getY() + RECT_SIZE;
+			int shift = 2;
 
 			if (item.getName() == Items.WALL) { // Jeœli WALL
 				if (pXl == iXr && pYu == iYu) { // 1. LEFT SIDE
@@ -179,7 +189,6 @@ public class Game extends StateController {
 					up = (up == false ? true : up);
 				}
 			} else if (item.getName() == Items.DIRT) { // Jeœli DIRT
-				int shift = 2;
 				
 				if (item.getBody().intersects(pXl + shift, pYu + shift, RECT_SIZE - shift * 2, RECT_SIZE - shift * 2)) {
 						item.playAnimation();
@@ -187,6 +196,11 @@ public class Game extends StateController {
 						map.remove(item);
 					updateLevel();
 				}
+			} else if ((item.getName() == Items.RED_DIAMOND || item.getName() == Items.GREEN_DIAMOND) || (item.getName() == Items.BLUE_DIAMOND || item.getName() == Items.YELLOW_DIAMOND)) {
+				if (item.getBody().intersects(pXl + shift, pYu + shift, RECT_SIZE - shift * 2, RECT_SIZE - shift * 2)) {
+					map.remove(item);
+				}
+
 			}
 		}
 
