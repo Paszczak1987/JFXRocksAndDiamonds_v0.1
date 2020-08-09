@@ -37,7 +37,6 @@ public class Game extends StateController {
 	private boolean pause;
 	private String collisionType;
 	private KeyEvent keyEvent;
-	//private boolean didGameStarted;
 	
 	@FXML
 	private Pane gamePane;
@@ -53,7 +52,6 @@ public class Game extends StateController {
 		
 		this.levelNr = 0;
 		this.pause = true;
-		//this.didGameStarted = false;
 		
 		player = new Player(RECT_SIZE);
 		map = new ArrayList<Item>();

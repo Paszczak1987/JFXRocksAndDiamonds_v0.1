@@ -24,7 +24,7 @@ public class Player extends Item {
 		skin = textures.get(0);
 		body = new Rectangle(size,size);
 		body.setFill(new ImagePattern(skin));
-		body.setViewOrder(1);
+		//body.setViewOrder(1);
 		timeline = new Timeline(new KeyFrame(Duration.millis(4), this::doStep));
 		timeline.setCycleCount(size);
 	}
