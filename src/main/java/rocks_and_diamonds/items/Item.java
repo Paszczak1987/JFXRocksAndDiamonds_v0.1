@@ -62,6 +62,7 @@ public class Item {
 		skin = textures.get(0);
 		body = new Rectangle(size, size);
 		body.setFill(new ImagePattern(skin));
+		//elo
 		setPosition(x, y);
 	}
 
