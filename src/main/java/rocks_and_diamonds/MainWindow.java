@@ -1,10 +1,14 @@
 package rocks_and_diamonds;
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 import javafx.application.Application;
 import javafx.scene.image.Image;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
 public class MainWindow extends Application {
@@ -37,7 +41,14 @@ public class MainWindow extends Application {
 		appWindow.setTitle("Rocks & Diamonds by £ukasz & Krzysztof");
 		appWindow.setResizable(false);
 		appWindow.show();
+		music();
 
+	}
+	
+	
+	public void music() {
+		AudioClip audio = new AudioClip(this.getClass().getResource("/Music/background-music.mp3").toString());
+		audio.play();		
 	}
 
 	public void changeState(GameStates state) {
