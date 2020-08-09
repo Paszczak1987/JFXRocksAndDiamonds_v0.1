@@ -9,14 +9,17 @@ import javafx.stage.Stage;
 
 public class MainWindow extends Application {
 
+	
 	private Stage appWindow;
 	private List<GameState> gameStates;
 	private GameState currentState;
 
+	private String playerName;
+	
 	@Override
 	public void start(Stage window) throws Exception {
 		this.appWindow = window;
-
+		this.playerName = "unknown";
 		gameStates = new ArrayList<GameState>();
 		gameStates.add(new GameState(this, GameStates.ENTER_PLAYER_NAME,
 				this.getClass().getResource("/FXML/ENTER_PLAYER_NAME.fxml")));
@@ -51,6 +54,14 @@ public class MainWindow extends Application {
 		appWindow.close();
 	}
 
+	public void setPlayerName(String playerName) {
+		this.playerName = playerName;
+	}
+	
+	public String getPlayerName() {
+		return playerName;
+	}
+	
 	public GameState getGameState() {
 		return currentState;
 	}
