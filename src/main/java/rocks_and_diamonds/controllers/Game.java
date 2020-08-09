@@ -6,6 +6,8 @@ import java.util.List;
 import javafx.animation.Animation;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.BoundingBox;
+import javafx.geometry.Bounds;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -152,13 +154,19 @@ public class Game extends StateController {
 		displayLevel();
 	}
 
+	private boolean doesCollide(Item item, Bounds playerBounds) {
+		return item.getBody().intersects(playerBounds);
+	}
+	
 	public void checkCollision() {
 		//Player bounds
 		double pXl = player.getBody().getX();
 		double pXr = player.getBody().getX() + RECT_SIZE;
 		double pYu = player.getBody().getY();
 		double pYd = player.getBody().getY() + RECT_SIZE;
-
+		double shift = 2;
+		Bounds pBounds = new BoundingBox(pXl + shift, pYu + shift, RECT_SIZE - shift * 2, RECT_SIZE - shift * 2);
+		
 		boolean left = false;
 		boolean right = false;
 		boolean up = false;
@@ -176,8 +184,7 @@ public class Game extends StateController {
 			double iXr = item.getBody().getX() + RECT_SIZE;
 			double iYu = item.getBody().getY();
 			double iYd = item.getBody().getY() + RECT_SIZE;
-			int shift = 2;
-
+			
 			if (item.getName() == Items.WALL) { // Jeœli WALL
 				if (pXl == iXr && pYu == iYu) { // 1. LEFT SIDE
 					left = (left == false ? true : left);
@@ -190,18 +197,36 @@ public class Game extends StateController {
 				}
 			} else if (item.getName() == Items.DIRT) { // Jeœli DIRT
 				
-				if (item.getBody().intersects(pXl + shift, pYu + shift, RECT_SIZE - shift * 2, RECT_SIZE - shift * 2)) {
+				if (doesCollide(item, pBounds)) {
 						item.playAnimation();
 					if(item.getAnimationStatus()) 
 						map.remove(item);
 					updateLevel();
 				}
-			} else if ((item.getName() == Items.RED_DIAMOND || item.getName() == Items.GREEN_DIAMOND) || (item.getName() == Items.BLUE_DIAMOND || item.getName() == Items.YELLOW_DIAMOND)) {
-				if (item.getBody().intersects(pXl + shift, pYu + shift, RECT_SIZE - shift * 2, RECT_SIZE - shift * 2)) {
+			
+			} else if (item.getName() == Items.RED_DIAMOND || item.getName() == Items.GREEN_DIAMOND || item.getName() == Items.BLUE_DIAMOND || item.getName() == Items.YELLOW_DIAMOND) {
+				if (doesCollide(item, pBounds)) {
 					map.remove(item);
+					updateLevel();
 				}
 
-			}
+			} 
+//			else if(item.getName() == Items.GREEN_DIAMOND) {
+//				if (doesCollide(item, pBounds)) {
+//					map.remove(item);
+//					updateLevel();
+//				}
+//			}else if(item.getName() == Items.BLUE_DIAMOND) {
+//				if (doesCollide(item, pBounds)) {
+//					map.remove(item);
+//					updateLevel();
+//				}
+//			}else if(item.getName() == Items.YELLOW_DIAMOND) {
+//				if (doesCollide(item, pBounds)) {
+//					map.remove(item);
+//					updateLevel();
+//				}
+//			}
 		}
 
 		if ((!left && !right) && (!up && !down)) {
@@ -273,6 +298,7 @@ public class Game extends StateController {
 		}
 
 		frameTime = System.currentTimeMillis() - lastTime;
+		System.out.println(frameTime);
 		lastTime = System.currentTimeMillis();
 	}
 
