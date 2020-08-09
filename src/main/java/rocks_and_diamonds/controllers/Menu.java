@@ -5,100 +5,138 @@ import java.util.List;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
-import javafx.scene.control.SplitPane;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import rocks_and_diamonds.GameState;
 import rocks_and_diamonds.GameStates;
 
 public class Menu extends StateController {
-	
+
 	private GameState parent;
-	
+
+	@FXML
+	private VBox menuBox;
 	@FXML
 	private StackPane stackPane;
 	@FXML
-	private SplitPane splitPane;
-	@FXML
-	private AnchorPane anchorPaneMenu;
-	@FXML
-	private AnchorPane anchorPanePicture;
-	@FXML
-	private VBox vBox;
-	@FXML
-	private Button reasumeGame;
-	@FXML
-	private Button newGame;
+	private Button game;
 	@FXML
 	private Button options;
 	@FXML
 	private Button hallOfFame;
 	@FXML
 	private Button quit;
-	
+
 	private List<Button> buttons;
-	
+	private int btnIndex;
+	private String btnGeneralStyle;
+	private DropShadow btnShadow;
+
 	public void initialize() {
-		
+
 		buttons = new ArrayList<Button>();
-		buttons.add(reasumeGame);
-		buttons.add(newGame);
+		buttons.add(game);
 		buttons.add(options);
 		buttons.add(hallOfFame);
 		buttons.add(quit);
 		
-		{// KeyListener na Buttony
+		btnIndex = 0;
+		btnGeneralStyle = "-fx-background-color: lightgray;";
+		btnShadow = new DropShadow(BlurType.values()[0], Color.rgb(215, 156, 36), 0, 3.0f, 3.0f, 3.0f);
+		focusOnButton(btnIndex);
+
+		for (Button btn : buttons) {
+			btn.setFocusTraversable(false);
+			btn.setCursor(Cursor.HAND);
+		}
+
+		{// KeyListener na menuBox
+			menuBox.setFocusTraversable(true);
 			EventHandler<KeyEvent> keyPressed = new EventHandler<KeyEvent>() {
 				@Override
 				public void handle(KeyEvent e) {
 					buttonOnKeyEvent(e);
 				}
 			};
-			for(Button btn: buttons)
-				btn.addEventHandler(KeyEvent.KEY_PRESSED, keyPressed);
-		}// KeyListener na Buttony
-		
+			menuBox.addEventHandler(KeyEvent.KEY_PRESSED, keyPressed);
+		} // KeyListener na menuBox
+
 	}
-	
-	public void newGameOnMouseClicked() {
+
+	public void gameOnMouseClicked() {
 		parent.mainWindow().changeState(GameStates.GAME);
+		game.setText("Reasume Game");
 	}
-	
+
 	public void optionsOnMouseClicked() {
 		parent.mainWindow().changeState(GameStates.OPTIONS);
 	}
-	
+
 	public void hallOfFameOnMouseClicked() {
 		parent.mainWindow().changeState(GameStates.HALLOFFAME);
-	} 
-	
+	}
+
 	public void quitOnMouseClicked() {
 		parent.mainWindow().changeState(GameStates.QUIT);
 	}
 	
+	public void onEnter(MouseEvent e) {
+		for(int i = 0; i < buttons.size(); i++) {
+			if(e.getTarget().hashCode() == buttons.get(i).hashCode())
+				btnIndex = i;
+		}
+		focusOnButton(btnIndex);
+	}
+
 	public void buttonOnKeyEvent(KeyEvent e) {
-		for(Button btn: buttons) {
-			if(e.getCode() == KeyCode.ENTER) {
-				if(btn.isFocused()) {
-					if(btn.getId().equals("reasumeGame"))
-						System.out.println("RESUME GAME !!!"); // to siê wypierdoli
-					else if (btn.getId().equals("newGame"))
-						parent.mainWindow().changeState(GameStates.GAME);
-					else if (btn.getId().equals("options"))
-						parent.mainWindow().changeState(GameStates.OPTIONS);
-					else if (btn.getId().equals("hallOfFame"))
-						parent.mainWindow().changeState(GameStates.HALLOFFAME);
-					else if (btn.getId().equals("quit"))
-						parent.mainWindow().changeState(GameStates.QUIT);
-				}
+		if(e.getCode() == KeyCode.DOWN) {
+			if(btnIndex < buttons.size() - 1)
+				btnIndex++;
+			else
+				btnIndex = 0;
+		}else if (e.getCode() == KeyCode.UP){
+			if(btnIndex > 0)
+				btnIndex--;
+			else
+				btnIndex = buttons.size() - 1;
+		}else if (e.getCode() == KeyCode.ENTER) {
+			String id = buttons.get(btnIndex).getId();
+			if (id.equals("game")) {
+				parent.mainWindow().changeState(GameStates.GAME);
+				game.setText("Reasume Game");
+			} else if (id.equals("options"))
+				parent.mainWindow().changeState(GameStates.OPTIONS);
+			else if (id.equals("hallOfFame"))
+				parent.mainWindow().changeState(GameStates.HALLOFFAME);
+			else if (id.equals("quit"))
+				parent.mainWindow().changeState(GameStates.QUIT);
+		}
+		
+		focusOnButton(btnIndex);
+		
+	}
+	
+	private void focusOnButton(int btnIndex) {
+		for(int i = 0; i < buttons.size(); i++) {
+			Button btn = buttons.get(i);
+			if(i == btnIndex) {
+				btn.setStyle(btnGeneralStyle+"-fx-text-fill: black;");
+				btn.setEffect(btnShadow);
+			}else {
+				btn.setStyle(btnGeneralStyle+"-fx-text-fill: grey;");
+				btn.setEffect(null);
 			}
 		}
 	}
-	
+
 	@Override
 	public void setParent(GameState parent) {
 		this.parent = parent;
@@ -106,12 +144,12 @@ public class Menu extends StateController {
 
 	@Override
 	public void handle(long now) {
-		// TODO Auto-generated method stub		
+		// TODO Auto-generated method stub
 	}
 
 	@Override
 	public void play() {
 		// TODO Auto-generated method stub
 	}
-	
+
 }

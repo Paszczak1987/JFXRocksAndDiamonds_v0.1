@@ -23,8 +23,6 @@ import rocks_and_diamonds.GameStates;
 public class Game extends StateController {
 
 	private GameState parent;
-	private int levelNr;
-	private Player player;
 	private List<Item> map;
 
 	// Timer fields
@@ -34,10 +32,13 @@ public class Game extends StateController {
 	private int millisecondsSum;
 
 	// Game fields
-	private boolean pause = true;
-	private String collisionType = "NONE";
+	private Player player;
+	private int levelNr;
+	private boolean pause;
+	private String collisionType;
 	private KeyEvent keyEvent;
-
+	//private boolean didGameStarted;
+	
 	@FXML
 	private Pane gamePane;
 	@FXML
@@ -49,7 +50,11 @@ public class Game extends StateController {
 
 	@FXML
 	public void initialize() {
+		
 		this.levelNr = 0;
+		this.pause = true;
+		//this.didGameStarted = false;
+		
 		player = new Player(RECT_SIZE);
 		map = new ArrayList<Item>();
 
@@ -76,7 +81,11 @@ public class Game extends StateController {
 	public void gamePaneOnKeyPressed(KeyEvent e) {
 
 		this.keyEvent = e;
-
+		
+		//-----------------------------------------
+		// playerMove() jest wywo³ywany w pêtli gry
+		//-----------------------------------------
+		
 		if (e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.SPACE)
 			parent.mainWindow().changeState(GameStates.QUIT);
 		else if (e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.ENTER) {
@@ -86,12 +95,19 @@ public class Game extends StateController {
 				start();
 			}
 		} else if (e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.P) {
-			pause = true;
-			timeLabel.setStyle("-fx-font-size: 12px");
-			timeLabel.setText("Pauza\n[ENTER] by wznowiæ.");
-			stop();
+			pauseGame();
+		} else if (e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.ESCAPE) {
+			pauseGame();
+			parent.mainWindow().changeState(GameStates.MENU);
 		}
 
+	}
+	
+	private void pauseGame() {
+		pause = true;
+		timeLabel.setStyle("-fx-font-size: 12px");
+		timeLabel.setText("Pauza\n[ENTER] by wznowiæ.");
+		stop();
 	}
 
 	private void loadItem(Color color, int x, int y) {
@@ -161,7 +177,6 @@ public class Game extends StateController {
 					right = (right == false ? true : right);
 				} else if (pYd == iYu && pXl == iXl) { // 3. DOWN SIDE
 					down = (down == false ? true : down);
-					System.out.println(i+" "+item.getName());
 				} else if (pYu == iYd && pXl == iXl) { // 4. UP SIDE
 					up = (up == false ? true : up);
 				}
@@ -218,6 +233,7 @@ public class Game extends StateController {
 	}
 
 	// Gameloop/Timer
+	@Override
 	public void handle(long now) {
 		if (lastTime == 0) {
 			lastTime = System.currentTimeMillis();

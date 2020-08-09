@@ -23,13 +23,16 @@
                   <Insets />
                </VBox.margin>
             </Label>
-            <HBox fx:id="hBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="238.0">
+            <HBox fx:id="hBox" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="238.0">
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
                <children>
                   <TextField fx:id="textField" onKeyPressed="#textFieldOnKeyPressed" prefHeight="34.0" prefWidth="160.0" />
-                  <Button fx:id="button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#buttonOnMouseClicked" opacity="0.7" prefHeight="34.0" prefWidth="40.0" text="ok" />
+                  <Button fx:id="button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#buttonOnMouseClicked" prefHeight="34.0" prefWidth="40.0" text="OK">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Button>
                </children>
             </HBox>
          </children>
