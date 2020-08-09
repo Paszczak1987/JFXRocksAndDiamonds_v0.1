@@ -20,6 +20,9 @@ public class Loading extends StateController {
 	private int 	msSum;
 	
 	private GameState parent;
+	private String MEDIA_URL = "/Pictures/Diamond.mp4";
+	private MediaPlayer mediaPlayer;
+	
 	@FXML
 	private StackPane stackPane;	
 	@FXML
@@ -33,9 +36,6 @@ public class Loading extends StateController {
 	@FXML 
 	private MediaView mediaView;	
 	
-	private MediaPlayer mediaPlayer;
-	private String MEDIA_URL = "/Pictures/Diamond.mp4";
-	
 	@FXML
 	public void initialize() {
 		
@@ -44,13 +44,12 @@ public class Loading extends StateController {
 	 	mediaPlayer = new MediaPlayer(new Media(this.getClass().getResource(MEDIA_URL).toExternalForm()));
 	 	mediaView.setMediaPlayer(mediaPlayer);
 	 	
-	 	new Bounce(circle1).setCycleCount(5).setDelay(Duration.valueOf("3000ms")).play();
-	    new Bounce(circle2).setCycleCount(5).setDelay(Duration.valueOf("3250ms")).play();
-	    new Bounce(circle3).setCycleCount(5).setDelay(Duration.valueOf("3500ms")).play();
-	 	
 	}
 	
 	public void play() {
+		new Bounce(circle1).setCycleCount(5).play();
+		new Bounce(circle2).setCycleCount(5).setDelay(Duration.valueOf("250ms")).play();
+		new Bounce(circle3).setCycleCount(5).setDelay(Duration.valueOf("500ms")).play();
 		mediaPlayer.play();
 	}
 	
