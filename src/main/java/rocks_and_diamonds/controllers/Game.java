@@ -39,7 +39,7 @@ public class Game extends StateController {
 	private boolean pause;
 	private String collisionType;
 	private KeyEvent keyEvent;
-	
+
 	@FXML
 	private Pane gamePane;
 	@FXML
@@ -51,10 +51,10 @@ public class Game extends StateController {
 
 	@FXML
 	public void initialize() {
-		
+
 		this.levelNr = 0;
 		this.pause = true;
-		
+
 		player = new Player(RECT_SIZE);
 		map = new ArrayList<Item>();
 
@@ -81,11 +81,11 @@ public class Game extends StateController {
 	public void gamePaneOnKeyPressed(KeyEvent e) {
 
 		this.keyEvent = e;
-		
-		//-----------------------------------------
+
+		// -----------------------------------------
 		// playerMove() jest wywo³ywany w pêtli gry
-		//-----------------------------------------
-		
+		// -----------------------------------------
+
 		if (e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.SPACE)
 			parent.mainWindow().changeState(GameStates.QUIT);
 		else if (e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.ENTER) {
@@ -102,7 +102,7 @@ public class Game extends StateController {
 		}
 
 	}
-	
+
 	private void pauseGame() {
 		pause = true;
 		timeLabel.setStyle("-fx-font-size: 12px");
@@ -116,20 +116,20 @@ public class Game extends StateController {
 			player.setPosition(x, y);
 			map.add(player);
 		} else if (color.equals(Items.WALL.getColor())) {
-			item = new Item(Items.WALL, RECT_SIZE, x, y);			
+			item = new Item(Items.WALL, RECT_SIZE, x, y);
 		} else if (color.equals(Items.DIRT.getColor())) {
-			item = new Item(Items.DIRT, RECT_SIZE, x, y);			
+			item = new Item(Items.DIRT, RECT_SIZE, x, y);
 		} else if (color.equals(Items.RED_DIAMOND.getColor())) {
-			item = new Item(Items.RED_DIAMOND, RECT_SIZE, x, y);						
+			item = new Item(Items.RED_DIAMOND, RECT_SIZE, x, y);
 		} else if (color.equals(Items.GREEN_DIAMOND.getColor())) {
-			item = new Item(Items.GREEN_DIAMOND, RECT_SIZE, x, y);			
+			item = new Item(Items.GREEN_DIAMOND, RECT_SIZE, x, y);
 		} else if (color.equals(Items.BLUE_DIAMOND.getColor())) {
-			item = new Item(Items.BLUE_DIAMOND, RECT_SIZE, x, y);			
+			item = new Item(Items.BLUE_DIAMOND, RECT_SIZE, x, y);
 		} else if (color.equals(Items.YELLOW_DIAMOND.getColor())) {
 			item = new Item(Items.YELLOW_DIAMOND, RECT_SIZE, x, y);
 		}
-		
-		if(item != null)
+
+		if (item != null)
 			map.add(item);
 	}
 
@@ -157,34 +157,34 @@ public class Game extends StateController {
 	private boolean doesCollide(Item item, Bounds playerBounds) {
 		return item.getBody().intersects(playerBounds);
 	}
-	
+
 	public void checkCollision() {
-		//Player bounds
+		// Player bounds
 		double pXl = player.getBody().getX();
 		double pXr = player.getBody().getX() + RECT_SIZE;
 		double pYu = player.getBody().getY();
 		double pYd = player.getBody().getY() + RECT_SIZE;
 		double shift = 2;
 		Bounds pBounds = new BoundingBox(pXl + shift, pYu + shift, RECT_SIZE - shift * 2, RECT_SIZE - shift * 2);
-		
+
 		boolean left = false;
 		boolean right = false;
 		boolean up = false;
 		boolean down = false;
 
 		for (int i = 0; i < map.size(); i++) {
-			
-			if(map.get(i).getName() == Items.PLAYER) // Wykluczamy Playera
+
+			if (map.get(i).getName() == Items.PLAYER) // Wykluczamy Playera
 				i++;
-			
+
 			Item item = map.get(i);
-			
-			//Item bounds
+
+			// Item bounds
 			double iXl = item.getBody().getX();
 			double iXr = item.getBody().getX() + RECT_SIZE;
 			double iYu = item.getBody().getY();
 			double iYd = item.getBody().getY() + RECT_SIZE;
-			
+
 			if (item.getName() == Items.WALL) { // Jeœli WALL
 				if (pXl == iXr && pYu == iYu) { // 1. LEFT SIDE
 					left = (left == false ? true : left);
@@ -196,37 +196,23 @@ public class Game extends StateController {
 					up = (up == false ? true : up);
 				}
 			} else if (item.getName() == Items.DIRT) { // Jeœli DIRT
-				
+
 				if (doesCollide(item, pBounds)) {
-						item.playAnimation();
-					if(item.getAnimationStatus()) 
+					item.playAnimation();
+					if (item.getAnimationStatus())
 						map.remove(item);
 					updateLevel();
 				}
-			
-			} else if (item.getName() == Items.RED_DIAMOND || item.getName() == Items.GREEN_DIAMOND || item.getName() == Items.BLUE_DIAMOND || item.getName() == Items.YELLOW_DIAMOND) {
+
+			} else if (item.getName() == Items.RED_DIAMOND || item.getName() == Items.GREEN_DIAMOND // Jeœli DIAMOND
+					|| item.getName() == Items.BLUE_DIAMOND || item.getName() == Items.YELLOW_DIAMOND) {
 				if (doesCollide(item, pBounds)) {
 					map.remove(item);
 					updateLevel();
 				}
 
-			} 
-//			else if(item.getName() == Items.GREEN_DIAMOND) {
-//				if (doesCollide(item, pBounds)) {
-//					map.remove(item);
-//					updateLevel();
-//				}
-//			}else if(item.getName() == Items.BLUE_DIAMOND) {
-//				if (doesCollide(item, pBounds)) {
-//					map.remove(item);
-//					updateLevel();
-//				}
-//			}else if(item.getName() == Items.YELLOW_DIAMOND) {
-//				if (doesCollide(item, pBounds)) {
-//					map.remove(item);
-//					updateLevel();
-//				}
-//			}
+			}
+
 		}
 
 		if ((!left && !right) && (!up && !down)) {
