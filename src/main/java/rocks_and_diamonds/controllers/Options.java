@@ -13,8 +13,6 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import rocks_and_diamonds.GameState;
@@ -23,15 +21,9 @@ import rocks_and_diamonds.GameStates;
 public class Options extends StateController{
 	
 	private GameState parent;
-	
+
 	@FXML
-	private StackPane stackPane;
-	@FXML
-	private HBox hBox;	
-	@FXML
-	private VBox vBox1;
-	@FXML
-	private VBox vBox2;
+	private VBox optionsBtnBox;
 	@FXML
 	private Button music;
 	@FXML
@@ -41,17 +33,18 @@ public class Options extends StateController{
 	@FXML
 	private Button backToMenu;
 	@FXML
-	private TextField tfmusic;
+	private TextField musicValue;
 	@FXML
-	private TextField tftexture;
+	private TextField textureValue;
 	@FXML
-	private TextField tfdifficulty;
+	private TextField difficultyValue;
 	
 	private List<Button> buttons;
+	private List<TextField> options;
 	private int btnIndex;
 	private String btnGeneralStyle;
 	private DropShadow btnShadow;
-	
+	private String optionGeneralStyle;
 	
 	@FXML
 	public void initialize() {
@@ -64,39 +57,73 @@ public class Options extends StateController{
 		
 		btnIndex = 0;
 		btnGeneralStyle = "-fx-background-color: lightgray;";
-		btnShadow = new DropShadow(BlurType.values()[0], Color.rgb(215, 156, 36), 0, 3.0f, 3.0f, 3.0f);
+		btnShadow = new DropShadow(BlurType.values()[0], Color.rgb(215, 156, 36), 0, 0.0f, 1.0f, 1.0f);
 		focusOnButton(btnIndex);
-
+		
 		for (Button btn : buttons) {
 			btn.setFocusTraversable(false);
-
 			btn.setCursor(Cursor.HAND);
 		}
+		
+		options = new ArrayList<TextField>();
+		options.add(musicValue);
+		options.add(textureValue);
+		options.add(difficultyValue);
+		
+		optionGeneralStyle = "-fx-background-color: rgb(31,29,29);";
+		
+		for(TextField option: options)
+			option.setStyle(optionGeneralStyle+" -fx-text-fill: white;");
+		
 
-		{// KeyListener na menuBox
-			vBox1.setFocusTraversable(true);
+		{// KeyListener na optionsBtnBox
+			optionsBtnBox.setFocusTraversable(true);
 			EventHandler<KeyEvent> keyPressed = new EventHandler<KeyEvent>() {
 				@Override
 				public void handle(KeyEvent e) {
 					buttonOnKeyEvent(e);
 				}
 			};
-			vBox1.addEventHandler(KeyEvent.KEY_PRESSED, keyPressed);
-		} // KeyListener na menuBox
+			optionsBtnBox.addEventHandler(KeyEvent.KEY_PRESSED, keyPressed);
+		} // KeyListener na optionsBtnBox
+		
+		updateValues();
 		
 	}
 	
+	private void updateValues() {
+		if(GameData.isMusicOn())
+			musicValue.setText("ON");
+		else
+			musicValue.setText("OFF");
+		textureValue.setText(GameData.getTexture());
+		difficultyValue.setText(GameData.getDifficulty()+"s");
+	}
+	
+	public void disableDifficultyValues() {
+		difficultyValue.setStyle(optionGeneralStyle+" -fx-text-inner-color: grey;");
+	}
 	
 	public void musicOnMouseClicked() {
-		
+		GameData.musicOnOff();
+		updateValues();
 	}
 	
 	public void textureOnMouseClicked() {
-		
+		GameData.changeTexture();
+		updateValues();
+		Game game = (Game)(parent.mainWindow().getGameState(GameStates.GAME).getController());
+		game.getPlayer().changeTextures(GameData.getTexture());
+		game.updateLevel();
 	}
 	
 	public void difficultyOnMouseClicked() {
-		
+		Game game = (Game)(parent.mainWindow().getGameState(GameStates.GAME).getController());
+		if(!game.isGameGoingOn()) {
+			GameData.changeDifficulty();
+			game.setDifficulty();
+			updateValues();			
+		}
 	}
 	
 	public void returnOnMouseClicked() {
@@ -124,18 +151,15 @@ public class Options extends StateController{
 				btnIndex = buttons.size() - 1;
 		}else if (e.getCode() == KeyCode.ENTER) {
 			String id = buttons.get(btnIndex).getId();
-			if (id.equals("music")) {
-				
-			} else if (id.equals("texture")) {
-				
-			}
-			else if (id.equals("difficulty")) {
-			
-			}
+			if (id.equals("music"))
+				musicOnMouseClicked();
+			else if (id.equals("texture"))
+				textureOnMouseClicked();
+			else if (id.equals("difficulty"))
+				difficultyOnMouseClicked();
 			else if (id.equals("backToMenu")) {
 				parent.mainWindow().changeState(GameStates.MENU);
 			}
-				
 		}
 		
 		focusOnButton(btnIndex);		
@@ -158,7 +182,6 @@ public class Options extends StateController{
 	@Override
 	public void setParent(GameState parent) {
 		this.parent = parent;
-		
 	}
 
 	@Override

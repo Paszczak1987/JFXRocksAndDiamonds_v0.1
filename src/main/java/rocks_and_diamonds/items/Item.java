@@ -3,13 +3,10 @@ package rocks_and_diamonds.items;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
@@ -102,7 +99,7 @@ public class Item {
 		animate();
 	}
 
-	private void setDefaultSkin() {
+	public void setDefaultSkin() {
 		if (!skin.equals(textures.get(0))) {
 			skin = textures.get(0);
 			body.setFill(new ImagePattern(skin));

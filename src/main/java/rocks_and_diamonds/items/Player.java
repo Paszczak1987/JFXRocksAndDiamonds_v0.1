@@ -76,12 +76,18 @@ public class Player extends Item {
 		setDefaultSkin();
 	}
 
-	public void setDefaultSkin() {
-		if (!skin.equals(textures.get(0))) {
-			skin = textures.get(0);
-			body.setFill(new ImagePattern(skin));
-		} else
-			return;
+	public void changeTextures(String character) {
+		textures.clear();
+		if(character.equals("MALE")) {
+			textures.add(new Image("Pictures/Player/adventurer_stand.png", size, size, false, false));
+			textures.add(new Image("Pictures/Player/adventurer_walk1.png", size, size, false, false));
+			textures.add(new Image("Pictures/Player/adventurer_walk2.png", size, size, false, false));
+		}else if(character.equals("FEMALE")) {
+			textures.add(new Image("Pictures/Player/female_stand.png", size, size, false, false));
+			textures.add(new Image("Pictures/Player/female_walk1.png", size, size, false, false));
+			textures.add(new Image("Pictures/Player/female_walk2.png", size, size, false, false));
+		}
+		setDefaultSkin();
 	}
 	
 	private void executeMove(KeyEvent keyEvent) {

@@ -7,11 +7,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="stackPane" prefHeight="748.0" prefWidth="924.0" style="-fx-background-color: rgb(31,29,29);;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rocks_and_diamonds.controllers.Quit">
+<StackPane prefHeight="748.0" prefWidth="924.0" style="-fx-background-color: rgb(31,29,29);;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rocks_and_diamonds.controllers.Quit">
    <children>
-      <VBox fx:id="vBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="550.0">
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="550.0">
          <children>
-            <Label fx:id="label" text="Do you want to quit the game? " textFill="WHITE">
+            <Label text="Do you really want to quit? " textFill="WHITE">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>

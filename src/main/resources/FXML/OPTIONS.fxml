@@ -8,11 +8,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="748.0" prefWidth="924.0" style="-fx-background-color: rgb(31,29,29);;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rocks_and_diamonds.controllers.Options">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="748.0" prefWidth="924.0" style="-fx-background-color: rgb(31,29,29);;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rocks_and_diamonds.controllers.Options">
    <children>
-      <HBox fx:id="hBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="550.0">
+      <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="550.0">
          <children>
-            <VBox fx:id="vBox1" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="275.0">
+            <VBox fx:id="optionsBtnBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="275.0">
                <children>
                   <Button fx:id="music" mnemonicParsing="false" onMouseClicked="#musicOnMouseClicked" onMouseEntered="#onEnter" prefHeight="70.0" prefWidth="255.0" text="Music">
                      <opaqueInsets>
@@ -38,7 +38,7 @@
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font></Button>
-                  <Button fx:id="backToMenu" mnemonicParsing="false" onMouseClicked="#returnOnMouseClicked" onMouseEntered="#onEnter" prefHeight="70.0" prefWidth="255.0" text="Return to Menu">
+                  <Button fx:id="backToMenu" mnemonicParsing="false" onMouseClicked="#returnOnMouseClicked" onMouseEntered="#onEnter" prefHeight="70.0" prefWidth="255.0" text="Back to menu">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font></Button>
@@ -47,9 +47,9 @@
                   <Insets />
                </opaqueInsets>
             </VBox>
-            <VBox fx:id="vBox2" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="275.0">
+            <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="275.0">
                <children>
-                  <TextField fx:id="tfmusic" alignment="CENTER" prefHeight="70.0" prefWidth="255.0" text="ON">
+                  <TextField fx:id="musicValue" alignment="CENTER" prefHeight="70.0" prefWidth="255.0">
                      <opaqueInsets>
                         <Insets bottom="30.0" />
                      </opaqueInsets>
@@ -60,14 +60,14 @@
                         <Font size="24.0" />
                      </font>
                   </TextField>
-                  <TextField fx:id="tftexture" alignment="CENTER" prefHeight="70.0" prefWidth="255.0" text="MALE">
+                  <TextField fx:id="textureValue" alignment="CENTER" prefHeight="70.0" prefWidth="255.0">
                      <VBox.margin>
                         <Insets bottom="10.0" />
                      </VBox.margin>
                      <font>
                         <Font size="24.0" />
                      </font></TextField>
-                  <TextField fx:id="tfdifficulty" alignment="CENTER" prefHeight="70.0" prefWidth="255.0" text="90 sec">
+                  <TextField fx:id="difficultyValue" alignment="CENTER" prefHeight="70.0" prefWidth="255.0">
                      <font>
                         <Font size="24.0" />
                      </font></TextField>

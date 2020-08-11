@@ -13,8 +13,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import rocks_and_diamonds.GameState;
 import rocks_and_diamonds.GameStates;
@@ -22,12 +20,7 @@ import rocks_and_diamonds.GameStates;
 public class Quit extends StateController {
 	
 	private GameState parent;
-	@FXML
-	private StackPane stackPane;
-	@FXML
-	private VBox vBox;
-	@FXML
-	private Label label;
+
 	@FXML
 	private HBox hBox;
 	@FXML
@@ -37,9 +30,7 @@ public class Quit extends StateController {
 	
 	private List<Label> labels;
 	private int lbIndex;
-	private String lbGeneralStyle;
 	private DropShadow lbShadow;
-	
 	
 	public void initialize() {
 		
@@ -47,18 +38,16 @@ public class Quit extends StateController {
 		labels.add(labelYes);
 		labels.add(labelNo);
 		
-		
 		lbIndex = 0;
 		lbShadow = new DropShadow(BlurType.values()[0], Color.rgb(215, 156, 36), 0, 3.0f, 3.0f, 3.0f); 
 		focusOnLabel(lbIndex);
 
 		for (Label lb : labels) {
 			lb.setFocusTraversable(false);
-
 			lb.setCursor(Cursor.HAND);
 		}
 
-		{// KeyListener na menuBox
+		{// KeyListener na hBox
 			hBox.setFocusTraversable(true);
 			EventHandler<KeyEvent> keyPressed = new EventHandler<KeyEvent>() {
 				@Override
@@ -67,7 +56,7 @@ public class Quit extends StateController {
 				}
 			};
 			hBox.addEventHandler(KeyEvent.KEY_PRESSED, keyPressed);
-		} // KeyListener na menuBox
+		} // KeyListener na hBox
 	}
 	
 	public void onEnter(MouseEvent e) {
@@ -82,10 +71,8 @@ public class Quit extends StateController {
 		for(int i = 0; i < labels.size(); i++) {
 			Label lb = labels.get(i);
 			if(i == lbIndex) {
-				lb.setStyle(lbGeneralStyle+"-fx-text-fill: black;");
 				lb.setEffect(lbShadow);
 			}else {
-				lb.setStyle(lbGeneralStyle+"-fx-text-fill: grey;");
 				lb.setEffect(null);
 			}
 		}		
@@ -110,7 +97,6 @@ public class Quit extends StateController {
 				parent.mainWindow().changeState(GameStates.MENU);
 			}	
 		}
-		
 		focusOnLabel(lbIndex);		
 	}
 	

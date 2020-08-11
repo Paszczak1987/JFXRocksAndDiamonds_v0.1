@@ -15,7 +15,7 @@
          <children>
           <AnchorPane prefHeight="748.0" prefWidth="270.0" style="-fx-background-color: rgb(31,29,29);">
                <children>
-                  <VBox fx:id="menuBox" alignment="TOP_CENTER" layoutY="-1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="748.0" prefWidth="268.0">
+                  <VBox fx:id="menuBtnBox" alignment="TOP_CENTER" layoutY="-1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="748.0" prefWidth="268.0">
                      <children>
                         <Button fx:id="game" mnemonicParsing="false" onMouseClicked="#gameOnMouseClicked" onMouseEntered="#onEnter" prefHeight="70.0" prefWidth="255.0" text="New Game">
                            <VBox.margin>

@@ -23,9 +23,9 @@ public class Menu extends StateController {
 	private GameState parent;
 
 	@FXML
-	private VBox menuBox;
-	@FXML
 	private StackPane stackPane;
+	@FXML
+	private VBox menuBtnBox;
 	@FXML
 	private Button game;
 	@FXML
@@ -59,14 +59,14 @@ public class Menu extends StateController {
 		}
 
 		{// KeyListener na menuBox
-			menuBox.setFocusTraversable(true);
+			menuBtnBox.setFocusTraversable(true);
 			EventHandler<KeyEvent> keyPressed = new EventHandler<KeyEvent>() {
 				@Override
 				public void handle(KeyEvent e) {
 					buttonOnKeyEvent(e);
 				}
 			};
-			menuBox.addEventHandler(KeyEvent.KEY_PRESSED, keyPressed);
+			menuBtnBox.addEventHandler(KeyEvent.KEY_PRESSED, keyPressed);
 		} // KeyListener na menuBox
 
 	}

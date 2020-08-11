@@ -8,12 +8,12 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="stackPane" alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="748.0" prefWidth="924.0" style="-fx-background-image: url(Pictures/EnterPlayerName.jpg); -fx-background-size: stretch;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="rocks_and_diamonds.controllers.Loading">
+<StackPane alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="748.0" prefWidth="924.0" style="-fx-background-image: url(Pictures/EnterPlayerName.jpg); -fx-background-size: stretch;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="rocks_and_diamonds.controllers.Loading">
    <children>
       <MediaView fx:id="mediaView" fitHeight="748.0" fitWidth="924.0" nodeOrientation="INHERIT" />
       <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="400.0">
          <children>
-            <Label fx:id="label" text="LOADING " textFill="WHITE">
+            <Label text="LOADING " textFill="WHITE">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>

@@ -3,7 +3,6 @@ package rocks_and_diamonds.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.animation.Animation;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.BoundingBox;
@@ -15,7 +14,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import rocks_and_diamonds.items.Items;
 import rocks_and_diamonds.items.Player;
 import rocks_and_diamonds.items.Item;
@@ -37,6 +35,7 @@ public class Game extends StateController {
 	private Player player;
 	private int levelNr;
 	private boolean pause;
+	private boolean gameIsGoing;
 	private String collisionType;
 	private KeyEvent keyEvent;
 
@@ -54,6 +53,7 @@ public class Game extends StateController {
 
 		this.levelNr = 0;
 		this.pause = true;
+		this.gameIsGoing = false;
 
 		player = new Player(RECT_SIZE);
 		map = new ArrayList<Item>();
@@ -72,7 +72,7 @@ public class Game extends StateController {
 			gamePane.addEventHandler(KeyEvent.ANY, keyPressed);
 		} // KeyListener na gamePane
 
-		this.timeToCount = 90;
+		setDifficulty();
 
 		timeLabel.setStyle("-fx-font-size: 12px");
 		timeLabel.setText("Wciœnij [ENTER]\njeœli jesteœ gotowy.");
@@ -89,26 +89,42 @@ public class Game extends StateController {
 		if (e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.SPACE)
 			parent.mainWindow().changeState(GameStates.QUIT);
 		else if (e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.ENTER) {
-			if (timeToCount > 0) {
-				pause = false;
-				timeLabel.setStyle("-fx-font-size: 15px");
-				start();
+			if(gameIsGoing == false) {
+				gameIsGoing = true;
+				Options o = (Options)(parent.mainWindow().getGameState(GameStates.OPTIONS).getController());
+				o.disableDifficultyValues();
 			}
+			pauseOrPlay(true);
 		} else if (e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.P) {
-			pauseGame();
+			if(gameIsGoing)
+				if(!pause)
+					pauseOrPlay(false);
+				else
+					pauseOrPlay(true);
 		} else if (e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.ESCAPE) {
-			pauseGame();
+			if(gameIsGoing)
+				pauseOrPlay(false);
 			parent.mainWindow().changeState(GameStates.MENU);
 		}
 
 	}
 
-	private void pauseGame() {
-		pause = true;
-		timeLabel.setStyle("-fx-font-size: 12px");
-		timeLabel.setText("Pauza\n[ENTER] by wznowiæ.");
-		stop();
+	public void pauseOrPlay(boolean play) {
+		if(play == false) {
+			pause = true;
+			timeLabel.setStyle("-fx-font-size: 12px");
+			timeLabel.setText("Pauza\n[ENTER] by wznowiæ.");
+			stop();			
+		}else {
+			if (timeToCount > 0) {
+				pause = false;
+				timeLabel.setStyle("-fx-font-size: 15px");
+				start();
+			}
+		}
 	}
+	
+	
 
 	private void loadItem(Color color, int x, int y) {
 		Item item = null;
@@ -143,7 +159,7 @@ public class Game extends StateController {
 		}
 	}
 
-	public void displayLevel() {
+	private void displayLevel() {
 		for (Item item : map) {
 			gamePane.getChildren().add(item.getBody());
 		}
@@ -158,7 +174,7 @@ public class Game extends StateController {
 		return item.getBody().intersects(playerBounds);
 	}
 
-	public void checkCollision() {
+	private void checkCollision() {
 		// Player bounds
 		double pXl = player.getBody().getX();
 		double pXr = player.getBody().getX() + RECT_SIZE;
@@ -254,7 +270,23 @@ public class Game extends StateController {
 			player.move(keyEvent, collisionType);
 		}
 	}
+	
+	public Player getPlayer() {
+		return player;
+	}
+	
+	public boolean isGameGoingOn() {
+		return gameIsGoing;
+	}
+	
+	public boolean isGamePaused() {
+		return pause;
+	}
 
+	public void setDifficulty() {
+		timeToCount = GameData.getDifficulty();
+	}
+	
 	// Gameloop/Timer
 	@Override
 	public void handle(long now) {
@@ -284,7 +316,6 @@ public class Game extends StateController {
 		}
 
 		frameTime = System.currentTimeMillis() - lastTime;
-		System.out.println(frameTime);
 		lastTime = System.currentTimeMillis();
 	}
 

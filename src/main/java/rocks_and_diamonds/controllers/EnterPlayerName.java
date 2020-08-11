@@ -3,36 +3,19 @@ package rocks_and_diamonds.controllers;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import rocks_and_diamonds.GameState;
 import rocks_and_diamonds.GameStates;
 
 public class EnterPlayerName extends StateController{
 	
 	private GameState parent;
-	
-	@FXML
-	private StackPane stackpane;	
-	@FXML
-	private Rectangle rectangle;	
-	@FXML
-	private StackPane stackPane;	
-	@FXML
-	private VBox vBox;	
-	@FXML
-	private Label label;	
-	@FXML
-	private HBox hBox;	
+
 	@FXML
 	private TextField textField;	
 	@FXML
@@ -42,6 +25,7 @@ public class EnterPlayerName extends StateController{
 	
 	@FXML
 	public void initialize() {
+		
 		btnGeneralStyle = "-fx-background-color: lightgray;";
 		btnShadow = new DropShadow(BlurType.values()[0], Color.rgb(215, 156, 36), 0, 3.0f, 3.0f, 3.0f);
 		button.setStyle("-fx-background-color: lightgray");
@@ -63,7 +47,7 @@ public class EnterPlayerName extends StateController{
 	
 	private void goToLoading() {
 		stop();
-		parent.mainWindow().setPlayerName(textField.getText());
+		GameData.setPlayerName(textField.getText());
 		parent.mainWindow().changeState(GameStates.LOADING);
 		parent.mainWindow().getGameState().getController().start();	//start Timera
 		parent.mainWindow().getGameState().getController().play();	//start Animacji 	
