@@ -36,19 +36,28 @@ public class Game extends StateController {
 	private List<Item> diamonds;
 	private Player player;
 	private int levelNr;
+	private int score;
 	private boolean pause;
-	//private String collisionType;
 	private KeyEvent keyEvent;
 	private double boundShift;
+	String defaultMessage;
 	
 	@FXML
 	private Pane gamePane;
 	@FXML
 	private VBox sideDisplay;
 	@FXML
-	private Label label;
+	private Label lvlLabel;
 	@FXML
 	private Label timeLabel;
+	@FXML
+	private Label scoreLabel;
+	@FXML
+	private Label diamondsLabel;
+	@FXML
+	private Label statusLabel;
+	@FXML
+	private Label message;
 
 	@FXML
 	public void initialize() {
@@ -78,8 +87,15 @@ public class Game extends StateController {
 
 		setDifficulty();
 
-		timeLabel.setStyle("-fx-font-size: 12px");
-		timeLabel.setText("Wciœnij [ENTER]\njeœli jesteœ gotowy.");
+		defaultMessage = "[Enter] to start\n[P] to pause/unpause\n[ESC] to main menu";
+		
+		statusLabel.setTextFill(Color.GOLD);
+		statusLabel.setText("Ready");
+		
+		diamondsLabel.setText(String.valueOf(player.howMuchDiamondsHave()));
+		
+		message.setTextFill(Color.CYAN);
+		message.setText(defaultMessage);
 	}
 
 // -----------------------------------------
@@ -98,8 +114,8 @@ public class Game extends StateController {
 				GameData.gameIsGoing = true;
 				Options options = (Options)(parent.mainWindow().getGameState(GameStates.OPTIONS).getController());
 				options.disableDifficultyValues();
+				pauseOrPlay(true);
 			}
-			pauseOrPlay(true);
 		} else if (e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.P) {
 			if(GameData.gameIsGoing)
 				if(!pause)
@@ -119,13 +135,14 @@ public class Game extends StateController {
 	public void pauseOrPlay(boolean play) {
 		if(play == false) {
 			pause = true;
-			timeLabel.setStyle("-fx-font-size: 12px");
-			timeLabel.setText("Pauza\n[ENTER] by wznowiæ.");
+			statusLabel.setTextFill(Color.RED);
+			statusLabel.setText("Paused");
 			stop();			
 		}else {
 			if (timeToCount > 0) {
 				pause = false;
-				timeLabel.setStyle("-fx-font-size: 15px");
+				statusLabel.setTextFill(Color.CHARTREUSE);
+				statusLabel.setText("Playing");
 				start();
 			}
 		}
@@ -165,6 +182,7 @@ public class Game extends StateController {
 
 	private void loadLevel() {
 		Image level = new Image("Pictures/Levels/lvl" + levelNr + ".bmp");
+		lvlLabel.setText(String.valueOf(levelNr));
 		for (int x = 0; x < level.getWidth(); x++) {
 			for (int y = 0; y < level.getHeight(); y++) {
 				Color color = level.getPixelReader().getColor(x, y);
@@ -213,7 +231,8 @@ public class Game extends StateController {
 				double iXr = item.getBody().getX() + RECT_SIZE;
 				double iYu = item.getBody().getY();
 
-				if (item.getName() == Items.WALL || item.getName() == Items.STONE || item.getName() == Items.DIRT || item.getName() == Items.DOOR) { // Jeœli WALL lub STONE
+				if (item.getName() == Items.WALL || item.getName() == Items.STONE || item.getName() == Items.DIRT || item.getName() == Items.DOOR) {
+					
 					if (sXl == iXr && sYu == iYu) { // 1. LEFT SIDE
 						left = (left == false ? true : left);
 					} else if (sXr == iXl && sYu == iYu) { // 2. RIGHT SIDE
@@ -221,17 +240,22 @@ public class Game extends StateController {
 					} else if (sYd == iYu && sXl == iXl) { // 3. DOWN SIDE
 						down = (down == false ? true : down);
 					}
+					
 				}else if(item.getName() == Items.PLAYER) {
-					if (sYd == iYu && ((iXl+2 > sXl && iXl+2 < sXr)||(iXr-2 > sXl && iXr-2 < sXr))) { // 3. DOWN SIDE
+					//jeœli kamieñ spadnie na layera
+					if (sYd == iYu && ((iXl + 2 > sXl && iXl + 2 < sXr) || (iXr - 2 > sXl && iXr - 2 < sXr))) {
 						down = (down == false ? true : down);
 					}
-				}else if (item.getName() == Items.RED_DIAMOND || item.getName() == Items.GREEN_DIAMOND // Jeœli DIAMOND
+					
+				}else if (item.getName() == Items.RED_DIAMOND || item.getName() == Items.GREEN_DIAMOND
 						|| item.getName() == Items.BLUE_DIAMOND || item.getName() == Items.YELLOW_DIAMOND) {
+					
 					if (doesCollide(item, sBounds)) {
 						diamonds.remove(item);
 						map.remove(item);
 						updateLevel();
 					}
+					
 				}
 
 			} // collision loop
@@ -283,6 +307,7 @@ public class Game extends StateController {
 			double iYd = item.getBody().getY() + RECT_SIZE;
 
 			if (item.getName() == Items.WALL) { // Jeœli WALL
+				
 				if (pXl == iXr && pYu == iYu) { // 1. LEFT SIDE
 					left = (left == false ? true : left);
 				} else if (pXr == iXl && pYu == iYu) { // 2. RIGHT SIDE
@@ -292,6 +317,7 @@ public class Game extends StateController {
 				} else if (pYu == iYd && pXl == iXl) { // 4. UP SIDE
 					up = (up == false ? true : up);
 				}
+				
 			} else if (item.getName() == Items.DIRT) { // Jeœli DIRT
 
 				if (doesCollide(item, pBounds)) {
@@ -302,6 +328,7 @@ public class Game extends StateController {
 				}
 				
 			}else if(item.getName() == Items.STONE) {// Jeœli STONE
+				
 				if(pXl == iXr && pYu == iYu) {
 					if(item.getCollision().equals("DOWN_LEFT"))
 						left = (left == false ? true : left);
@@ -322,91 +349,89 @@ public class Game extends StateController {
 
 			} else if (item.getName() == Items.RED_DIAMOND || item.getName() == Items.GREEN_DIAMOND // Jeœli DIAMOND
 					|| item.getName() == Items.BLUE_DIAMOND || item.getName() == Items.YELLOW_DIAMOND) {
+				
 				if (doesCollide(item, pBounds)) {
 					player.takeDiamond(item);
+					setScore(item);
 					diamonds.remove(item);
 					map.remove(item);
 					updateLevel();
 				}
 				
 			}else if(item.getName() == Items.DOOR) {
-				if (doesCollide(item, pBounds)) {
+				
+				if (doesCollide(item, pBounds)) 
 					System.out.println("door");
-				}
+				
 			}
 
 		} // collision loop
 
 		if ((!left && !right) && (!up && !down)) {
 			player.setCollision("NONE");
-			//collisionType = "NONE";
 		} else if ((left && right) && down) {
 			player.setCollision("WALL_LEFT_RIGHT_DOWN");
-			//collisionType = "WALL_LEFT_RIGHT_DOWN";
 		} else if ((left && up) && down) {
 			player.setCollision("WALL_LEFT_UP_DOWN");
-			//collisionType = "WALL_LEFT_UP_DOWN";
 		} else if ((left && up) && right) {
 			player.setCollision("WALL_LEFT_UP_RIGHT");
-			//collisionType = "WALL_LEFT_UP_RIGHT";
 		} else if ((up && right) && down) {
 			player.setCollision("WALL_UP_RIGHT_DOWN");
-			//collisionType = "WALL_UP_RIGHT_DOWN";
 		} else if (left && up) {
 			player.setCollision("WALL_LEFT_UP");
-			//collisionType = "WALL_LEFT_UP";
 		} else if (left && right) {
 			player.setCollision("WALL_LEFT_RIGHT");
-			//collisionType = "WALL_LEFT_RIGHT";
 		} else if (left && down) {
 			player.setCollision("WALL_LEFT_DOWN");
-			//collisionType = "WALL_LEFT_DOWN";
 		} else if (up && right) {
 			player.setCollision("WALL_UP_RIGHT");
-			//collisionType = "WALL_UP_RIGHT";
 		} else if (right && down) {
 			player.setCollision("WALL_RIGHT_DOWN");
-			//collisionType = "WALL_RIGHT_DOWN";
 		} else if (up && down) {
 			player.setCollision("WALL_UP_DOWN");
-			//collisionType = "WALL_UP_DOWN";
 		} else if (left) {
 			player.setCollision("WALL_LEFT");
-			//collisionType = "WALL_LEFT";
 		} else if (up) {
 			player.setCollision("WALL_UP");
-			//collisionType = "WALL_UP";
 		} else if (right) {
 			player.setCollision("WALL_RIGHT");
-			//collisionType = "WALL_RIGHT";
 		} else if (down) {
 			player.setCollision("WALL_DOWN");
-			//collisionType = "WALL_DOWN";
 		}
 	}
 
 	private void playerMove() {
 		KeyCode code = keyEvent.getCode();
-		if (code == KeyCode.UP || code == KeyCode.DOWN || code == KeyCode.LEFT || code == KeyCode.RIGHT) {
-			//player.move(keyEvent, collisionType);
+		if (code == KeyCode.UP || code == KeyCode.DOWN || code == KeyCode.LEFT || code == KeyCode.RIGHT)
 			player.move(keyEvent);
-		}
 	}
 	
 	public Player getPlayer() {
 		return player;
 	}
 	
-//	public boolean isGameGoingOn() {
-//		return gameIsGoing;
-//	}
-	
 	public boolean isGamePaused() {
 		return pause;
+	}
+	
+	private void setScore(Item diamond) {
+		if(diamond.getName() == Items.GREEN_DIAMOND) 
+			score += 75;
+		else if(diamond.getName() == Items.YELLOW_DIAMOND)
+			score += 150;
+		else if(diamond.getName() == Items.BLUE_DIAMOND)
+			score += 225;
+		else if(diamond.getName() == Items.RED_DIAMOND)
+			score += 300;
+		GameData.setScore(score);
+		scoreLabel.setTextFill(Color.CHARTREUSE);
+		scoreLabel.setText(String.valueOf(score));
 	}
 
 	public void setDifficulty() {
 		timeToCount = GameData.getDifficulty();
+		timeLabel.setTextFill(Color.CHARTREUSE);
+		timeLabel.setText(String.valueOf(timeToCount));
 	}
 	
 	// Gameloop/Timer
@@ -425,7 +450,12 @@ public class Game extends StateController {
 			playerCollisions();
 			
 			playerMove();
-			timeLabel.setText("Time: " + timeToCount + "s left");
+			
+			if(timeToCount < 10)
+				timeLabel.setTextFill(Color.RED);
+			else if(timeToCount < GameData.getDifficulty()/2)
+				timeLabel.setTextFill(Color.YELLOW);
+			timeLabel.setText(String.valueOf(timeToCount));
 		}
 
 		if (millisecondsSum > 1000) {
@@ -433,6 +463,9 @@ public class Game extends StateController {
 			timeToCount--;
 
 			if (timeToCount == 0) {
+				timeLabel.setText("");
+				statusLabel.setTextFill(Color.RED);
+				statusLabel.setText("Time out");
 				stop();
 				return;
 			}

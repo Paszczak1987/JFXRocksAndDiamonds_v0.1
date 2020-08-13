@@ -21,7 +21,6 @@ import rocks_and_diamonds.GameStates;
 public class Options extends StateController{
 	
 	private GameState parent;
-	private Game game;
 
 	@FXML
 	private VBox optionsBtnBox;
@@ -119,8 +118,9 @@ public class Options extends StateController{
 	}
 	
 	public void difficultyOnMouseClicked() {
-		if(GameData.gameIsGoing) {
+		if(GameData.gameIsGoing == false) {
 			GameData.changeDifficulty();
+			Game game = (Game)(parent.mainWindow().getGameState(GameStates.GAME).getController());
 			game.setDifficulty();
 			updateValues();			
 		}

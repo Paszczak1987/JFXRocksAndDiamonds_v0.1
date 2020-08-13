@@ -22,7 +22,6 @@ public class GameData {
 		texture = "MALE";
 		music = true;
 		bgMusic = new AudioClip(Paths.get("src/main/resources/Music/background-music.mp3").toUri().toString());
-		score = 0;
 		levelNumber = 0;
 		wasNotPaused = false;
 		gameIsGoing = false;
@@ -82,8 +81,8 @@ public class GameData {
 		return music;
 	}
 	
-	public static void increaseScore(int scr) {
-		score += scr;
+	public static void setScore(int scr) {
+		score = scr;
 	}
 	
 	public static int getScore() {
