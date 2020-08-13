@@ -45,6 +45,12 @@ public class Item {
 		this.collision = "NONE";
 		if (this.name == Items.WALL) {
 			textures.add(new Image("Pictures/Textures/brick_grey.png", size, size, false, false));
+		}else if(this.name == Items.GREY_WALL) {
+			textures.add(new Image("Pictures/Textures/greystone_default.png", size, size, false, false));
+			textures.add(new Image("Pictures/Textures/greystone_crushed_01.png", size, size, false, false));
+			textures.add(new Image("Pictures/Textures/greystone_crushed_02.png", size, size, false, false));
+			timeline.getKeyFrames().add(new KeyFrame(Duration.millis(74), this::doStep));
+			timeline.setCycleCount(4);
 		} else if (this.name == Items.DIRT) {
 			textures.add(new Image("Pictures/Textures/dirt_default.png", size, size, false, false));
 			textures.add(new Image("Pictures/Textures/dirt_crushed_01.png", size, size, false, false));
@@ -103,7 +109,7 @@ public class Item {
 
 	// Metoda wywo³ywana przez Timeline co ka¿dy cykl
 	protected void doStep(ActionEvent actionEvent) {
-		if (this.name == Items.DIRT) {
+		if (this.name == Items.DIRT || this.name == Items.GREY_WALL) {
 			frameCounter++;
 			timeline.setOnFinished(this::afterAnimation);
 			animate();

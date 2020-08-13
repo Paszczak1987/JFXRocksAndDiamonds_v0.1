@@ -33,6 +33,7 @@ public class Game extends StateController {
 	// Game fields
 	private List<Item> map;
 	private List<Item> stones;
+	private int stoneToRemove;
 	private List<Item> diamonds;
 	private Player player;
 	private int levelNr;
@@ -72,6 +73,7 @@ public class Game extends StateController {
 		diamonds = new ArrayList<Item>();
 		
 		loadLevel();
+		stoneToRemove = stones.size();
 		displayLevel();
 
 		{// KeyListener na gamePane
@@ -89,10 +91,16 @@ public class Game extends StateController {
 
 		defaultMessage = "[Enter] to start\n[P] to pause/unpause\n[ESC] to main menu";
 		
+		lvlLabel.setTextFill(Color.GOLD);
+		
+		scoreLabel.setTextFill(Color.CHARTREUSE);
+		scoreLabel.setText(String.valueOf(score));
+		
 		statusLabel.setTextFill(Color.GOLD);
 		statusLabel.setText("Ready");
 		
-		diamondsLabel.setText(String.valueOf(player.howMuchDiamondsHave()));
+		diamondsLabel.setTextFill(Color.MAGENTA);
+		diamondsLabel.setText("");
 		
 		message.setTextFill(Color.CYAN);
 		message.setText(defaultMessage);
@@ -110,40 +118,56 @@ public class Game extends StateController {
 		// -----------------------------------------
 
 		if (e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.ENTER) {
+			
 			if(GameData.gameIsGoing == false) {
 				GameData.gameIsGoing = true;
 				Options options = (Options)(parent.mainWindow().getGameState(GameStates.OPTIONS).getController());
-				options.disableDifficultyValues();
+				options.disableDifficultyValues(true);
 				pauseOrPlay(true);
 			}
+			
 		} else if (e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.P) {
+			
 			if(GameData.gameIsGoing)
 				if(!pause)
 					pauseOrPlay(false);
 				else
 					pauseOrPlay(true);
+			
 		} else if (e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.ESCAPE) {
+			
 			if(GameData.gameIsGoing)
 				pauseOrPlay(false);
+			if(timeToCount == 0) {
+				resetGame();
+				Options options = (Options)(parent.mainWindow().getGameState(GameStates.OPTIONS).getController());
+				options.disableDifficultyValues(false);
+				Menu menu = (Menu)(parent.mainWindow().getGameState(GameStates.MENU).getController());
+				menu.setNewGamebtnTxt("New Game");
+			}
 			parent.mainWindow().changeState(GameStates.MENU);
+		
 		} else if(e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.G) {
-			System.out.println("P:"+player.howMuchDiamondsHave()+" M:"+diamonds.size());
+			System.out.println("stones: "+stones.size()+" remove:"+stoneToRemove);
+			//System.out.println("P:"+player.howMuchDiamondsHave()+" M:"+diamonds.size());
 		}
 
 	}
 
 	public void pauseOrPlay(boolean play) {
-		if(play == false) {
-			pause = true;
-			statusLabel.setTextFill(Color.RED);
-			statusLabel.setText("Paused");
-			stop();			
-		}else {
-			if (timeToCount > 0) {
-				pause = false;
-				statusLabel.setTextFill(Color.CHARTREUSE);
-				statusLabel.setText("Playing");
-				start();
+		if (timeToCount > 0) {
+			if (play == false) {
+				pause = true;
+				statusLabel.setTextFill(Color.TOMATO);
+				statusLabel.setText("Paused");
+				stop();
+			} else {
+				if (timeToCount > 0) {
+					pause = false;
+					statusLabel.setTextFill(Color.PALEGREEN);
+					statusLabel.setText("Playing");
+					start();
+				}
 			}
 		}
 	}
@@ -155,6 +179,8 @@ public class Game extends StateController {
 			map.add(player);
 		} else if (color.equals(Items.WALL.getColor())) {
 			item = new Item(Items.WALL, RECT_SIZE, x, y);
+		}else if (color.equals(Items.GREY_WALL.getColor())) {
+			item = new Item(Items.GREY_WALL, RECT_SIZE, x, y); 
 		} else if (color.equals(Items.DIRT.getColor())) {
 			item = new Item(Items.DIRT, RECT_SIZE, x, y);
 		} else if (color.equals(Items.RED_DIAMOND.getColor())) {
@@ -210,6 +236,12 @@ public class Game extends StateController {
 // 					STONES
 // -----------------------------------------
 	private void stonesCollisions() {
+		
+		if(stoneToRemove < stones.size()) {
+			stones.remove(stoneToRemove);
+			stoneToRemove = stones.size();
+		}
+		
 		for(Item stone: stones) {
 			double sXl = stone.getBody().getX();
 			double sXr = stone.getBody().getX() + RECT_SIZE;
@@ -241,8 +273,22 @@ public class Game extends StateController {
 						down = (down == false ? true : down);
 					}
 					
+				}else if(item.getName() == Items.GREY_WALL) {
+					
+					if (doesCollide(item, sBounds)) {
+						item.playAnimation();
+						stone.getBody().setOpacity(0.0d);
+						if (item.getAnimationStatus()) {
+							setScore(item);
+							map.remove(item);
+							map.remove(stone);	
+							stoneToRemove = stones.indexOf(stone);
+						}
+						updateLevel();
+					}
+					
 				}else if(item.getName() == Items.PLAYER) {
-					//jeœli kamieñ spadnie na layera
+					//jeœli kamieñ spadnie na playera
 					if (sYd == iYu && ((iXl + 2 > sXl && iXl + 2 < sXr) || (iXr - 2 > sXl && iXr - 2 < sXr))) {
 						down = (down == false ? true : down);
 					}
@@ -306,7 +352,7 @@ public class Game extends StateController {
 			double iYu = item.getBody().getY();
 			double iYd = item.getBody().getY() + RECT_SIZE;
 
-			if (item.getName() == Items.WALL) { // Jeœli WALL
+			if (item.getName() == Items.WALL || item.getName() == Items.GREY_WALL) { // Jeœli WALL
 				
 				if (pXl == iXr && pYu == iYu) { // 1. LEFT SIDE
 					left = (left == false ? true : left);
@@ -322,8 +368,10 @@ public class Game extends StateController {
 
 				if (doesCollide(item, pBounds)) {
 					item.playAnimation();
-					if (item.getAnimationStatus())
+					if (item.getAnimationStatus()) {
+						setScore(item);
 						map.remove(item);
+					}
 					updateLevel();
 				}
 				
@@ -352,6 +400,7 @@ public class Game extends StateController {
 				
 				if (doesCollide(item, pBounds)) {
 					player.takeDiamond(item);
+					diamondsLabel.setText(diamondsLabel.getText()+"| ");
 					setScore(item);
 					diamonds.remove(item);
 					map.remove(item);
@@ -414,17 +463,50 @@ public class Game extends StateController {
 		return pause;
 	}
 	
-	private void setScore(Item diamond) {
-		if(diamond.getName() == Items.GREEN_DIAMOND) 
+	public void resetGame() {
+		
+		//zapis wyniku do hall of fame
+		
+		levelNr = 0;
+		pause = true;
+		score = 0;
+
+		map.clear();
+		stones.clear();
+		diamonds.clear();
+		
+		loadLevel();
+		stoneToRemove = stones.size();
+		updateLevel();
+
+		setDifficulty();
+		GameData.gameIsGoing = false;
+		
+		scoreLabel.setText(String.valueOf(score));
+		
+		statusLabel.setTextFill(Color.GOLD);
+		statusLabel.setText("Ready");
+
+		diamondsLabel.setText("");
+	
+		message.setText(defaultMessage);
+		player.getDiamonds().clear();
+	}
+	
+	private void setScore(Item item) {
+		if(item.getName() == Items.GREEN_DIAMOND) 
 			score += 75;
-		else if(diamond.getName() == Items.YELLOW_DIAMOND)
+		else if(item.getName() == Items.YELLOW_DIAMOND)
 			score += 150;
-		else if(diamond.getName() == Items.BLUE_DIAMOND)
+		else if(item.getName() == Items.BLUE_DIAMOND)
 			score += 225;
-		else if(diamond.getName() == Items.RED_DIAMOND)
+		else if(item.getName() == Items.RED_DIAMOND)
 			score += 300;
+		else if(item.getName() == Items.GREY_WALL)
+			score += 5;
+		else if(item.getName() == Items.DIRT)
+			score += 1;
 		GameData.setScore(score);
-		scoreLabel.setTextFill(Color.CHARTREUSE);
 		scoreLabel.setText(String.valueOf(score));
 	}
 
@@ -464,7 +546,7 @@ public class Game extends StateController {
 
 			if (timeToCount == 0) {
 				timeLabel.setText("");
-				statusLabel.setTextFill(Color.RED);
+				statusLabel.setTextFill(Color.TOMATO);
 				statusLabel.setText("Time out");
 				stop();
 				return;

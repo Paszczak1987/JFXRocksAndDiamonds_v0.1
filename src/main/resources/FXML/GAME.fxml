@@ -15,9 +15,9 @@
             <Pane fx:id="gamePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="748.0" prefWidth="748.0" style="-fx-background-color: black;" />
             <VBox fx:id="sideDisplay" alignment="CENTER" prefHeight="748.0" prefWidth="176.0" style="-fx-background-color: rgb(31,29,29);">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" minHeight="50.0" prefHeight="124.0" prefWidth="145.0" text="Rocks &amp; Diamonds by Łukasz &amp; Krzysztof" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                  <Label alignment="CENTER" contentDisplay="CENTER" minHeight="50.0" prefHeight="250.0" prefWidth="145.0" text="Rocks&amp;Diamonds by Łukasz &amp; Krzysztof" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                      <font>
-                        <Font size="15.0" />
+                        <Font name="System Italic" size="15.0" />
                      </font>
                   </Label>
                   <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0">
@@ -80,7 +80,7 @@
                         </Label>
                         <Label fx:id="diamondsLabel" textFill="WHITE">
                            <font>
-                              <Font size="15.0" />
+                              <Font size="20.0" />
                            </font>
                         </Label>
                      </children>
@@ -105,7 +105,7 @@
                         <Insets left="25.0" />
                      </padding>
                   </HBox>
-                  <Label fx:id="message" alignment="CENTER" prefHeight="364.0" prefWidth="176.0" textFill="WHITE" wrapText="true" />
+                  <Label fx:id="message" alignment="CENTER" prefHeight="250.0" prefWidth="145.0" textFill="WHITE" wrapText="true" />
                </children>
             </VBox>
          </children>

@@ -76,10 +76,6 @@ public class MainWindow extends Application {
 		appWindow.setScene(currentState.getScene());
 	}
 
-	public void check() {
-		System.out.println("MainWindow!");
-	}
-
 	public void close() {
 		appWindow.close();
 	}

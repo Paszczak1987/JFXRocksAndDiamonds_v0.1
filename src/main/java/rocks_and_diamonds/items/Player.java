@@ -116,6 +116,10 @@ public class Player extends Item {
 		return diamonds.size();
 	}
 	
+	public List<Item> getDiamonds(){
+		return diamonds;
+	}
+	
 	public void move(KeyEvent keyEvent/*, String collision*/) {
 		// blokada zmiany kierunku przed koñcem animacji
 		if (timeline.getStatus() == Animation.Status.STOPPED)

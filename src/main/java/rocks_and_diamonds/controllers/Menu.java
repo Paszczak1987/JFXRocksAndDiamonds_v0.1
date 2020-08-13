@@ -70,9 +70,13 @@ public class Menu extends StateController {
 
 	public void gameOnMouseClicked() {
 		parent.mainWindow().changeState(GameStates.GAME);
-		game.setText("Reasume Game");
+		setNewGamebtnTxt("Reasume Game");
 	}
-
+	
+	public void setNewGamebtnTxt(String txt) {
+		game.setText(txt);
+	}
+	
 	public void optionsOnMouseClicked() {
 		parent.mainWindow().changeState(GameStates.OPTIONS);
 	}

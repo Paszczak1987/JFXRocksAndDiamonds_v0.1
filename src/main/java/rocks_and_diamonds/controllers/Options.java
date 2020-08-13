@@ -100,8 +100,12 @@ public class Options extends StateController{
 		difficultyValue.setText(GameData.getDifficulty()+"s");
 	}
 	
-	public void disableDifficultyValues() {
-		difficultyValue.setStyle(optionGeneralStyle+" -fx-text-inner-color: grey;");
+	public void disableDifficultyValues(boolean disable) {
+		if(disable)
+			difficultyValue.setStyle(optionGeneralStyle+" -fx-text-inner-color: grey;");
+		else
+			difficultyValue.setStyle(optionGeneralStyle+" -fx-text-inner-color: white;");
+			
 	}
 	
 	public void musicOnMouseClicked() {
