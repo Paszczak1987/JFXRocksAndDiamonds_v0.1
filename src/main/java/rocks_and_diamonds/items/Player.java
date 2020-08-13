@@ -2,6 +2,10 @@ package rocks_and_diamonds.items;
 
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -14,9 +18,11 @@ import javafx.scene.paint.ImagePattern;
 public class Player extends Item {
 	
 	private KeyCode direction;
+	private List<Item> diamonds;
 	
 	public Player(int size) {
 		this.size = size;
+		this.diamonds = new ArrayList<Item>();
 		name = Items.PLAYER;
 		textures.add(new Image("Pictures/Player/adventurer_stand.png", size, size, false, false));
 		textures.add(new Image("Pictures/Player/adventurer_walk1.png", size, size, false, false));
@@ -100,6 +106,14 @@ public class Player extends Item {
 			else
 				setDefaultSkin();
 		}
+	}
+	
+	public void takeDiamond(Item diamond) {
+		diamonds.add(diamond);
+	}
+	
+	public int howMuchDiamondsHave() {
+		return diamonds.size();
 	}
 	
 	public void move(KeyEvent keyEvent/*, String collision*/) {

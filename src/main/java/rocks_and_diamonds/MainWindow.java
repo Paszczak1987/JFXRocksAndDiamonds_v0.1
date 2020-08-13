@@ -38,7 +38,7 @@ public class MainWindow extends Application {
 		gameStates.add(new GameState(this, GameStates.HALLOFFAME, this.getClass().getResource("/FXML/HALLOFFAME.fxml")));
 		gameStates.add(new GameState(this, GameStates.GAME, this.getClass().getResource("/FXML/GAME.fxml")));
 		gameStates.add(new GameState(this, GameStates.QUIT, this.getClass().getResource("/FXML/QUIT.fxml")));
-
+		
 		//changeState(GameStates.ENTER_PLAYER_NAME);
 		changeState(GameStates.MENU);
 		appWindow.getIcons().add(new Image("/Pictures/MainIcon.png"));
@@ -56,7 +56,7 @@ public class MainWindow extends Application {
 		
 		Game game = (Game)getGameState(GameStates.GAME).getController();
 		
-		if(game.isGameGoingOn()) {
+		if(GameData.gameIsGoing) {
 			if(game.isGamePaused() == false)
 				GameData.setWasNotPaused(true);
 			

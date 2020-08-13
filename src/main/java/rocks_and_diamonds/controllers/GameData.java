@@ -1,19 +1,20 @@
 package rocks_and_diamonds.controllers;
 
 import java.nio.file.Paths;
-
 import javafx.scene.media.AudioClip;
 
 public class GameData {
+
+	private static AudioClip bgMusic;
 	
 	private static String playerName;
 	private static int difficulty;
 	private static String texture;
 	private static boolean music;
-	private static AudioClip bgMusic;
 	private static int score;
 	private static int levelNumber;
 	private static boolean wasNotPaused;
+	public static boolean gameIsGoing;
 	
 	static {
 		playerName = "unknown";
@@ -24,6 +25,7 @@ public class GameData {
 		score = 0;
 		levelNumber = 0;
 		wasNotPaused = false;
+		gameIsGoing = false;
 		
 		if(music)
 			bgMusic.play();

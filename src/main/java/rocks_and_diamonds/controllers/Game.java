@@ -23,20 +23,20 @@ import rocks_and_diamonds.GameStates;
 public class Game extends StateController {
 
 	private GameState parent;
-	private List<Item> map;
-	private List<Item> stones;
 
-	// Timer fields
+	// game loop fields
 	private int timeToCount;
 	private long lastTime;
 	private long frameTime;
 	private int millisecondsSum;
 
 	// Game fields
+	private List<Item> map;
+	private List<Item> stones;
+	private List<Item> diamonds;
 	private Player player;
 	private int levelNr;
 	private boolean pause;
-	private boolean gameIsGoing;
 	//private String collisionType;
 	private KeyEvent keyEvent;
 	private double boundShift;
@@ -55,13 +55,13 @@ public class Game extends StateController {
 
 		this.levelNr = 0;
 		this.pause = true;
-		this.gameIsGoing = false;
 		this.boundShift = 2;
 
 		player = new Player(RECT_SIZE);
 		map = new ArrayList<Item>();
 		stones = new ArrayList<Item>();
-
+		diamonds = new ArrayList<Item>();
+		
 		loadLevel();
 		displayLevel();
 
@@ -82,6 +82,9 @@ public class Game extends StateController {
 		timeLabel.setText("Wciœnij [ENTER]\njeœli jesteœ gotowy.");
 	}
 
+// -----------------------------------------
+//					CONTROLS
+//-----------------------------------------	
 	public void gamePaneOnKeyPressed(KeyEvent e) {
 
 		this.keyEvent = e;
@@ -90,29 +93,25 @@ public class Game extends StateController {
 		// playerMove() jest wywo³ywany w pêtli gry
 		// -----------------------------------------
 
-		if (e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.SPACE)
-			parent.mainWindow().changeState(GameStates.QUIT);
-		else if (e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.ENTER) {
-			if(gameIsGoing == false) {
-				gameIsGoing = true;
-				Options o = (Options)(parent.mainWindow().getGameState(GameStates.OPTIONS).getController());
-				o.disableDifficultyValues();
+		if (e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.ENTER) {
+			if(GameData.gameIsGoing == false) {
+				GameData.gameIsGoing = true;
+				Options options = (Options)(parent.mainWindow().getGameState(GameStates.OPTIONS).getController());
+				options.disableDifficultyValues();
 			}
 			pauseOrPlay(true);
 		} else if (e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.P) {
-			if(gameIsGoing)
+			if(GameData.gameIsGoing)
 				if(!pause)
 					pauseOrPlay(false);
 				else
 					pauseOrPlay(true);
 		} else if (e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.ESCAPE) {
-			if(gameIsGoing)
+			if(GameData.gameIsGoing)
 				pauseOrPlay(false);
 			parent.mainWindow().changeState(GameStates.MENU);
 		} else if(e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.G) {
-			for(int i = 0; i< stones.size(); i++) {
-				System.out.println(i+" c:"+stones.get(i).getCollision()+" d:"+stones.get(i).getDir());
-			}
+			System.out.println("P:"+player.howMuchDiamondsHave()+" M:"+diamonds.size());
 		}
 
 	}
@@ -143,12 +142,16 @@ public class Game extends StateController {
 			item = new Item(Items.DIRT, RECT_SIZE, x, y);
 		} else if (color.equals(Items.RED_DIAMOND.getColor())) {
 			item = new Item(Items.RED_DIAMOND, RECT_SIZE, x, y);
+			diamonds.add(item);
 		} else if (color.equals(Items.GREEN_DIAMOND.getColor())) {
-			item = new Item(Items.GREEN_DIAMOND, RECT_SIZE, x, y);
+			item = new Item(Items.GREEN_DIAMOND, RECT_SIZE, x, y);			
+			diamonds.add(item);
 		} else if (color.equals(Items.BLUE_DIAMOND.getColor())) {
-			item = new Item(Items.BLUE_DIAMOND, RECT_SIZE, x, y);
+			item = new Item(Items.BLUE_DIAMOND, RECT_SIZE, x, y);			
+			diamonds.add(item);
 		} else if (color.equals(Items.YELLOW_DIAMOND.getColor())) {
 			item = new Item(Items.YELLOW_DIAMOND, RECT_SIZE, x, y);
+			diamonds.add(item);
 		} else if (color.equals(Items.STONE.getColor())) {
 			item = new Item(Items.STONE, RECT_SIZE, x, y);
 			stones.add(item);
@@ -185,6 +188,9 @@ public class Game extends StateController {
 		return item.getBody().intersects(playerBounds);
 	}
 
+// -----------------------------------------
+// 					STONES
+// -----------------------------------------
 	private void stonesCollisions() {
 		for(Item stone: stones) {
 			double sXl = stone.getBody().getX();
@@ -207,7 +213,7 @@ public class Game extends StateController {
 				double iXr = item.getBody().getX() + RECT_SIZE;
 				double iYu = item.getBody().getY();
 
-				if (item.getName() == Items.WALL || item.getName() == Items.STONE || item.getName() == Items.DIRT) { // Jeœli WALL lub STONE
+				if (item.getName() == Items.WALL || item.getName() == Items.STONE || item.getName() == Items.DIRT || item.getName() == Items.DOOR) { // Jeœli WALL lub STONE
 					if (sXl == iXr && sYu == iYu) { // 1. LEFT SIDE
 						left = (left == false ? true : left);
 					} else if (sXr == iXl && sYu == iYu) { // 2. RIGHT SIDE
@@ -222,6 +228,7 @@ public class Game extends StateController {
 				}else if (item.getName() == Items.RED_DIAMOND || item.getName() == Items.GREEN_DIAMOND // Jeœli DIAMOND
 						|| item.getName() == Items.BLUE_DIAMOND || item.getName() == Items.YELLOW_DIAMOND) {
 					if (doesCollide(item, sBounds)) {
+						diamonds.remove(item);
 						map.remove(item);
 						updateLevel();
 					}
@@ -247,7 +254,10 @@ public class Game extends StateController {
 			stone.move("DOWN");
 		}
 	}
-	
+		
+// -----------------------------------------
+//					PLAYER
+//-----------------------------------------
 	private void playerCollisions() {
 		// Player bounds
 		double pXl = player.getBody().getX();
@@ -313,6 +323,8 @@ public class Game extends StateController {
 			} else if (item.getName() == Items.RED_DIAMOND || item.getName() == Items.GREEN_DIAMOND // Jeœli DIAMOND
 					|| item.getName() == Items.BLUE_DIAMOND || item.getName() == Items.YELLOW_DIAMOND) {
 				if (doesCollide(item, pBounds)) {
+					player.takeDiamond(item);
+					diamonds.remove(item);
 					map.remove(item);
 					updateLevel();
 				}
@@ -385,9 +397,9 @@ public class Game extends StateController {
 		return player;
 	}
 	
-	public boolean isGameGoingOn() {
-		return gameIsGoing;
-	}
+//	public boolean isGameGoingOn() {
+//		return gameIsGoing;
+//	}
 	
 	public boolean isGamePaused() {
 		return pause;
