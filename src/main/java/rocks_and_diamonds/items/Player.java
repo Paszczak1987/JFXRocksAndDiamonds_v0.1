@@ -101,8 +101,8 @@ public class Player extends Item {
 				setDefaultSkin();
 		}
 	}
-
-	public void move(KeyEvent keyEvent, String collision) {
+	
+	public void move(KeyEvent keyEvent/*, String collision*/) {
 		// blokada zmiany kierunku przed koñcem animacji
 		if (timeline.getStatus() == Animation.Status.STOPPED)
 			direction = keyEvent.getCode();

@@ -37,9 +37,10 @@ public class Game extends StateController {
 	private int levelNr;
 	private boolean pause;
 	private boolean gameIsGoing;
-	private String collisionType;
+	//private String collisionType;
 	private KeyEvent keyEvent;
-
+	private double boundShift;
+	
 	@FXML
 	private Pane gamePane;
 	@FXML
@@ -55,6 +56,7 @@ public class Game extends StateController {
 		this.levelNr = 0;
 		this.pause = true;
 		this.gameIsGoing = false;
+		this.boundShift = 2;
 
 		player = new Player(RECT_SIZE);
 		map = new ArrayList<Item>();
@@ -189,6 +191,7 @@ public class Game extends StateController {
 			double sXr = stone.getBody().getX() + RECT_SIZE;
 			double sYu = stone.getBody().getY();
 			double sYd = stone.getBody().getY() + RECT_SIZE;
+			Bounds sBounds = new BoundingBox(sXl + boundShift, sYu + boundShift, RECT_SIZE - boundShift * 2, RECT_SIZE - boundShift * 2);
 
 			boolean left = false;
 			boolean right = false;
@@ -215,6 +218,12 @@ public class Game extends StateController {
 				}else if(item.getName() == Items.PLAYER) {
 					if (sYd == iYu && ((iXl+2 > sXl && iXl+2 < sXr)||(iXr-2 > sXl && iXr-2 < sXr))) { // 3. DOWN SIDE
 						down = (down == false ? true : down);
+					}
+				}else if (item.getName() == Items.RED_DIAMOND || item.getName() == Items.GREEN_DIAMOND // Jeœli DIAMOND
+						|| item.getName() == Items.BLUE_DIAMOND || item.getName() == Items.YELLOW_DIAMOND) {
+					if (doesCollide(item, sBounds)) {
+						map.remove(item);
+						updateLevel();
 					}
 				}
 
@@ -245,8 +254,7 @@ public class Game extends StateController {
 		double pXr = player.getBody().getX() + RECT_SIZE;
 		double pYu = player.getBody().getY();
 		double pYd = player.getBody().getY() + RECT_SIZE;
-		double shift = 2;
-		Bounds pBounds = new BoundingBox(pXl + shift, pYu + shift, RECT_SIZE - shift * 2, RECT_SIZE - shift * 2);
+		Bounds pBounds = new BoundingBox(pXl + boundShift, pYu + boundShift, RECT_SIZE - boundShift * 2, RECT_SIZE - boundShift * 2);
 
 		boolean left = false;
 		boolean right = false;
@@ -284,10 +292,16 @@ public class Game extends StateController {
 				}
 				
 			}else if(item.getName() == Items.STONE) {// Jeœli STONE
-				if((pXl > iXl && pXl < iXr ) && (pYu+shift > iYu && pYu+shift <iYd)) { // 1. LEFT SIDE
+				if(pXl == iXr && pYu == iYu) {
+					if(item.getCollision().equals("DOWN_LEFT"))
+						left = (left == false ? true : left);
+				}else if((pXl > iXl && pXl < iXr ) && (pYu+boundShift > iYu && pYu+boundShift <iYd)) { // 1. LEFT SIDE
 					item.move("LEFT");
 					left = (left == false ? true : left);
-				}else if((pXr > iXl && pXr < iXr) && (pYu+shift > iYu && pYu+shift <iYd)) { // 2. RIGHT SIDE
+				}else if(pXr == iXl && pYu == iYu) {
+					if(item.getCollision().equals("DOWN_RIGHT"))
+						right = (right == false ? true : right);
+				}else if((pXr > iXl && pXr < iXr) && (pYu+boundShift > iYu && pYu+boundShift <iYd)) { // 2. RIGHT SIDE
 					item.move("RIGHT");					
 					right = (right == false ? true : right);
 				} else if (pYd == iYu && pXl == iXl) { // 3. DOWN SIDE
@@ -312,42 +326,58 @@ public class Game extends StateController {
 		} // collision loop
 
 		if ((!left && !right) && (!up && !down)) {
-			collisionType = "NONE";
+			player.setCollision("NONE");
+			//collisionType = "NONE";
 		} else if ((left && right) && down) {
-			collisionType = "WALL_LEFT_RIGHT_DOWN";
+			player.setCollision("WALL_LEFT_RIGHT_DOWN");
+			//collisionType = "WALL_LEFT_RIGHT_DOWN";
 		} else if ((left && up) && down) {
-			collisionType = "WALL_LEFT_UP_DOWN";
+			player.setCollision("WALL_LEFT_UP_DOWN");
+			//collisionType = "WALL_LEFT_UP_DOWN";
 		} else if ((left && up) && right) {
-			collisionType = "WALL_LEFT_UP_RIGHT";
+			player.setCollision("WALL_LEFT_UP_RIGHT");
+			//collisionType = "WALL_LEFT_UP_RIGHT";
 		} else if ((up && right) && down) {
-			collisionType = "WALL_UP_RIGHT_DOWN";
+			player.setCollision("WALL_UP_RIGHT_DOWN");
+			//collisionType = "WALL_UP_RIGHT_DOWN";
 		} else if (left && up) {
-			collisionType = "WALL_LEFT_UP";
+			player.setCollision("WALL_LEFT_UP");
+			//collisionType = "WALL_LEFT_UP";
 		} else if (left && right) {
-			collisionType = "WALL_LEFT_RIGHT";
+			player.setCollision("WALL_LEFT_RIGHT");
+			//collisionType = "WALL_LEFT_RIGHT";
 		} else if (left && down) {
-			collisionType = "WALL_LEFT_DOWN";
+			player.setCollision("WALL_LEFT_DOWN");
+			//collisionType = "WALL_LEFT_DOWN";
 		} else if (up && right) {
-			collisionType = "WALL_UP_RIGHT";
+			player.setCollision("WALL_UP_RIGHT");
+			//collisionType = "WALL_UP_RIGHT";
 		} else if (right && down) {
-			collisionType = "WALL_RIGHT_DOWN";
+			player.setCollision("WALL_RIGHT_DOWN");
+			//collisionType = "WALL_RIGHT_DOWN";
 		} else if (up && down) {
-			collisionType = "WALL_UP_DOWN";
+			player.setCollision("WALL_UP_DOWN");
+			//collisionType = "WALL_UP_DOWN";
 		} else if (left) {
-			collisionType = "WALL_LEFT";
+			player.setCollision("WALL_LEFT");
+			//collisionType = "WALL_LEFT";
 		} else if (up) {
-			collisionType = "WALL_UP";
+			player.setCollision("WALL_UP");
+			//collisionType = "WALL_UP";
 		} else if (right) {
-			collisionType = "WALL_RIGHT";
+			player.setCollision("WALL_RIGHT");
+			//collisionType = "WALL_RIGHT";
 		} else if (down) {
-			collisionType = "WALL_DOWN";
+			player.setCollision("WALL_DOWN");
+			//collisionType = "WALL_DOWN";
 		}
 	}
 
 	private void playerMove() {
 		KeyCode code = keyEvent.getCode();
 		if (code == KeyCode.UP || code == KeyCode.DOWN || code == KeyCode.LEFT || code == KeyCode.RIGHT) {
-			player.move(keyEvent, collisionType);
+			//player.move(keyEvent, collisionType);
+			player.move(keyEvent);
 		}
 	}
 	

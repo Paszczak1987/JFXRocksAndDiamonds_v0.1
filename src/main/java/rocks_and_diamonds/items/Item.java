@@ -23,8 +23,8 @@ public class Item {
 	protected final int dx;
 	protected final int dy;
 	protected int frameCounter;
+	protected String collision;
 	private String direction;
-	private String collision;
 	private boolean isAnimationFinished;
 	private boolean isAnimationStarted;
 
