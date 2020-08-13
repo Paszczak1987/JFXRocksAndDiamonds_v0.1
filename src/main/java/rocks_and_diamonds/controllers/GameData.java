@@ -25,7 +25,6 @@ public class GameData {
 		levelNumber = 0;
 		wasNotPaused = false;
 		
-		
 		if(music)
 			bgMusic.play();
 		

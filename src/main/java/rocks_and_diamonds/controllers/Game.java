@@ -24,6 +24,7 @@ public class Game extends StateController {
 
 	private GameState parent;
 	private List<Item> map;
+	private List<Item> stones;
 
 	// Timer fields
 	private int timeToCount;
@@ -57,6 +58,7 @@ public class Game extends StateController {
 
 		player = new Player(RECT_SIZE);
 		map = new ArrayList<Item>();
+		stones = new ArrayList<Item>();
 
 		loadLevel();
 		displayLevel();
@@ -105,6 +107,10 @@ public class Game extends StateController {
 			if(gameIsGoing)
 				pauseOrPlay(false);
 			parent.mainWindow().changeState(GameStates.MENU);
+		} else if(e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.G) {
+			for(int i = 0; i< stones.size(); i++) {
+				System.out.println(i+" c:"+stones.get(i).getCollision()+" d:"+stones.get(i).getDir());
+			}
 		}
 
 	}
@@ -124,8 +130,6 @@ public class Game extends StateController {
 		}
 	}
 	
-	
-
 	private void loadItem(Color color, int x, int y) {
 		Item item = null;
 		if (color.equals(Items.PLAYER.getColor())) {
@@ -143,6 +147,11 @@ public class Game extends StateController {
 			item = new Item(Items.BLUE_DIAMOND, RECT_SIZE, x, y);
 		} else if (color.equals(Items.YELLOW_DIAMOND.getColor())) {
 			item = new Item(Items.YELLOW_DIAMOND, RECT_SIZE, x, y);
+		} else if (color.equals(Items.STONE.getColor())) {
+			item = new Item(Items.STONE, RECT_SIZE, x, y);
+			stones.add(item);
+		}else if(color.equals(Items.DOOR.getColor())) {
+			item = new Item(Items.DOOR, RECT_SIZE, x, y);	
 		}
 
 		if (item != null)
@@ -174,7 +183,63 @@ public class Game extends StateController {
 		return item.getBody().intersects(playerBounds);
 	}
 
-	private void checkCollision() {
+	private void stonesCollisions() {
+		for(Item stone: stones) {
+			double sXl = stone.getBody().getX();
+			double sXr = stone.getBody().getX() + RECT_SIZE;
+			double sYu = stone.getBody().getY();
+			double sYd = stone.getBody().getY() + RECT_SIZE;
+
+			boolean left = false;
+			boolean right = false;
+			boolean down = false;
+			
+			for (int i = 0; i < map.size(); i++) {// collision loop
+				
+				if (map.get(i).equals(stone)) // wykluczamy kamieñ dla którego sprawdzamy kolizje
+					i++;
+				Item item = map.get(i);
+				// Item bounds
+				double iXl = item.getBody().getX();
+				double iXr = item.getBody().getX() + RECT_SIZE;
+				double iYu = item.getBody().getY();
+
+				if (item.getName() == Items.WALL || item.getName() == Items.STONE || item.getName() == Items.DIRT) { // Jeœli WALL lub STONE
+					if (sXl == iXr && sYu == iYu) { // 1. LEFT SIDE
+						left = (left == false ? true : left);
+					} else if (sXr == iXl && sYu == iYu) { // 2. RIGHT SIDE
+						right = (right == false ? true : right);
+					} else if (sYd == iYu && sXl == iXl) { // 3. DOWN SIDE
+						down = (down == false ? true : down);
+					}
+				}else if(item.getName() == Items.PLAYER) {
+					if (sYd == iYu && ((iXl+2 > sXl && iXl+2 < sXr)||(iXr-2 > sXl && iXr-2 < sXr))) { // 3. DOWN SIDE
+						down = (down == false ? true : down);
+					}
+				}
+
+			} // collision loop
+			
+			if((!left && !right) && !down) {
+				stone.setCollision("NONE");
+			} else if(left && down) {
+				stone.setCollision("DOWN_LEFT");
+			} else if(right && down) {
+				stone.setCollision("DOWN_RIGHT");
+			}else if(left && right) {
+				stone.setCollision("LEFT_RIGHT");				
+			}else if(left) {
+				stone.setCollision("LEFT");
+			}else if(right) {
+				stone.setCollision("RIGHT");	
+			} else if(down) {
+				stone.setCollision("DOWN");
+			}
+			stone.move("DOWN");
+		}
+	}
+	
+	private void playerCollisions() {
 		// Player bounds
 		double pXl = player.getBody().getX();
 		double pXr = player.getBody().getX() + RECT_SIZE;
@@ -188,13 +253,11 @@ public class Game extends StateController {
 		boolean up = false;
 		boolean down = false;
 
-		for (int i = 0; i < map.size(); i++) {
+		for (int i = 0; i < map.size(); i++) { // collision loop
 
 			if (map.get(i).getName() == Items.PLAYER) // Wykluczamy Playera
 				i++;
-
 			Item item = map.get(i);
-
 			// Item bounds
 			double iXl = item.getBody().getX();
 			double iXr = item.getBody().getX() + RECT_SIZE;
@@ -219,6 +282,19 @@ public class Game extends StateController {
 						map.remove(item);
 					updateLevel();
 				}
+				
+			}else if(item.getName() == Items.STONE) {// Jeœli STONE
+				if((pXl > iXl && pXl < iXr ) && (pYu+shift > iYu && pYu+shift <iYd)) { // 1. LEFT SIDE
+					item.move("LEFT");
+					left = (left == false ? true : left);
+				}else if((pXr > iXl && pXr < iXr) && (pYu+shift > iYu && pYu+shift <iYd)) { // 2. RIGHT SIDE
+					item.move("RIGHT");					
+					right = (right == false ? true : right);
+				} else if (pYd == iYu && pXl == iXl) { // 3. DOWN SIDE
+					down = (down == false ? true : down);
+				} else if (pYu == iYd && pXl == iXl) { // 4. UP SIDE
+					up = (up == false ? true : up);
+				}
 
 			} else if (item.getName() == Items.RED_DIAMOND || item.getName() == Items.GREEN_DIAMOND // Jeœli DIAMOND
 					|| item.getName() == Items.BLUE_DIAMOND || item.getName() == Items.YELLOW_DIAMOND) {
@@ -226,10 +302,14 @@ public class Game extends StateController {
 					map.remove(item);
 					updateLevel();
 				}
-
+				
+			}else if(item.getName() == Items.DOOR) {
+				if (doesCollide(item, pBounds)) {
+					System.out.println("door");
+				}
 			}
 
-		}
+		} // collision loop
 
 		if ((!left && !right) && (!up && !down)) {
 			collisionType = "NONE";
@@ -298,7 +378,10 @@ public class Game extends StateController {
 		millisecondsSum += frameTime;
 
 		{// update
-			checkCollision();
+	
+			stonesCollisions();
+			playerCollisions();
+			
 			playerMove();
 			timeLabel.setText("Time: " + timeToCount + "s left");
 		}

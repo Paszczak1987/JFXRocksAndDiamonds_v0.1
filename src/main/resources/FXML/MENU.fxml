@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="stackPane" alignment="BOTTOM_CENTER" prefHeight="748.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rocks_and_diamonds.controllers.Menu">
+<StackPane alignment="BOTTOM_CENTER" prefHeight="748.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rocks_and_diamonds.controllers.Menu">
    <children>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>

@@ -12,7 +12,6 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import rocks_and_diamonds.GameState;
@@ -22,8 +21,6 @@ public class Menu extends StateController {
 
 	private GameState parent;
 
-	@FXML
-	private StackPane stackPane;
 	@FXML
 	private VBox menuBtnBox;
 	@FXML

@@ -10,7 +10,9 @@ public enum Items {
 	RED_DIAMOND(255,0,0),
 	GREEN_DIAMOND(0,255,0),
 	BLUE_DIAMOND(0,0,255),
-	YELLOW_DIAMOND(255,255,0);
+	YELLOW_DIAMOND(255,255,0),
+	DOOR(255,10,255),
+	STONE(0,200,255);
 	
 	private Color color;
 	

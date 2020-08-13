@@ -23,6 +23,8 @@ public class Item {
 	protected final int dx;
 	protected final int dy;
 	protected int frameCounter;
+	private String direction;
+	private String collision;
 	private boolean isAnimationFinished;
 	private boolean isAnimationStarted;
 
@@ -39,14 +41,16 @@ public class Item {
 	public Item(Items name, int size, int x, int y) {
 		this.name = name;
 		this.size = size;
+		this.direction = "NONE";
+		this.collision = "NONE";
 		if (this.name == Items.WALL) {
 			textures.add(new Image("Pictures/Textures/brick_grey.png", size, size, false, false));
 		} else if (this.name == Items.DIRT) {
 			textures.add(new Image("Pictures/Textures/dirt_default.png", size, size, false, false));
 			textures.add(new Image("Pictures/Textures/dirt_crushed_01.png", size, size, false, false));
 			textures.add(new Image("Pictures/Textures/dirt_crushed_02.png", size, size, false, false));
-			timeline.setCycleCount(4);
 			timeline.getKeyFrames().add(new KeyFrame(Duration.millis(74), this::doStep));
+			timeline.setCycleCount(4);
 		} else if (this.name == Items.RED_DIAMOND) {
 			textures.add(new Image("Pictures/Textures/redD.png", size, size, false, false));
 		} else if (this.name == Items.GREEN_DIAMOND) {
@@ -55,11 +59,16 @@ public class Item {
 			textures.add(new Image("Pictures/Textures/blueD.png", size, size, false, false));
 		} else if (this.name == Items.YELLOW_DIAMOND) {
 			textures.add(new Image("Pictures/Textures/yellowD.png", size, size, false, false));
+		}else if (this.name == Items.STONE) {
+			textures.add(new Image("Pictures/Textures/rock.png", size, size, false, false));
+			timeline = new Timeline(new KeyFrame(Duration.millis(4), this::doStep));
+			timeline.setCycleCount(size);
+		}else if (this.name == Items.DOOR) {
+			textures.add(new Image("Pictures/Textures/door.png", size, size, false, false));
 		}
 		skin = textures.get(0);
 		body = new Rectangle(size, size);
 		body.setFill(new ImagePattern(skin));
-		//elo
 		setPosition(x, y);
 	}
 
@@ -92,13 +101,55 @@ public class Item {
 		body.setX(y * size);
 	}
 
-	// Metoda wywoywana przez Timeline co ka¿dy cykl
+	// Metoda wywo³ywana przez Timeline co ka¿dy cykl
 	protected void doStep(ActionEvent actionEvent) {
-		frameCounter++;
-		timeline.setOnFinished(this::afterAnimation);
-		animate();
+		if (this.name == Items.DIRT) {
+			frameCounter++;
+			timeline.setOnFinished(this::afterAnimation);
+			animate();
+		} else if (this.name == Items.STONE) {
+			timeline.setOnFinished(this::afterAnimation);
+			if(direction.equals("LEFT")) {
+				body.setX(body.getX() - dx);
+			}else if (direction.equals("RIGHT")) {
+				body.setX(body.getX() + dx);
+			}else if(direction.equals("DOWN")) {
+				body.setY(body.getY() + dy);
+			}
+		}
 	}
 
+	public void move(String dir) {
+		this.direction = dir;
+		if(collision.equals("NONE")) {
+			playAnimation();	
+		}else if(collision.equals("DOWN")) {
+			if(!direction.equals("DOWN"))
+				playAnimation();				
+		}else if(collision.equals("LEFT")) {
+			if(!direction.equals("LEFT"))
+				playAnimation();
+		}else if(collision.equals("RIGHT")) {
+			if(!direction.equals("RIGHT"))
+				playAnimation();
+		}else if(collision.equals("LEFT_RIGHT")) {
+			if(!direction.equals("LEFT") && !direction.equals("RIGHT"))
+				playAnimation();
+		}
+	}
+	
+	public void setCollision(String side) {
+		collision = side;
+	}
+	
+	public String getCollision() {
+		return collision;
+	}
+	
+	public String getDir() {
+		return direction;
+	}
+	
 	public void setDefaultSkin() {
 		if (!skin.equals(textures.get(0))) {
 			skin = textures.get(0);
@@ -120,6 +171,7 @@ public class Item {
 	
 	private void afterAnimation(ActionEvent actionEvent) {
 		isAnimationFinished = true;
+		isAnimationStarted = false;
 	}
 	
 	public void playAnimation() {
