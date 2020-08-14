@@ -139,6 +139,9 @@ public class Game extends StateController {
 			if(GameData.gameIsGoing)
 				pauseOrPlay(false);
 			if(timeToCount == 0) {
+				GameData.standingAddAndSort();
+				GameData.writeToFile();
+				
 				resetGame();
 				Options options = (Options)(parent.mainWindow().getGameState(GameStates.OPTIONS).getController());
 				options.disableDifficultyValues(false);
@@ -148,8 +151,9 @@ public class Game extends StateController {
 			parent.mainWindow().changeState(GameStates.MENU);
 		
 		} else if(e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.G) {
-			System.out.println("stones: "+stones.size()+" remove:"+stoneToRemove);
-			//System.out.println("P:"+player.howMuchDiamondsHave()+" M:"+diamonds.size());
+//			System.out.println("stones: "+stones.size()+" remove:"+stoneToRemove);
+//			System.out.println("P:"+player.howMuchDiamondsHave()+" M:"+diamonds.size());
+//			GameData.readFromFile();
 		}
 
 	}

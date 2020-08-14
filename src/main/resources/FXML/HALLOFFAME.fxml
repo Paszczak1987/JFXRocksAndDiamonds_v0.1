@@ -12,15 +12,15 @@
    <children>
       <VBox fx:id="vBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#returnOnMouseClicked" onMouseEntered="#onEnter" prefHeight="748.0" prefWidth="924.0">
          <children>
-            <Label fx:id="label" text="HALL OF FAME " textFill="#f2eeee">
+            <Label fx:id="label" alignment="CENTER" prefHeight="46.0" prefWidth="359.0" text="Hall of fame " textAlignment="CENTER" textFill="WHITE">
                <font>
-                  <Font size="52.0" />
+                  <Font size="25.0" />
                </font>
                <VBox.margin>
                   <Insets bottom="30.0" />
                </VBox.margin>
             </Label>
-            <TextArea fx:id="textArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="447.0" prefWidth="822.0">
+            <TextArea fx:id="textArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="827.0">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>

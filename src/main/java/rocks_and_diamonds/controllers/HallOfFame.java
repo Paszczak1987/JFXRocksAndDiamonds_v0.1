@@ -29,7 +29,6 @@ public class HallOfFame extends StateController{
 	private TextArea textArea;
 	@FXML
 	private Button backToMenu; 
-	
 	private String btnGeneralStyle;
 	private DropShadow btnShadow;
 	
@@ -39,6 +38,8 @@ public class HallOfFame extends StateController{
 		btnGeneralStyle = "-fx-background-color: lightgray;";
 		btnShadow = new DropShadow(BlurType.values()[0], Color.rgb(215, 156, 36), 0, 3.0f, 3.0f, 3.0f);
 		
+		textArea.setFocusTraversable(false);
+		textArea.setEditable(false);
 		backToMenu.setFocusTraversable(false);
 		backToMenu.setCursor(Cursor.HAND);
 	}
@@ -57,8 +58,6 @@ public class HallOfFame extends StateController{
 		backToMenu.setStyle(btnGeneralStyle+"-fx-text-fill: black;");
 		backToMenu.setEffect(btnShadow);	
 	}
-
-	
 
 	@Override
 	public void setParent(GameState parent) {
