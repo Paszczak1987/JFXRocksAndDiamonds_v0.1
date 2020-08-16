@@ -39,8 +39,8 @@ public class MainWindow extends Application {
 		gameStates.add(new GameState(this, GameStates.GAME, this.getClass().getResource("/FXML/GAME.fxml")));
 		gameStates.add(new GameState(this, GameStates.QUIT, this.getClass().getResource("/FXML/QUIT.fxml")));
 		
-		//changeState(GameStates.ENTER_PLAYER_NAME);
-		changeState(GameStates.MENU);
+		changeState(GameStates.ENTER_PLAYER_NAME);
+		//changeState(GameStates.MENU);
 		appWindow.getIcons().add(new Image("/Pictures/MainIcon.png"));
 		appWindow.setTitle("Rocks & Diamonds by £ukasz & Krzysztof");
 		appWindow.setResizable(false);

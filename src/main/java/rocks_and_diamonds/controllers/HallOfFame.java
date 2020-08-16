@@ -49,7 +49,6 @@ public class HallOfFame extends StateController{
 	private DropShadow btnShadow;
 	private String labelStyle;
 	
-	
 	@FXML
 	public void initialize() {
 		
@@ -87,11 +86,6 @@ public class HallOfFame extends StateController{
 			};
 			btnBox.addEventHandler(KeyEvent.KEY_PRESSED, keyPressed);
 		} // KeyListener na btnBox
-			
-		for(Pair<String,Integer> record: GameData.getStandings()) {
-			names.add(record.getKey());
-			score.add(record.getValue());
-		}
 		
 		for(int i = 0; i < table.getChildren().size(); i++) {
 			Label label = (Label)table.getChildren().get(i);
@@ -104,13 +98,25 @@ public class HallOfFame extends StateController{
 			label.setText("");
 		}
 		
+		update();
+			
+	}
+	
+	public void update() {
+		names.clear();
+		score.clear();
+		
+		for(Pair<String,Integer> record: GameData.getStandings()) {
+			names.add(record.getKey());
+			score.add(record.getValue());
+		}
+		
 		for(int i = 0; i < nameLabels.size(); i++) {
 			if(i < names.size()) {
 				nameLabels.get(i).setText(names.get(i));
 				scoreLabels.get(i).setText(score.get(i).toString());
 			}
 		}
-			
 	}
 	
 	public void buttonOnKeyEvent(KeyEvent e) {

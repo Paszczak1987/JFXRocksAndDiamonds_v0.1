@@ -18,7 +18,8 @@ public class GameData {
 	private static AudioClip bgMusic;
 	
 	private static String playerName;
-	private static int difficulty;
+	private static int[] difficulty = {70,90,110};
+	private static int diffIndex;
 	private static String texture;
 	private static boolean music;
 	private static int score;
@@ -30,7 +31,7 @@ public class GameData {
 	
 	static {
 		playerName = "unknown";
-		difficulty = 90;
+		diffIndex = 1;
 		texture = "MALE";
 		music = true;
 		bgMusic = new AudioClip(Paths.get("src/main/resources/Music/background-music.mp3").toUri().toString());
@@ -40,9 +41,9 @@ public class GameData {
 		standings = new ArrayList<Pair<String,Integer>>();
 		file = new File("src/main/resources/Scores/Scores.txt");
 		readFromFile();
-		if(music)
+		bgMusic.setCycleCount(AudioClip.INDEFINITE);
+		if(music) 
 			bgMusic.play();
-		
 	}
 	
 	public static void setPlayerName(String name) {
@@ -54,14 +55,13 @@ public class GameData {
 	}
 	
 	public static void changeDifficulty() {
-		if(difficulty == 90)
-			difficulty = 45;
-		else
-			difficulty = 90;
+		diffIndex++;
+		if(diffIndex == difficulty.length)
+			diffIndex = 0;	
 	}
 	
 	public static int getDifficulty() {
-		return difficulty;
+		return difficulty[diffIndex];
 	}
 	
 	public static void changeTexture() {

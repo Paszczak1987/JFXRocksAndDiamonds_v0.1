@@ -26,6 +26,7 @@ public class Game extends StateController {
 
 	// game loop fields
 	private int timeToCount;
+	private int countdownToNextLevel;
 	private long lastTime;
 	private long frameTime;
 	private int millisecondsSum;
@@ -39,9 +40,12 @@ public class Game extends StateController {
 	private int levelNr;
 	private int score;
 	private boolean pause;
+	private boolean nextLevel;
+	private boolean endGame;
 	private KeyEvent keyEvent;
 	private double boundShift;
-	String defaultMessage;
+	private boolean defaultMessageFlag;
+	private String defaultMessage;
 	
 	@FXML
 	private Pane gamePane;
@@ -63,8 +67,10 @@ public class Game extends StateController {
 	@FXML
 	public void initialize() {
 
-		this.levelNr = 0;
+		this.levelNr = 1;
 		this.pause = true;
+		this.nextLevel = false;
+		this.endGame = false;
 		this.boundShift = 2;
 
 		player = new Player(RECT_SIZE);
@@ -88,8 +94,9 @@ public class Game extends StateController {
 		} // KeyListener na gamePane
 
 		setDifficulty();
+		//countdownToNextLevel = 20;
 
-		defaultMessage = "[Enter] to start\n[P] to pause/unpause\n[ESC] to main menu";
+		defaultMessage = "[Enter] to start\n[P] to pause/unpause\n[ESC] to main menu\n[Q] to abandon";
 		
 		lvlLabel.setTextFill(Color.GOLD);
 		
@@ -102,8 +109,9 @@ public class Game extends StateController {
 		diamondsLabel.setTextFill(Color.MAGENTA);
 		diamondsLabel.setText("");
 		
-		message.setTextFill(Color.CYAN);
-		message.setText(defaultMessage);
+		defaultMessageFlag = true;
+		setDefaultMessage(Color.CYAN, defaultMessage);
+		message.setWrapText(true);
 	}
 
 // -----------------------------------------
@@ -128,20 +136,28 @@ public class Game extends StateController {
 			
 		} else if (e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.P) {
 			
-			if(GameData.gameIsGoing)
+			if(GameData.gameIsGoing && nextLevel == false)
 				if(!pause)
 					pauseOrPlay(false);
 				else
 					pauseOrPlay(true);
-			
+		}else if(e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.Q) {
+			stop();
+			resetGame();
+			Options options = (Options)(parent.mainWindow().getGameState(GameStates.OPTIONS).getController());
+			options.disableDifficultyValues(false);
+			Menu menu = (Menu)(parent.mainWindow().getGameState(GameStates.MENU).getController());
+			menu.setNewGamebtnTxt("New Game");
+			parent.mainWindow().changeState(GameStates.MENU);
 		} else if (e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.ESCAPE) {
 			
-			if(GameData.gameIsGoing)
+			if(GameData.gameIsGoing && nextLevel == false)
 				pauseOrPlay(false);
-			if(timeToCount == 0) {
+			if(endGame) {
 				GameData.standingAddAndSort();
 				GameData.writeToFile();
-				
+				HallOfFame hallOfFame = (HallOfFame)(parent.mainWindow().getGameState(GameStates.HALLOFFAME).getController());
+				hallOfFame.update();
 				resetGame();
 				Options options = (Options)(parent.mainWindow().getGameState(GameStates.OPTIONS).getController());
 				options.disableDifficultyValues(false);
@@ -413,8 +429,27 @@ public class Game extends StateController {
 				
 			}else if(item.getName() == Items.DOOR) {
 				
-				if (doesCollide(item, pBounds)) 
-					System.out.println("door");
+				if (doesCollide(item, pBounds)) {
+					if(defaultMessageFlag == true) {
+						defaultMessageFlag = false;
+						if(player.getDiamonds().size() < 2) {
+							setDefaultMessage(Color.RED, "You need to collect at least two diamonds");				
+						}else {										
+							//player.getAnimation().stop();
+							if(timeToCount < 20)
+								countdownToNextLevel = 20;
+							else
+								countdownToNextLevel = timeToCount;
+							nextLevel = true;
+						}
+						
+					}
+				} else {
+					if(defaultMessageFlag == false)
+						defaultMessageFlag = true;
+						setDefaultMessage(Color.CYAN, defaultMessage);
+				}
+					
 				
 			}
 
@@ -455,8 +490,10 @@ public class Game extends StateController {
 
 	private void playerMove() {
 		KeyCode code = keyEvent.getCode();
-		if (code == KeyCode.UP || code == KeyCode.DOWN || code == KeyCode.LEFT || code == KeyCode.RIGHT)
-			player.move(keyEvent);
+		if(GameData.gameIsGoing) {
+			if (code == KeyCode.UP || code == KeyCode.DOWN || code == KeyCode.LEFT || code == KeyCode.RIGHT)
+				player.move(keyEvent);			
+		}
 	}
 	
 	public Player getPlayer() {
@@ -467,14 +504,20 @@ public class Game extends StateController {
 		return pause;
 	}
 	
+	private void setDefaultMessage(Color c, String message) {
+		this.message.setTextFill(c);
+		this.message.setText(message);
+	}
+	
 	public void resetGame() {
 		
-		//zapis wyniku do hall of fame
-		
-		levelNr = 0;
+		if(levelNr != 1)
+			levelNr = 1;
 		pause = true;
+		endGame = false;
 		score = 0;
-
+		GameData.setScore(score);
+		
 		map.clear();
 		stones.clear();
 		diamonds.clear();
@@ -485,6 +528,7 @@ public class Game extends StateController {
 
 		setDifficulty();
 		GameData.gameIsGoing = false;
+		nextLevel = false;
 		
 		scoreLabel.setText(String.valueOf(score));
 		
@@ -493,12 +537,43 @@ public class Game extends StateController {
 
 		diamondsLabel.setText("");
 	
-		message.setText(defaultMessage);
+		setDefaultMessage(Color.CYAN, defaultMessage);
 		player.getDiamonds().clear();
+		
+	}
+	
+	private void nextLevel() {
+		levelNr++;
+		
+		map.clear();
+		stones.clear();
+		diamonds.clear();
+		player.setDefaultSkin();
+		
+		loadLevel();
+		pause = true;
+		endGame = false;
+		stoneToRemove = stones.size();
+		updateLevel();			
+
+		setDifficulty();
+		GameData.gameIsGoing = false;
+		nextLevel = false;	
+		
+		statusLabel.setTextFill(Color.GOLD);
+		statusLabel.setText("Ready");
+
+		diamondsLabel.setText("");
+	
+		setDefaultMessage(Color.CYAN, defaultMessage);
+		player.getDiamonds().clear();
+		
 	}
 	
 	private void setScore(Item item) {
-		if(item.getName() == Items.GREEN_DIAMOND) 
+		if(item == null)
+			score+=15;
+		else if(item.getName() == Items.GREEN_DIAMOND) 
 			score += 75;
 		else if(item.getName() == Items.YELLOW_DIAMOND)
 			score += 150;
@@ -510,6 +585,7 @@ public class Game extends StateController {
 			score += 5;
 		else if(item.getName() == Items.DIRT)
 			score += 1;
+		
 		GameData.setScore(score);
 		scoreLabel.setText(String.valueOf(score));
 	}
@@ -535,28 +611,80 @@ public class Game extends StateController {
 			stonesCollisions();
 			playerCollisions();
 			
-			playerMove();
+			if(nextLevel == false)
+				playerMove();
 			
-			if(timeToCount < 10)
-				timeLabel.setTextFill(Color.RED);
-			else if(timeToCount < GameData.getDifficulty()/2)
-				timeLabel.setTextFill(Color.YELLOW);
-			timeLabel.setText(String.valueOf(timeToCount));
+			{//zmiana koloru licznika czasu
+				if(timeToCount < 10)
+					timeLabel.setTextFill(Color.RED);
+				else if(timeToCount < GameData.getDifficulty()/2)
+					timeLabel.setTextFill(Color.YELLOW);
+				timeLabel.setText(String.valueOf(timeToCount));				
+			}//zmiana koloru licznika czasu
+			
+			{//Zmiana instrukcji jeœli mamy dwa diamenty lub gdy ju¿ dwóch nie uzbieramy
+				if((diamonds.size() < 2 && player.getDiamonds().size() < 1 ) || (diamonds.size() < 1 && player.getDiamonds().size() < 2)) {
+					statusLabel.setTextFill(Color.TOMATO);
+					statusLabel.setText("Gems lack");
+					setDefaultMessage(Color.RED, "Game Over\n[ESC] to main menu");
+					stop();
+				}else if(player.getDiamonds().size() > 1) {
+					setDefaultMessage(Color.CYAN, defaultMessage+"\nNow you can go to the next level");
+				}
+			}//Zmiana instrukcji jeœli mamy dwa diamenty lub gdy ju¿ dwóch nie uzbieramy
+			
 		}
-
-		if (millisecondsSum > 1000) {
-
-			timeToCount--;
-
-			if (timeToCount == 0) {
-				timeLabel.setText("");
-				statusLabel.setTextFill(Color.TOMATO);
-				statusLabel.setText("Time out");
-				stop();
-				return;
+		
+		if(nextLevel == false) {
+			//Obecny poziom
+			if (millisecondsSum > 1000) {
+				
+				timeToCount--;
+				
+				if (timeToCount == 0) {
+					timeLabel.setText("0");
+					statusLabel.setTextFill(Color.TOMATO);
+					statusLabel.setText("Time out");
+					setDefaultMessage(Color.RED, "Game Over\n[ESC] to main menu");
+					endGame = true;
+					stop();
+				}
+				
+				millisecondsSum = 0;
+			}		
+		}else {
+			//Nastêpny poziom
+			
+			statusLabel.setTextFill(Color.PALEGREEN);
+			statusLabel.setText("Next level");
+			setDefaultMessage(Color.CHARTREUSE, "Good job! You are going to the next level.");	
+			
+			if(millisecondsSum > 100) {
+				
+				timeToCount = timeToCount > 0 ? timeToCount - 1 : 0;
+				countdownToNextLevel = countdownToNextLevel > 0 ? countdownToNextLevel - 1 : 0;
+				
+				if(timeToCount > 0) {
+					setScore(null);
+				}
+				
+				if(timeToCount == 0 && countdownToNextLevel == 0) {
+					timeLabel.setText("0");
+					stop();
+					if(levelNr < 4)
+						nextLevel();
+					else {
+						statusLabel.setTextFill(Color.PALEGREEN);
+						statusLabel.setText("Completed");
+						setDefaultMessage(Color.CHARTREUSE, "You have beat the game.\n[ESC] to main menu");
+						endGame = true;
+						stop();
+					}
+				}
+				
+				millisecondsSum = 0;
+				
 			}
-
-			millisecondsSum = 0;
 		}
 
 		frameTime = System.currentTimeMillis() - lastTime;

@@ -49,7 +49,7 @@ public class Item {
 			textures.add(new Image("Pictures/Textures/greystone_default.png", size, size, false, false));
 			textures.add(new Image("Pictures/Textures/greystone_crushed_01.png", size, size, false, false));
 			textures.add(new Image("Pictures/Textures/greystone_crushed_02.png", size, size, false, false));
-			timeline.getKeyFrames().add(new KeyFrame(Duration.millis(74), this::doStep));
+			timeline.getKeyFrames().add(new KeyFrame(Duration.millis(40), this::doStep));
 			timeline.setCycleCount(4);
 		} else if (this.name == Items.DIRT) {
 			textures.add(new Image("Pictures/Textures/dirt_default.png", size, size, false, false));

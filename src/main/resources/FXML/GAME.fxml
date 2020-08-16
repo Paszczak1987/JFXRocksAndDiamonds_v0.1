@@ -22,7 +22,7 @@
                   </Label>
                   <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0">
                      <children>
-                        <Label prefHeight="25.0" prefWidth="80.0" text="Level:" textFill="WHITE">
+                        <Label prefHeight="25.0" prefWidth="60.0" text="Level:" textFill="WHITE">
                            <font>
                               <Font size="15.0" />
                            </font>
@@ -34,12 +34,12 @@
                         </Label>
                      </children>
                      <padding>
-                        <Insets left="25.0" />
+                        <Insets left="20.0" />
                      </padding>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0">
                      <children>
-                        <Label prefHeight="25.0" prefWidth="80.0" text="Time: " textFill="WHITE">
+                        <Label prefHeight="25.0" prefWidth="60.0" text="Time: " textFill="WHITE">
                            <font>
                               <Font size="15.0" />
                            </font>
@@ -51,12 +51,15 @@
                         </Label>
                      </children>
                      <VBox.margin>
-                        <Insets left="25.0" />
+                        <Insets />
                      </VBox.margin>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0">
                      <children>
-                        <Label prefHeight="25.0" prefWidth="80.0" text="Score:" textFill="WHITE">
+                        <Label prefHeight="25.0" prefWidth="60.0" text="Score:" textFill="WHITE">
                            <font>
                               <Font size="15.0" />
                            </font>
@@ -68,12 +71,12 @@
                         </Label>
                      </children>
                      <padding>
-                        <Insets left="25.0" />
+                        <Insets left="20.0" />
                      </padding>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0">
                      <children>
-                        <Label prefHeight="25.0" prefWidth="80.0" text="Diamonds:" textFill="WHITE">
+                        <Label prefHeight="25.0" prefWidth="60.0" text="Gems:" textFill="WHITE">
                            <font>
                               <Font size="15.0" />
                            </font>
@@ -85,12 +88,12 @@
                         </Label>
                      </children>
                      <padding>
-                        <Insets left="25.0" />
+                        <Insets left="20.0" />
                      </padding>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0">
                      <children>
-                        <Label prefHeight="25.0" prefWidth="80.0" text="Status:" textFill="WHITE">
+                        <Label prefHeight="25.0" prefWidth="60.0" text="Status:" textFill="WHITE">
                            <font>
                               <Font size="15.0" />
                            </font>
@@ -102,7 +105,7 @@
                         </Label>
                      </children>
                      <padding>
-                        <Insets left="25.0" />
+                        <Insets left="20.0" />
                      </padding>
                   </HBox>
                   <Label fx:id="message" alignment="CENTER" prefHeight="250.0" prefWidth="145.0" textFill="WHITE" wrapText="true" />
