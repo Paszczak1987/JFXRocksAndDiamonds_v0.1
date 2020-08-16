@@ -7,6 +7,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
@@ -22,6 +23,8 @@ public class Options extends StateController{
 	
 	private GameState parent;
 
+	@FXML
+	private Label title;
 	@FXML
 	private VBox optionsBtnBox;
 	@FXML
@@ -49,6 +52,8 @@ public class Options extends StateController{
 	@FXML
 	public void initialize() {
 		
+		title.setTextFill(Color.GOLD);
+		
 		buttons = new ArrayList<Button>();
 		buttons.add(music);
 		buttons.add(texture);
@@ -57,7 +62,7 @@ public class Options extends StateController{
 		
 		btnIndex = 0;
 		btnGeneralStyle = "-fx-background-color: lightgray;";
-		btnShadow = new DropShadow(BlurType.values()[0], Color.rgb(215, 156, 36), 0, 0.0f, 1.0f, 1.0f);
+		btnShadow = new DropShadow(BlurType.values()[0], Color.rgb(215, 156, 36), 0, 3.0f, 3.0f, 3.0f);
 		focusOnButton(btnIndex);
 		
 		for (Button btn : buttons) {

@@ -123,7 +123,12 @@ public class GameData {
 
 			standings.add(new Pair<String, Integer>(key, value));
 		}
-
+		Collections.sort(standings, new Comparator<Pair<String,Integer>>() {
+		    @Override
+		    public int compare(Pair<String,Integer> p1, Pair<String,Integer> p2) {
+		        return p2.getValue().compareTo(p1.getValue());
+		    }
+		});
 		inputFileReader.close();
 	}
 	
