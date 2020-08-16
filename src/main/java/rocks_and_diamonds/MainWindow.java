@@ -21,14 +21,14 @@ public class MainWindow extends Application {
 	@Override
 	public void start(Stage window) throws Exception {
 		this.appWindow = window;
-		{// Listener przy minimalizacji lub przywróceniu okna apki
+		{// Listener przy minimalizacji lub przywroceniu okna apki
 			window.iconifiedProperty().addListener(new ChangeListener<Boolean>() {
 				@Override
 				public void changed(ObservableValue<? extends Boolean> ov, Boolean max, Boolean min) {
 					musicAndPauseAtMinimize(max, min);
 				}
 			});
-		} // Listener przy minimalizacji lub przywróceniu okna apki
+		} // Listener przy minimalizacji lub przywroceniu okna apki
 		
 		gameStates = new ArrayList<GameState>();
 		gameStates.add(new GameState(this, GameStates.ENTER_PLAYER_NAME, this.getClass().getResource("/FXML/ENTER_PLAYER_NAME.fxml")));
@@ -90,7 +90,7 @@ public class MainWindow extends Application {
 				return gameState;
 		return null;
 	}
-
+	
 	public static void main(String[] args) {
 		launch(args);
 	}

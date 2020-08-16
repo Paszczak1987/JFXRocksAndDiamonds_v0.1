@@ -26,7 +26,7 @@ public class GameState {
 		controller.setParent(this);
 		scene = new Scene(stackPane);
 
-		// £adowanie CSSów
+		// Ladowanie CSSow
 		// scene.getStylesheets().add(this.getClass().getResource("/CSS/"+stateName.toString()+".css").toExternalForm());
 	}
 

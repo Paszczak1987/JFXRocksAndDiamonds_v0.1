@@ -39,7 +39,7 @@ public class Player extends Item {
 		return direction;
 	}
 	
-	// Metoda wywoywana przez Timeline co ka¿dy cykl
+	// Metoda wywoywana przez Timeline co kazdy cykl
 	protected void doStep(ActionEvent actionEvent) {
 
 		frameCounter++;
@@ -121,7 +121,7 @@ public class Player extends Item {
 	}
 	
 	public void move(KeyEvent keyEvent/*, String collision*/) {
-		// blokada zmiany kierunku przed koñcem animacji
+		// blokada zmiany kierunku przed koncem animacji
 		if (timeline.getStatus() == Animation.Status.STOPPED)
 			direction = keyEvent.getCode();
 

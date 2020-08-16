@@ -122,7 +122,7 @@ public class Game extends StateController {
 		this.keyEvent = e;
 
 		// -----------------------------------------
-		// playerMove() jest wywo³ywany w pêtli gry
+		// playerMove() jest wywolywany w petli gry
 		// -----------------------------------------
 
 		if (e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.ENTER) {
@@ -164,7 +164,7 @@ public class Game extends StateController {
 				Menu menu = (Menu)(parent.mainWindow().getGameState(GameStates.MENU).getController());
 				menu.setNewGamebtnTxt("New Game");
 			}
-			parent.mainWindow().changeState(GameStates.MENU);
+			parent.mainWindow().changeState(GameStates.MENU) ;
 		
 		} else if(e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.G) {
 //			System.out.println("stones: "+stones.size()+" remove:"+stoneToRemove);
@@ -275,7 +275,7 @@ public class Game extends StateController {
 			
 			for (int i = 0; i < map.size(); i++) {// collision loop
 				
-				if (map.get(i).equals(stone)) // wykluczamy kamieñ dla którego sprawdzamy kolizje
+				if (map.get(i).equals(stone)) // wykluczamy kamien dla ktorego sprawdzamy kolizje
 					i++;
 				Item item = map.get(i);
 				// Item bounds
@@ -308,7 +308,7 @@ public class Game extends StateController {
 					}
 					
 				}else if(item.getName() == Items.PLAYER) {
-					//jeœli kamieñ spadnie na playera
+					//jesli kamien spadnie na playera
 					if (sYd == iYu && ((iXl + 2 > sXl && iXl + 2 < sXr) || (iXr - 2 > sXl && iXr - 2 < sXr))) {
 						down = (down == false ? true : down);
 					}
@@ -372,7 +372,7 @@ public class Game extends StateController {
 			double iYu = item.getBody().getY();
 			double iYd = item.getBody().getY() + RECT_SIZE;
 
-			if (item.getName() == Items.WALL || item.getName() == Items.GREY_WALL) { // Jeœli WALL
+			if (item.getName() == Items.WALL || item.getName() == Items.GREY_WALL) { // Jesli WALL
 				
 				if (pXl == iXr && pYu == iYu) { // 1. LEFT SIDE
 					left = (left == false ? true : left);
@@ -395,7 +395,7 @@ public class Game extends StateController {
 					updateLevel();
 				}
 				
-			}else if(item.getName() == Items.STONE) {// Jeœli STONE
+			}else if(item.getName() == Items.STONE) {// Jesli STONE
 				
 				if(pXl == iXr && pYu == iYu) {
 					if(item.getCollision().equals("DOWN_LEFT"))
@@ -415,7 +415,7 @@ public class Game extends StateController {
 					up = (up == false ? true : up);
 				}
 
-			} else if (item.getName() == Items.RED_DIAMOND || item.getName() == Items.GREEN_DIAMOND // Jeœli DIAMOND
+			} else if (item.getName() == Items.RED_DIAMOND || item.getName() == Items.GREEN_DIAMOND // Jesli DIAMOND
 					|| item.getName() == Items.BLUE_DIAMOND || item.getName() == Items.YELLOW_DIAMOND) {
 				
 				if (doesCollide(item, pBounds)) {
@@ -622,7 +622,7 @@ public class Game extends StateController {
 				timeLabel.setText(String.valueOf(timeToCount));				
 			}//zmiana koloru licznika czasu
 			
-			{//Zmiana instrukcji jeœli mamy dwa diamenty lub gdy ju¿ dwóch nie uzbieramy
+			{//Zmiana instrukcji jesli mamy dwa diamenty lub gdy juz dwoch nie uzbieramy
 				if((diamonds.size() < 2 && player.getDiamonds().size() < 1 ) || (diamonds.size() < 1 && player.getDiamonds().size() < 2)) {
 					statusLabel.setTextFill(Color.TOMATO);
 					statusLabel.setText("Gems lack");
@@ -631,7 +631,7 @@ public class Game extends StateController {
 				}else if(player.getDiamonds().size() > 1) {
 					setDefaultMessage(Color.CYAN, defaultMessage+"\nNow you can go to the next level");
 				}
-			}//Zmiana instrukcji jeœli mamy dwa diamenty lub gdy ju¿ dwóch nie uzbieramy
+			}//Zmiana instrukcji jesli mamy dwa diamenty lub gdy juz dwoch nie uzbieramy
 			
 		}
 		

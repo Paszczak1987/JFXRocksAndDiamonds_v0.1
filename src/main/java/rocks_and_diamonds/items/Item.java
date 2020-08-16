@@ -107,7 +107,7 @@ public class Item {
 		body.setX(y * size);
 	}
 
-	// Metoda wywo³ywana przez Timeline co ka¿dy cykl
+	// Metoda wywolywana przez Timeline co kazdy cykl
 	protected void doStep(ActionEvent actionEvent) {
 		if (this.name == Items.DIRT || this.name == Items.GREY_WALL) {
 			frameCounter++;

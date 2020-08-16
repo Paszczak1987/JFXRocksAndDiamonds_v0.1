@@ -1,6 +1,5 @@
 package rocks_and_diamonds.controllers;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
