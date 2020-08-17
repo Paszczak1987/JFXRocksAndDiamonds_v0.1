@@ -20,7 +20,8 @@ public class GameState {
 
 		this.parent = parent;
 		this.stateName = state;
-		FXMLLoader loader = new FXMLLoader(fxmlPathForScene);
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(fxmlPathForScene); 
 		stackPane = loader.load();
 		controller = loader.getController();
 		controller.setParent(this);
