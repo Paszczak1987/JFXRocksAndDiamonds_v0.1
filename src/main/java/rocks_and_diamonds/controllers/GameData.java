@@ -23,7 +23,6 @@ public class GameData {
 	private static String texture;
 	private static boolean music;
 	private static int score;
-	private static int levelNumber;
 	private static boolean wasNotPaused;
 	public static boolean gameIsGoing;
 	private static List<Pair<String,Integer>> standings;
@@ -35,7 +34,6 @@ public class GameData {
 		texture = "MALE";
 		music = true;
 		bgMusic = new AudioClip(Paths.get("src/main/resources/Music/background-music.mp3").toUri().toString());
-		levelNumber = 0;
 		wasNotPaused = false;
 		gameIsGoing = false;
 		standings = new ArrayList<Pair<String,Integer>>();
@@ -50,9 +48,9 @@ public class GameData {
 		playerName = name;
 	}
 	
-	public static String getPlayerName() {
-		return playerName;
-	}
+//	public static String getPlayerName() {
+//		return playerName;
+//	}
 	
 	public static void changeDifficulty() {
 		diffIndex++;
@@ -97,14 +95,6 @@ public class GameData {
 	
 	public static void setScore(int scr) {
 		score = scr;
-	}
-	
-	public static int getScore() {
-		return score;
-	}
-	
-	public static void increaseLevel() {
-		levelNumber++;
 	}
 	
 	public static void readFromFile() {
@@ -158,10 +148,6 @@ public class GameData {
 	
 	public static List<Pair<String,Integer>> getStandings(){
 		return standings;
-	}
-	
-	public static int getLvlNum() {
-		return levelNumber;
 	}
 	
 	public static void setWasNotPaused(boolean was) {

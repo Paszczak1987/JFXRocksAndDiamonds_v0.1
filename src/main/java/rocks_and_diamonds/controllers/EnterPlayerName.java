@@ -36,12 +36,12 @@ public class EnterPlayerName extends StateController{
 	}
 	
 	public void buttonOnMouseClicked() {
-		if(!textField.getText().equals(""))
+		if(!textField.getText().equals("") && !textField.getText().contains("#"))
 			goToLoading();
 	}
 	
 	public void textFieldOnKeyPressed(KeyEvent e) {
-		if(e.getCode() == KeyCode.ENTER && !textField.getText().equals(""))
+		if(e.getCode() == KeyCode.ENTER && !textField.getText().equals("") && !textField.getText().contains("#"))
 			goToLoading();
 	}
 	
@@ -60,7 +60,7 @@ public class EnterPlayerName extends StateController{
 
 	@Override
 	public void handle(long now) {
-		if(!textField.getText().equals("")) {
+		if(!textField.getText().equals("") && !textField.getText().contains("#")) {
 			button.setStyle(btnGeneralStyle+"-fx-text-fill: black;");
 			button.setEffect(btnShadow);
 			button.setCursor(Cursor.HAND);
