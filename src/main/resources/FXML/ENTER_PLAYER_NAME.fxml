@@ -10,7 +10,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="748.0" prefWidth="924.0" style="-fx-background-image: url(Pictures/EnterPlayerName.jpg); -fx-background-size: stretch;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rocks_and_diamonds.controllers.EnterPlayerName">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="748.0" prefWidth="924.0" style="-fx-background-image: url(Pictures/EnterPlayerName.jpg); -fx-background-size: stretch;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="rocks_and_diamonds.controllers.EnterPlayerName">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#dcdfe2" height="150.0" opacity="0.3" stroke="#cdc0c0" strokeType="INSIDE" width="250.0" />
       <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="250.0">

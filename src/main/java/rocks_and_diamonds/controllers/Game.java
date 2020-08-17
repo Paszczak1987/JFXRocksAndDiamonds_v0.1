@@ -96,7 +96,7 @@ public class Game extends StateController {
 		setDifficulty();
 		//countdownToNextLevel = 20;
 
-		defaultMessage = "[Enter] to start\n[P] to pause/unpause\n[ESC] to main menu\n[Q] to abandon";
+		defaultMessage = "[Enter] to start\n[P] to pause/unpause\n[ESC] to main menu\n[Q] to abandon\n";
 		
 		lvlLabel.setTextFill(Color.GOLD);
 		
