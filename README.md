@@ -1,7 +1,4 @@
 # JFXRocksAndDiamonds
-Dodano: 
- - Kolizje ze ścianami,
- - Rozpoczęcie gry po wciśnięciu [ENTER]
- - Pauza po wciśnięciu [P] i wznowienie po wciśnięciu [ENTER]
- - Timer gry 90s
- 
+If you want to run this app, 
+download or clone this repository
+and run it as JavaFX project in your IDE.
